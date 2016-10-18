@@ -1,0 +1,7 @@
+rootProject.name = 'CatShop'
+
+include 'Server'
+include 'BackEnd'
+include 'Customer'
+include 'Collection'
+include 'Warehouse'
