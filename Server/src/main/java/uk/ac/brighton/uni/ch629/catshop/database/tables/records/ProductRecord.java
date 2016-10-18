@@ -144,7 +144,7 @@ public class ProductRecord extends UpdatableRecordImpl<ProductRecord> implements
      */
     @Override
     public Field<Integer> field1() {
-        return Product.PRODUCT.PRODUCTNUMBER;
+        return Product.PRODUCT.PRODUCT_NUMBER;
     }
 
     /**
@@ -152,7 +152,7 @@ public class ProductRecord extends UpdatableRecordImpl<ProductRecord> implements
      */
     @Override
     public Field<String> field2() {
-        return Product.PRODUCT.PRODUCTDESCRIPTION;
+        return Product.PRODUCT.DESCRIPTION;
     }
 
     /**
@@ -160,7 +160,7 @@ public class ProductRecord extends UpdatableRecordImpl<ProductRecord> implements
      */
     @Override
     public Field<String> field3() {
-        return Product.PRODUCT.PRODUCTIMAGE;
+        return Product.PRODUCT.IMAGE;
     }
 
     /**
@@ -168,7 +168,7 @@ public class ProductRecord extends UpdatableRecordImpl<ProductRecord> implements
      */
     @Override
     public Field<Integer> field4() {
-        return Product.PRODUCT.PRODUCTSTOCK;
+        return Product.PRODUCT.STOCK;
     }
 
     /**

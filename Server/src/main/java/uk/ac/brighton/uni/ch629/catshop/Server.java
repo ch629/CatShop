@@ -6,7 +6,6 @@ import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-import org.jooq.util.derby.sys.Sys;
 import uk.ac.brighton.uni.ch629.catshop.database.tables.Product;
 
 import java.sql.Connection;
@@ -23,8 +22,8 @@ public class Server {
             Result<Record> result = create.select().from(Product.PRODUCT).fetch();
 
             for(Record r : result) {
-                Integer productNumber = r.getValue(Product.PRODUCT.PRODUCTNUMBER);
-                String description = r.getValue(Product.PRODUCT.PRODUCTDESCRIPTION);
+                Integer productNumber = r.getValue(Product.PRODUCT.PRODUCT_NUMBER);
+                String description = r.getValue(Product.PRODUCT.DESCRIPTION);
                 System.out.println(productNumber + ": " + description);
             }
         }catch (Exception e) {

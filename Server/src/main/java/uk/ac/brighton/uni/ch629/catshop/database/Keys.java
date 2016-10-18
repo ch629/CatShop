@@ -40,10 +40,10 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     private static class Identities0 extends AbstractKeys {
-        public static Identity<ProductRecord, Integer> IDENTITY_PRODUCT = createIdentity(Product.PRODUCT, Product.PRODUCT.PRODUCTNUMBER);
+        public static Identity<ProductRecord, Integer> IDENTITY_PRODUCT = createIdentity(Product.PRODUCT, Product.PRODUCT.PRODUCT_NUMBER);
     }
 
     private static class UniqueKeys0 extends AbstractKeys {
-        public static final UniqueKey<ProductRecord> KEY_PRODUCT_PRIMARY = createUniqueKey(Product.PRODUCT, Product.PRODUCT.PRODUCTNUMBER);
+        public static final UniqueKey<ProductRecord> KEY_PRODUCT_PRIMARY = createUniqueKey(Product.PRODUCT, Product.PRODUCT.PRODUCT_NUMBER);
     }
 }

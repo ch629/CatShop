@@ -26,19 +26,19 @@ public class Product extends TableImpl<ProductRecord> {
     /**
      * The column <code>catshop.product.ProductNumber</code>.
      */
-    public final TableField<ProductRecord, Integer> PRODUCTNUMBER = createField("ProductNumber", SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<ProductRecord, Integer> PRODUCT_NUMBER = createField("ProductNumber", SQLDataType.INTEGER.nullable(false), this, "");
     /**
      * The column <code>catshop.product.ProductDescription</code>.
      */
-    public final TableField<ProductRecord, String> PRODUCTDESCRIPTION = createField("ProductDescription", SQLDataType.VARCHAR.length(45).nullable(false), this, "");
+    public final TableField<ProductRecord, String> DESCRIPTION = createField("ProductDescription", SQLDataType.VARCHAR.length(45).nullable(false), this, "");
     /**
      * The column <code>catshop.product.ProductImage</code>.
      */
-    public final TableField<ProductRecord, String> PRODUCTIMAGE = createField("ProductImage", SQLDataType.VARCHAR.length(45).nullable(false), this, "");
+    public final TableField<ProductRecord, String> IMAGE = createField("ProductImage", SQLDataType.VARCHAR.length(45).nullable(false), this, "");
     /**
      * The column <code>catshop.product.ProductStock</code>.
      */
-    public final TableField<ProductRecord, Integer> PRODUCTSTOCK = createField("ProductStock", SQLDataType.INTEGER.defaulted(true), this, "");
+    public final TableField<ProductRecord, Integer> STOCK = createField("ProductStock", SQLDataType.INTEGER.defaulted(true), this, "");
 
     /**
      * Create a <code>catshop.product</code> table reference
