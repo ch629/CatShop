@@ -22,7 +22,7 @@ public class Product extends TableImpl<ProductRecord> {
      * The singleton instance of <code>catshop.product</code>
      */
     public static final Product PRODUCT = new Product();
-    private static final long serialVersionUID = 2073256957;
+    private static final long serialVersionUID = -1916101091;
     /**
      * The column <code>catshop.product.ProductNumber</code>.
      */
@@ -39,6 +39,10 @@ public class Product extends TableImpl<ProductRecord> {
      * The column <code>catshop.product.ProductStock</code>.
      */
     public final TableField<ProductRecord, Integer> STOCK = createField("ProductStock", SQLDataType.INTEGER.defaulted(true), this, "");
+    /**
+     * The column <code>catshop.product.ProductPrice</code>.
+     */
+    public final TableField<ProductRecord, java.lang.Double> PRICE = createField("ProductPrice", SQLDataType.DOUBLE, this, "");
 
     /**
      * Create a <code>catshop.product</code> table reference
@@ -98,14 +102,14 @@ public class Product extends TableImpl<ProductRecord> {
      * {@inheritDoc}
      */
     @Override
-    public Product as(java.lang.String alias) {
+    public Product as(String alias) {
         return new Product(alias, this);
     }
 
     /**
      * Rename this table
      */
-    public Product rename(java.lang.String name) {
+    public Product rename(String name) {
         return new Product(name, null);
     }
 }

@@ -1,5 +1,6 @@
 package uk.ac.brighton.uni.ch629.catshop;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -7,6 +8,7 @@ import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import uk.ac.brighton.uni.ch629.catshop.database.tables.Product;
+import uk.ac.brighton.uni.ch629.catshop.database.tables.records.ProductRecord;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,15 +24,19 @@ public class Server {
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
                 Result<Record> result = create.select().from(Product.PRODUCT).fetch();
 
-                JsonObject jsonObject = new JsonObject();
+                JsonArray array = new JsonArray();
                 for (Record r : result) {
+                    ProductRecord record = (ProductRecord) r;
                     JsonObject object = new JsonObject();
-                    object.addProperty("description", r.getValue(Product.PRODUCT.DESCRIPTION));
-                    object.addProperty("image", r.getValue(Product.PRODUCT.IMAGE));
-                    object.addProperty("stock", r.getValue(Product.PRODUCT.STOCK));
-                    jsonObject.add(r.getValue(Product.PRODUCT.PRODUCT_NUMBER).toString(), object);
+
+                    object.addProperty("number", record.getProductNumberInt());
+                    object.addProperty("description", record.getProductDescription());
+                    object.addProperty("image", record.getProductImage());
+                    object.addProperty("stock", record.getProductStockInt());
+//                    object.addProperty("price", record.getProductPriceDouble()); //NOTE: Commented out until values have been added to the db
+                    array.add(object);
                 }
-                return jsonObject;
+                return array;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -42,20 +48,19 @@ public class Server {
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
                 Result<Record> result = create.select().from(Product.PRODUCT).where(Product.PRODUCT.PRODUCT_NUMBER.equal(Integer.valueOf(req.params(":id")))).fetch();
 
-                JsonObject jsonObject = new JsonObject();
                 for (Record r : result) {
+                    ProductRecord record = (ProductRecord) r;
                     JsonObject object = new JsonObject();
-                    object.addProperty("description", r.getValue(Product.PRODUCT.DESCRIPTION));
-                    object.addProperty("image", r.getValue(Product.PRODUCT.IMAGE));
-                    object.addProperty("stock", r.getValue(Product.PRODUCT.STOCK));
+                    object.addProperty("description", record.getProductDescription());
+                    object.addProperty("image", record.getProductImage());
+                    object.addProperty("stock", record.getProductStockInt());
+//                    object.addProperty("price", record.getProductPriceDouble());
                     return object;
-//                    jsonObject.add(r.getValue(Product.PRODUCT.PRODUCT_NUMBER).toString(), object);
                 }
-                return jsonObject;
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return "";
+            return "None Found";
         });
     }
 }
