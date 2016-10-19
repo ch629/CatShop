@@ -35,7 +35,6 @@ public class DatabaseTest {
     public void testThatDataInserts() {
         assertThat(Product.getProduct(1)).isNull(); //NOTE: This is fine because the table is empty, and the next id will always be 0
         Product p = addProduct();
-        System.out.println("Generated with ID: " + p.getProductNumber());
         assertThat(Product.getProduct(p.getProductNumber())).isNotNull();
     }
 

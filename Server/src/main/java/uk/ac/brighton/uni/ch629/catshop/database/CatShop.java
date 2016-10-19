@@ -27,6 +27,10 @@ public class CatShop { //TODO: ThreadPool for SQL requests? -> Only do it for up
         return -1;
     }
 
+    public int executeUpdate(String sql, Object... args) {
+        return executeUpdate(String.format(sql, args));
+    }
+
 
     public Connection createConnectionException() throws SQLException {
         return dbType.getConnectionException();

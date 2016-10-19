@@ -119,10 +119,12 @@ public class Product {
     }
 
     public void update() {
-        throw new NotImplementedException();
+        String sql = "UPDATE Product SET ProductDescription='%s', ProductImage='%s', ProductStock=%d, ProductPrice=%f WHERE ProductNumber=%d;";
+        database.executeUpdate(sql, description, image, stock, price, productNumber);
     }
 
     public void delete() {
-        throw new NotImplementedException();
+        String sql = "DELETE FROM Product WHERE ProductNumber=%d;";
+        database.executeUpdate(sql, productNumber);
     }
 }
