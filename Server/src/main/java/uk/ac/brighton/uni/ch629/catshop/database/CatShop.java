@@ -1,14 +1,11 @@
 package uk.ac.brighton.uni.ch629.catshop.database;
 
-import uk.ac.brighton.uni.ch629.catshop.database.tables.ProductTable;
-
 import java.sql.Connection;
 
 /**
  * The Database
  */
-public class CatShop { //TODO: ThreadPool for SQL requests?
-    private final ProductTable PRODUCT_TABLE = new ProductTable(this);
+public class CatShop { //TODO: ThreadPool for SQL requests? -> Only do it for updates and stuff sent from clients
     private DBType dbType; //TODO: Dynamically pick which type of database? Using the Database.txt like Mike's?
 
     /**
