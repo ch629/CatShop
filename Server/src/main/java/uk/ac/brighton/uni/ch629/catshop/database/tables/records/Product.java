@@ -1,13 +1,14 @@
 package uk.ac.brighton.uni.ch629.catshop.database.tables.records;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.google.gson.JsonObject;
 import uk.ac.brighton.uni.ch629.catshop.database.CatShop;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Product {
     private static CatShop database = new CatShop();
@@ -38,10 +39,10 @@ public class Product {
     }
 
     public static Product getProduct(int productNumber) {
-        String sql = String.format("SELECT * FROM Product WHERE ProductNumber=%d", productNumber);
+        String sql = String.format("SELECT * FROM Product WHERE ProductNumber=%d;", productNumber);
         try (Connection c = database.createConnectionException(); Statement stmt = c.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
-            if (rs.next()) {
+            if (rs.next()) { //TODO: Could use getAll and only get the first Product, but may take more time because of the loop.
                 return new Product(
                         rs.getInt("ProductNumber"),
                         rs.getString("ProductDescription"),
@@ -55,17 +56,32 @@ public class Product {
         return null; //Didn't find it.
     }
 
-    public static Set<Product> getAll() {
-        throw new NotImplementedException();
+    public static List<Product> getAll() {
+        String sql = "SELECT * FROM Product ORDER BY ProductNumber;";
+        List<Product> productSet = new ArrayList<>();
+        try (Connection c = database.createConnectionException(); Statement stmt = c.createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                productSet.add(new Product(
+                        rs.getInt("ProductNumber"),
+                        rs.getString("ProductDescription"),
+                        rs.getFloat("ProductPrice"),
+                        rs.getInt("ProductStock"),
+                        rs.getString("ProductImage")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productSet; //Didn't find it.
     }
 
     public static void createTable() {
-        String sql = "CREATE TABLE Product(" +
+        String sql = "CREATE TABLE IF NOT EXISTS Product(" +
                 "ProductNumber INT(11) PRIMARY KEY AUTO_INCREMENT, " +
                 "ProductDescription VARCHAR(45) NOT NULL, " +
                 "ProductImage VARCHAR(45) NOT NULL, " +
                 "ProductStock INT(11), " +
-                "ProductPrice DOUBLE);";
+                "ProductPrice DECIMAL(12, 2));";
         database.executeUpdate(sql);
     }
 
@@ -126,5 +142,19 @@ public class Product {
     public void delete() {
         String sql = "DELETE FROM Product WHERE ProductNumber=%d;";
         database.executeUpdate(sql, productNumber);
+    }
+
+    public JsonObject toJsonObject() {
+        JsonObject object = new JsonObject();
+        object.addProperty("productNumber", productNumber);
+        object.addProperty("description", description);
+        object.addProperty("image", image);
+        object.addProperty("stock", stock);
+        object.addProperty("price", toDecimalPlaces(price, 2));
+        return object;
+    }
+
+    private Double toDecimalPlaces(double d, int decimalPlaces) {
+        return Double.parseDouble(String.format(String.format("%%.%df", decimalPlaces), d));
     }
 }
