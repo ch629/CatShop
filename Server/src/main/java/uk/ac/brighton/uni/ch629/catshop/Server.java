@@ -1,26 +1,15 @@
 package uk.ac.brighton.uni.ch629.catshop;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Result;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
-import uk.ac.brighton.uni.ch629.catshop.database.tables.Product;
-import uk.ac.brighton.uni.ch629.catshop.database.tables.records.ProductRecord;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static spark.Spark.get;
 
 public class Server {
-    public static void main(String[] args) {
-        String userName = "root", password = "pass", url = "jdbc:mysql://localhost:3306/catshop";
-
+    public static void main(String[] args) { //TODO: Cache images with Google Guava?
+        //TODO: Use new ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue)
         get("/product/all", (req, res) -> {
-            try (Connection conn = DriverManager.getConnection(url, userName, password)) {
+            /*try (Connection conn = DriverManager.getConnection(url, userName, password)) {
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
                 Result<Record> result = create.select().from(Product.PRODUCT).fetch();
 
@@ -39,12 +28,12 @@ public class Server {
                 return array;
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
             return "";
         });
 
         get("/product/:id", (req, res) -> {
-            try (Connection conn = DriverManager.getConnection(url, userName, password)) {
+            /*try (Connection conn = DriverManager.getConnection(url, userName, password)) {
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
                 Result<Record> result = create.select().from(Product.PRODUCT).where(Product.PRODUCT.PRODUCT_NUMBER.equal(Integer.valueOf(req.params(":id")))).fetch();
 
@@ -59,8 +48,12 @@ public class Server {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
             return "None Found";
         });
+    }
+
+    public static Logger getLogger() {
+        return LoggerFactory.getLogger(Server.class);
     }
 }
