@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public enum DBType {
-    MYSQL("jdbc:mysql://", "localhost:3306/catshop", "root", "pass"),
+    MYSQL("jdbc:mysql://", "localhost:3306/catshop?useSSL=false", "root", "pass"),
     SQLITE("jdbc:sqlite:", "catshop.db", null, null),
     DERBY("jdbc:derby:", "catshop.db", null, null),
     ODBC("jdbc:odbc:", "catshop.db", null, null);
@@ -26,12 +26,16 @@ public enum DBType {
      *
      * @return
      */
-    public Connection getConnection() {
+    public Connection getConnection() { //TODO: Maybe just keep throws SQLException, as the statement throws one anyway
         try {
             return DriverManager.getConnection(connectionPrefix + url, username, password);
         } catch (SQLException e) {
             Server.getLogger().error("Unable to create Connection to Database with URL: {}.", url);
         }
         return null;
+    }
+
+    public Connection getConnectionException() throws SQLException {
+        return DriverManager.getConnection(connectionPrefix + url, username, password);
     }
 }

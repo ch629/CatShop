@@ -1,36 +1,58 @@
 package uk.ac.brighton.uni.ch629.catshop.database.tables.records;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import uk.ac.brighton.uni.ch629.catshop.database.CatShop;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Set;
 
 public class Product {
+    private static CatShop database = new CatShop();
     private int productNumber = -1; //NOTE: Not final because of Auto Increment on the table
-    private String description;
+    private String description, image;
     private double price;
     private int stock;
 
-    public Product(int productNumber, String description, double price, int stock) {
-        this(description, price, stock);
+    public Product(int productNumber, String description, double price, int stock, String image) {
+        this(description, price, stock, image);
         this.productNumber = productNumber;
     }
 
-    public Product(String description, double price, int stock) {
+    public Product(String description, double price, int stock, String image) {
         this.description = description;
+        this.image = image;
         this.price = price;
         this.stock = stock;
     }
 
-    public Product(String description, double price) {
-        this(description, price, 0);
+    public Product(String description, double price, String image) {
+        this(description, price, 0, image);
     }
 
     public static void deleteAll() { //NOTE: Only really for testing
-        throw new NotImplementedException();
+        String sql = "DELETE FROM Product;";
+        database.executeUpdate(sql);
     }
 
     public static Product getProduct(int productNumber) {
-        throw new NotImplementedException();
+        String sql = String.format("SELECT * FROM Product WHERE ProductNumber=%d", productNumber);
+        try (Connection c = database.createConnectionException(); Statement stmt = c.createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                return new Product(
+                        rs.getInt("ProductNumber"),
+                        rs.getString("ProductDescription"),
+                        rs.getFloat("ProductPrice"),
+                        rs.getInt("ProductStock"),
+                        rs.getString("ProductImage"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; //Didn't find it.
     }
 
     public static Set<Product> getAll() {
@@ -38,11 +60,18 @@ public class Product {
     }
 
     public static void createTable() {
-        throw new NotImplementedException();
+        String sql = "CREATE TABLE Product(" +
+                "ProductNumber INT(11) PRIMARY KEY AUTO_INCREMENT, " +
+                "ProductDescription VARCHAR(45) NOT NULL, " +
+                "ProductImage VARCHAR(45) NOT NULL, " +
+                "ProductStock INT(11), " +
+                "ProductPrice DOUBLE);";
+        database.executeUpdate(sql);
     }
 
     public static void dropTable() {
-        throw new NotImplementedException();
+        String sql = "DROP TABLE IF EXISTS Product ;";
+        database.executeUpdate(sql);
     }
 
     public int getProductNumber() {
@@ -73,11 +102,20 @@ public class Product {
         this.description = description;
     }
 
-    //NOTE: To get the generated productNumber can use stmt.executeUpdate.("INSERT", Statement.RETURN_GENERATED_KEYS)
-    //NOTE: and stmt.getGeneratedKeys() as a ResultSet to receive it
     //NOTE: https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-usagenotes-last-insert-id.html
     public void create() {
-        throw new NotImplementedException();
+        String sql = "INSERT INTO Product(ProductDescription, ProductImage, ProductPrice, ProductStock) VALUES('%s', '%s', %f, %d);";
+        try (Connection c = database.createConnectionException(); Statement stmt = c.createStatement()) {
+            stmt.executeUpdate(String.format(sql, description, image, price, stock), Statement.RETURN_GENERATED_KEYS);
+            ResultSet resultSet = stmt.getGeneratedKeys();
+            if (resultSet.next()) productNumber = resultSet.getInt(1);
+            else {
+                //Didn't find get any generated key??
+            }
+            //NOTE: Connection & Statement auto close, ResultSet closes when it's Statement closes
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void update() {
