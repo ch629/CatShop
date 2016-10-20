@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Types of Databases to use.
+ */
 public enum DBType {
     MYSQL("jdbc:mysql://", "localhost:3306/catshop?useSSL=false", "root", "pass"),
     SQLITE("jdbc:sqlite:", "catshop.db", null, null),
@@ -26,6 +29,7 @@ public enum DBType {
      *
      * @return
      */
+    @Deprecated
     public Connection getConnection() { //TODO: Maybe just keep throws SQLException, as the statement throws one anyway
         try {
             return DriverManager.getConnection(connectionPrefix + url, username, password);
@@ -35,6 +39,12 @@ public enum DBType {
         return null;
     }
 
+    /**
+     * Get a new <code>Connection</code> to the Database.
+     *
+     * @return A <code>Connection</code> to the Database.
+     * @throws SQLException
+     */
     public Connection getConnectionException() throws SQLException {
         return DriverManager.getConnection(connectionPrefix + url, username, password);
     }

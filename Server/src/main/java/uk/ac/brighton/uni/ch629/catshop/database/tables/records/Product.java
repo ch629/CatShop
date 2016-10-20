@@ -10,6 +10,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A record of the Product Table, containing all the data in an object.
+ */
 public class Product {
     private static CatShop database = new CatShop();
     private int productNumber = -1; //NOTE: Not final because of Auto Increment on the table
@@ -33,11 +36,20 @@ public class Product {
         this(description, price, 0, image);
     }
 
+    /**
+     * Delete all records in this table.
+     */
     public static void deleteAll() { //NOTE: Only really for testing
         String sql = "DELETE FROM Product;";
         database.executeUpdate(sql);
     }
 
+    /**
+     * Get a Product from the database.
+     *
+     * @param productNumber The ID of the Product
+     * @return The product if exists else null
+     */
     public static Product getProduct(int productNumber) {
         String sql = String.format("SELECT * FROM Product WHERE ProductNumber=%d;", productNumber);
         try (Connection c = database.createConnectionException(); Statement stmt = c.createStatement()) {
@@ -56,6 +68,10 @@ public class Product {
         return null; //Didn't find it.
     }
 
+    /**
+     * Get all Products in the database.
+     * @return A list of all Products
+     */
     public static List<Product> getAll() {
         String sql = "SELECT * FROM Product ORDER BY ProductNumber;";
         List<Product> productSet = new ArrayList<>();
@@ -75,6 +91,9 @@ public class Product {
         return productSet; //Didn't find it.
     }
 
+    /**
+     * Create the Product Table
+     */
     public static void createTable() {
         String sql = "CREATE TABLE IF NOT EXISTS Product(" +
                 "ProductNumber INT(11) PRIMARY KEY AUTO_INCREMENT, " +
@@ -85,6 +104,9 @@ public class Product {
         database.executeUpdate(sql);
     }
 
+    /**
+     * Drop the Product Table
+     */
     public static void dropTable() {
         String sql = "DROP TABLE IF EXISTS Product ;";
         database.executeUpdate(sql);
@@ -118,6 +140,9 @@ public class Product {
         this.description = description;
     }
 
+    /**
+     * Insert a Product into the database using the fields in this object.
+     */
     //NOTE: https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-usagenotes-last-insert-id.html
     public void create() {
         String sql = "INSERT INTO Product(ProductDescription, ProductImage, ProductPrice, ProductStock) VALUES('%s', '%s', %f, %d);";
@@ -134,16 +159,26 @@ public class Product {
         }
     }
 
+    /**
+     * Update the Product in the Database with the fields in this object
+     */
     public void update() {
         String sql = "UPDATE Product SET ProductDescription='%s', ProductImage='%s', ProductStock=%d, ProductPrice=%f WHERE ProductNumber=%d;";
         database.executeUpdate(sql, description, image, stock, price, productNumber);
     }
 
+    /**
+     * Delete this Product from the Database.
+     */
     public void delete() {
         String sql = "DELETE FROM Product WHERE ProductNumber=%d;";
         database.executeUpdate(sql, productNumber);
     }
 
+    /**
+     * Converts the Product into a Gson JSONObject.
+     * @return A JsonObject conversion of this Product
+     */
     public JsonObject toJsonObject() {
         JsonObject object = new JsonObject();
         object.addProperty("productNumber", productNumber);
@@ -154,7 +189,14 @@ public class Product {
         return object;
     }
 
-    private Double toDecimalPlaces(double d, int decimalPlaces) {
+    /**
+     * Formats a double to a specific amount of decimal places
+     *
+     * @param d             The double to convert
+     * @param decimalPlaces The decimal places to format the double into
+     * @return The formatted double
+     */
+    private double toDecimalPlaces(double d, int decimalPlaces) {
         return Double.parseDouble(String.format(String.format("%%.%df", decimalPlaces), d));
     }
 }
