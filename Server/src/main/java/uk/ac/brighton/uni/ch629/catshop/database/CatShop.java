@@ -8,8 +8,8 @@ import java.sql.Statement;
  * The Database
  */
 public class CatShop { //TODO: ThreadPool for SQL requests? -> Only do it for updates and stuff sent from clients
-    private DBType dbType = DBType.MYSQL; //TODO: Dynamically pick which type of database? Using the Database.txt like Mike's?
-
+    private DBType dbType = DBType.MYSQL; //TODO: Dynamically pick which type of database? Using the Database.txt like Mike's? -> Will need the drivers and to change some of the SQL (SQLite uses AUTOINCREMENT and INTEGER rather thant AUTO_INCREMENT and INT)
+    //TODO: Might just be best to stick this on a PaaS to work on, so I can always use MySQL. (Maybe add NoSQL)
     /**
      * Creates a new <code>Connection</code> to access the Database.
      * @return

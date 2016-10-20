@@ -199,4 +199,8 @@ public class Product {
     private double toDecimalPlaces(double d, int decimalPlaces) {
         return Double.parseDouble(String.format(String.format("%%.%df", decimalPlaces), d));
     }
+
+    public String getImage() {
+        return image;
+    }
 }

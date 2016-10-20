@@ -9,12 +9,33 @@ import static spark.Spark.get;
 
 public class Server {
     public static void main(String[] args) { //TODO: Cache images with Google Guava?
-        //TODO: Use new ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue)
-        createDummyData();
+        createDummyData(); //TODO: Use a request system to create correct JSON for the Request similar to HitBox's way (Use ResponseCode and maybe a StatusCode to check if the request was successful on client)
         get("/product/all", (req, res) -> {
             JsonArray array = new JsonArray();
             Product.getAll().forEach(product -> array.add(product.toJsonObject()));
             return array;
+        });
+
+        get("/product/*/*", (req, res) -> {
+            if (req.splat().length >= 2) {
+                int productNumber = Integer.parseInt(req.splat()[0]); //TODO: Integer Check
+                String detail = req.splat()[1];
+                Product product = Product.getProduct(productNumber);
+                if (product == null) return "No Product Found with ID: " + req.splat()[0];
+                switch (detail) {
+                    case "DESCRIPTION":
+                        return product.getDescription();
+                    case "PRICE":
+                        return product.getPrice();
+                    case "IMAGE":
+                        return product.getImage();
+                    case "STOCK":
+                        return product.getStock();
+                    default:
+                        return "None Found";
+                }
+            }
+            return "";
         });
 
         get("/product/:id", (req, res) -> {
