@@ -52,7 +52,7 @@ public class Product {
      */
     public static Product getProduct(int productNumber) {
         String sql = String.format("SELECT * FROM Product WHERE ProductNumber=%d;", productNumber);
-        try (Connection c = database.createConnectionException(); Statement stmt = c.createStatement()) {
+        try (Connection c = database.createConnection(); Statement stmt = c.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) { //TODO: Could use getAll and only get the first Product, but may take more time because of the loop.
                 return new Product(
@@ -75,7 +75,7 @@ public class Product {
     public static List<Product> getAll() {
         String sql = "SELECT * FROM Product ORDER BY ProductNumber;";
         List<Product> productSet = new ArrayList<>();
-        try (Connection c = database.createConnectionException(); Statement stmt = c.createStatement()) {
+        try (Connection c = database.createConnection(); Statement stmt = c.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 productSet.add(new Product(
@@ -146,7 +146,7 @@ public class Product {
     //NOTE: https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-usagenotes-last-insert-id.html
     public void create() {
         String sql = "INSERT INTO Product(ProductDescription, ProductImage, ProductPrice, ProductStock) VALUES('%s', '%s', %f, %d);";
-        try (Connection c = database.createConnectionException(); Statement stmt = c.createStatement()) {
+        try (Connection c = database.createConnection(); Statement stmt = c.createStatement()) {
             stmt.executeUpdate(String.format(sql, description, image, price, stock), Statement.RETURN_GENERATED_KEYS);
             ResultSet resultSet = stmt.getGeneratedKeys();
             if (resultSet.next()) productNumber = resultSet.getInt(1);

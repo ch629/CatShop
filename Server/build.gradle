@@ -2,4 +2,5 @@ dependencies {
     compile 'com.sparkjava:spark-core:2.5'
     compile 'org.slf4j:slf4j-simple:1.7.21'
     compile 'mysql:mysql-connector-java:5.1.39'
+    compile 'org.pac4j:spark-pac4j:1.2.1'
 }
