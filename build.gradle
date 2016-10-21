@@ -19,15 +19,17 @@ subprojects {
     apply plugin: 'idea'
     sourceCompatibility = 1.8
 
+    if (!it.name.startsWith(":Server")) {
+        dependencies {
+            compile 'com.mashape.unirest:unirest-java:1.4.9'
+            compile 'com.google.guava:guava:20.0-rc1'
+        }
+    }
+
     dependencies {
         testCompile 'junit:junit:4.12'
         testCompile 'org.assertj:assertj-core:3.5.2'
 
         compile 'com.google.code.gson:gson:2.7'
-
-        if (!it.name.startsWith(":Server")) {
-            compile 'com.mashape.unirest:unirest-java:1.4.9'
-            compile 'com.google.guava:guava:20.0-rc1'
-        }
     }
 }
