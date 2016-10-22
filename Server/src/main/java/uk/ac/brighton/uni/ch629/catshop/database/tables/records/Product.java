@@ -20,6 +20,9 @@ public class Product {
     private double price;
     private int stock;
 
+    private Product() {
+    }
+
     public Product(int productNumber, String description, double price, int stock, String image) {
         this(description, price, stock, image);
         this.productNumber = productNumber;
@@ -110,6 +113,16 @@ public class Product {
     public static void dropTable() {
         String sql = "DROP TABLE IF EXISTS Product;";
         database.executeUpdate(sql);
+    }
+
+    public static Product fromJsonObject(JsonObject object) { //TODO: Some sort of checks on this? Probably don't need it as only data from code should be creating the object
+        Product product = new Product();
+        product.productNumber = object.get("productNumber").getAsInt();
+        product.description = object.get("description").getAsString();
+        product.image = object.get("image").getAsString();
+        product.stock = object.get("stock").getAsInt();
+        product.price = object.get("price").getAsDouble();
+        return product;
     }
 
     public int getProductNumber() {

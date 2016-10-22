@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.mustache.MustacheTemplateEngine;
+import uk.ac.brighton.uni.ch629.catshop.communication.Request;
 import uk.ac.brighton.uni.ch629.catshop.communication.Response;
 import uk.ac.brighton.uni.ch629.catshop.communication.ResponseCode;
 import uk.ac.brighton.uni.ch629.catshop.database.tables.records.AuthToken;
@@ -40,7 +41,7 @@ public class Server { //TODO: Authentication using POST requests.
             return new Response(ResponseCode.SUCCESS, product.toJsonObject());
         });
 
-        before("/protected/*", (req, res) -> {
+        before("/protected/*", (req, res) -> { //TODO: Use Request?
             JsonObject object = (JsonObject) new JsonParser().parse(req.body());
             if (object == null) halt(401, "Not valid JSON request!");
             if (object != null && object.has("auth_token")) {
@@ -48,16 +49,19 @@ public class Server { //TODO: Authentication using POST requests.
                     AuthToken.addToken(object.get("auth_token").getAsString());
                     halt(401, "Your token has been added, please wait for it to be authorized!");
                 } else {
-                    if (!AuthToken.isTokenAccepted(object.get("auth_token").getAsString()))
+                    if (!AuthToken.isTokenAccepted(object.get("auth_token").getAsString())) {
+                        System.out.println("h");
                         halt(401, "Please wait for your token to be accepted!");
+                    }
                 }
             }
             if (!object.has("auth_token")) halt(401, "Unauthorised Access, please add your auth_token to the request!");
         });
 
         post("/protected/product/add", (req, res) -> {
-//            Response response = Response.fromJson((JsonObject) new JsonParser().parse(req.body()));
-//            System.out.println(response.getResponseCode().toString());
+            Request request = Request.fromJson((JsonObject) new JsonParser().parse(req.body()));
+            Product product = Product.fromJsonObject(request.getData());
+            product.create();
             return "SUCCESS!";
         });
 
@@ -76,6 +80,14 @@ public class Server { //TODO: Authentication using POST requests.
             AuthToken token = AuthToken.getAuthToken(json.get("token").getAsString());
             token.accept();
             token.update();
+            return "";
+        });
+
+        post("/subscribe", (req, res) -> { //NOTE: Subscribe to updates (Warehouse and ShopDisplay will need this)
+            //NOTE: Hold data about what exactly to listen for (Updates to Product or Orders)
+            //NOTE: If the Customer client caches the catalogue for searching, would need to be notified when stock has been decreased
+            //TODO: Was thinking about using the Observer pattern, but I don't think this will be easy to implement, because of multiple Product's; which can be duplicates meaning a lot of wasted memory.
+            String subscriptionIp = req.ip();
             return "";
         });
 

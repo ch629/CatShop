@@ -1,16 +1,36 @@
 package uk.ac.brighton.uni.ch629.catshop.communication;
 
 import com.google.gson.JsonObject;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Request {
-    String auth_token;
+    private String authToken;
+    private JsonObject data;
 
-    public JsonObject toJson() {
-        throw new NotImplementedException();
+    public Request(String authToken, JsonObject data) {
+        this.authToken = authToken;
+        this.data = data;
     }
 
-    public Request fromJson() {
-        throw new NotImplementedException();
+    public static Request fromJson(JsonObject object) {
+        return object.has("auth_token") ?
+                new Request(
+                        object.get("auth_token").getAsString(),
+                        object.get("data").getAsJsonObject()
+                ) : null;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public JsonObject getData() {
+        return data;
+    }
+
+    public JsonObject toJson() {
+        JsonObject object = new JsonObject();
+        object.addProperty("auth_token", authToken);
+        object.add("data", data);
+        return object;
     }
 }
