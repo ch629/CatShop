@@ -108,7 +108,7 @@ public class Product {
      * Drop the Product Table
      */
     public static void dropTable() {
-        String sql = "DROP TABLE IF EXISTS Product ;";
+        String sql = "DROP TABLE IF EXISTS Product;";
         database.executeUpdate(sql);
     }
 

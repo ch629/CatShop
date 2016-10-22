@@ -3,4 +3,6 @@ dependencies {
     compile 'org.slf4j:slf4j-simple:1.7.21'
     compile 'mysql:mysql-connector-java:5.1.39'
     compile 'org.pac4j:spark-pac4j:1.2.1'
+    compile 'org.pac4j:pac4j-oauth:1.9.3'
+    compile 'com.sparkjava:spark-template-mustache:2.3'
 }

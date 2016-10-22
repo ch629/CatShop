@@ -5,15 +5,25 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.ModelAndView;
+import spark.Spark;
+import spark.template.mustache.MustacheTemplateEngine;
 import uk.ac.brighton.uni.ch629.catshop.communication.Response;
 import uk.ac.brighton.uni.ch629.catshop.communication.ResponseCode;
+import uk.ac.brighton.uni.ch629.catshop.database.tables.records.AuthToken;
 import uk.ac.brighton.uni.ch629.catshop.database.tables.records.Product;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static spark.Spark.*;
 
 public class Server { //TODO: Authentication using POST requests.
     public static void main(String[] args) { //TODO: Cache images with Google Guava?
         createDummyData(); //TODO: Use a request system to create correct JSON for the Request similar to HitBox's way (Use ResponseCode and maybe a StatusCode to check if the request was successful on client)
+        Spark.staticFileLocation("/public");
+
         get("/product/all", (req, res) -> {
             JsonArray array = new JsonArray();
             Product.getAll().forEach(product -> array.add(product.toJsonObject()));
@@ -50,11 +60,33 @@ public class Server { //TODO: Authentication using POST requests.
             }
             return new Response(ResponseCode.PRODUCT_NOT_FOUND, "No product found with id: %s", productId);
         });
+
+        post("/auth/add", (req, res) -> {
+            JsonObject json = (JsonObject) new JsonParser().parse(req.body());
+            AuthToken token = AuthToken.getAuthToken(json.get("token").getAsString());
+            token.accept();
+            token.update();
+            return "";
+        });
+
+        get("/auth/add", (req, res) -> {
+            Map map = new HashMap();
+            map.put("requests",
+                    AuthToken.getAll()
+                            .stream()
+                            .filter(token -> !token.isAccepted())
+                            .collect(Collectors.toList()));
+            return new ModelAndView(map, "addauth.mustache");
+        }, new MustacheTemplateEngine());
     }
 
     public static void createDummyData() {
         Product.dropTable();
         Product.createTable();
+        AuthToken.dropTable();
+        AuthToken.createTable();
+        AuthToken.addToken("test123");
+        AuthToken.addToken("test456");
         new Product("40 inch LED HD TV", 269.00d, 90, "pic0001.jpg").create();
         new Product("DAB Radio", 29.99d, 20, "pic0002.jpg").create();
         new Product("Toaster", 19.99d, 33, "pic0003.jpg").create();

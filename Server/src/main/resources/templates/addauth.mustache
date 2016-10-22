@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Authorize Tokens</title>
+    <script src="/libs/jquery-3.1.1.min.js"></script>
+    <script>
+        jQuery(document).ready(function () {
+            jQuery('form').bind('submit', function (event) {
+                event.preventDefault();
+                var form = this;
+                var submitButton = form.getElementsByTagName('input');
+                var json = "{ " + "token: \"" + jQuery(submitButton).attr('token') + "\" }";
+
+                $.ajax({
+                    type: "POST",
+                    url: "/auth/add",
+                    data: json,
+                    dataType: "json"
+                });
+                form.parentElement.removeChild(form);
+                return false;
+            });
+        });
+    </script>
+</head>
+
+<body>
+<h1>Authorize Tokens:</h1>
+{{#requests}}
+    <form action="" method="post">
+        {{token}}
+        <input token='{{token}}' type="submit" value="Accept Token">
+    </form>
+{{/requests}}
+</body>
+</html>
