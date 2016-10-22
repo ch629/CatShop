@@ -40,15 +40,25 @@ public class Server { //TODO: Authentication using POST requests.
             return new Response(ResponseCode.SUCCESS, product.toJsonObject());
         });
 
-        boolean authenticated = true; //TODO: Authentication for /protected/ routes. (https://github.com/pac4j/spark-pac4j)
-        before("/product/*", (req, res) -> {
-            if (!authenticated) halt(401, "Unauthorised Access!");
+        before("/protected/*", (req, res) -> {
+            JsonObject object = (JsonObject) new JsonParser().parse(req.body());
+            if (object == null) halt(401, "Not valid JSON request!");
+            if (object != null && object.has("auth_token")) {
+                if (!AuthToken.hasToken(object.get("auth_token").getAsString())) {
+                    AuthToken.addToken(object.get("auth_token").getAsString());
+                    halt(401, "Your token has been added, please wait for it to be authorized!");
+                } else {
+                    if (!AuthToken.isTokenAccepted(object.get("auth_token").getAsString()))
+                        halt(401, "Please wait for your token to be accepted!");
+                }
+            }
+            if (!object.has("auth_token")) halt(401, "Unauthorised Access, please add your auth_token to the request!");
         });
 
         post("/protected/product/add", (req, res) -> {
-            Response response = Response.fromJson((JsonObject) new JsonParser().parse(req.body()));
-            System.out.println(response.getResponseCode().toString());
-            return "";
+//            Response response = Response.fromJson((JsonObject) new JsonParser().parse(req.body()));
+//            System.out.println(response.getResponseCode().toString());
+            return "SUCCESS!";
         });
 
         delete("/protected/product/:id", (req, res) -> {

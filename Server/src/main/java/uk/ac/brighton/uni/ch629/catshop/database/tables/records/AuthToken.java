@@ -36,7 +36,8 @@ public class AuthToken {
     }
 
     public static boolean isTokenAccepted(String token) {
-        return getAuthToken(token).isAccepted();
+        AuthToken authToken = getAuthToken(token);
+        return authToken != null && authToken.isAccepted();
     }
 
     public static void addToken(String token) {
@@ -67,6 +68,10 @@ public class AuthToken {
     public static void dropTable() {
         String sql = "DROP TABLE IF EXISTS AuthToken;";
         database.executeUpdate(sql);
+    }
+
+    public static boolean hasToken(String token) {
+        return getAuthToken(token) != null;
     }
 
     public boolean isAccepted() {
