@@ -1,6 +1,11 @@
 package uk.ac.brighton.uni.ch629.catshop.database.tables.records;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
 import uk.ac.brighton.uni.ch629.catshop.database.CatShop;
 
 import java.sql.Connection;
@@ -10,14 +15,20 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonAutoDetect
 public class AuthToken {
+    @JsonIgnore
     private static CatShop database = new CatShop();
     //TODO: Last Used time?
     //TODO: Logging of tasks done by this auth token?
+    @JsonProperty("token")
     private String token;
+    @JsonProperty("accepted")
     private boolean accepted = false;
 
-    private AuthToken(String token, boolean accepted) {
+    @JsonCreator
+    private AuthToken(@JsonProperty("token") String token,
+                      @JsonProperty("accepted") boolean accepted) {
         this.token = token;
         this.accepted = accepted;
     }
@@ -78,8 +89,27 @@ public class AuthToken {
         return accepted;
     }
 
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
+    }
+
     public String getToken() {
         return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public boolean isInTable() {
+        String sql = "SELECT 1 FROM AuthToken WHERE Token='%s';";
+        try (Connection connection = database.createConnection(); Statement stmt = connection.createStatement()) {
+            ResultSet rs = stmt.executeQuery(String.format(sql, token));
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void create() {
@@ -97,5 +127,10 @@ public class AuthToken {
 
     public void accept() {
         accepted = true;
+    }
+
+    @Override
+    public String toString() {
+        return JsonHelper.objectToNode(this).toString();
     }
 } //TODO: Auth Access Enum? Allows only specific access to specific pages?

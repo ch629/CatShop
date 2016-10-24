@@ -1,17 +1,28 @@
 package uk.ac.brighton.uni.ch629.catshop.communication;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
+import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
 
+
+@JsonAutoDetect
 public class Response { //TODO: Maybe put this in a separate library.
-    private ResponseCode responseCode;
-    private String responseMessage = "";
-    private JsonElement data = null;
+    @JsonProperty("responseCode")
+    private ResponseCode responseCode; //TODO: Make converter for Jackson to serialize this to an integer
+    @JsonIgnore
+    private String responseMessage = ""; //TODO: This needed?
+    @JsonProperty("data")
+    private JsonNode data = null;
 
     private Response() {
     }
 
-    public Response(ResponseCode code, JsonElement data) {
+    @JsonCreator
+    public Response(@JsonProperty("responseCode") ResponseCode code,
+                    @JsonProperty("data") JsonNode data) {
         this.responseCode = code;
         this.data = data;
     }
@@ -30,28 +41,12 @@ public class Response { //TODO: Maybe put this in a separate library.
         this.responseMessage = String.format(message, args);
     }
 
-    public static Response fromJson(JsonObject object) {
-        Response response = new Response();
-        response.responseCode = ResponseCode.values()[object.get("response").getAsInt()];
-        response.responseMessage = object.get("message").getAsString();
-        response.data = object.get("data");
-        return response;
-    }
-
-    public JsonObject toJson() {
-        JsonObject object = new JsonObject();
-        object.addProperty("response", responseCode.ordinal());
-        object.addProperty("message", responseMessage);
-        if (data != null) object.add("data", data);
-        return object;
-    }
-
-    public ResponseCode getResponseCode() {
-        return responseCode;
+    public JsonNode getData() {
+        return data;
     }
 
     @Override
     public String toString() {
-        return toJson().toString();
+        return JsonHelper.objectToNode(this).toString();
     }
 }

@@ -1,6 +1,10 @@
 package uk.ac.brighton.uni.ch629.catshop.database.tables.records;
 
-import com.google.gson.JsonObject;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
 import uk.ac.brighton.uni.ch629.catshop.database.CatShop;
 
 import java.sql.Connection;
@@ -13,17 +17,35 @@ import java.util.List;
 /**
  * A record of the Product Table, containing all the data in an object.
  */
+@JsonAutoDetect
 public class Product {
+    @JsonIgnore
     private static CatShop database = new CatShop();
+
+    @JsonProperty("productNumber")
     private int productNumber = -1; //NOTE: Not final because of Auto Increment on the table
-    private String description, image;
+
+    @JsonProperty("image")
+    private String image;
+
+    @JsonProperty("description")
+    private String description;
+
+    @JsonProperty("price")
     private double price;
+
+    @JsonProperty("stock")
     private int stock;
 
     private Product() {
     }
 
-    public Product(int productNumber, String description, double price, int stock, String image) {
+    @JsonCreator
+    public Product(@JsonProperty("productNumber") int productNumber,
+                   @JsonProperty("description") String description,
+                   @JsonProperty("price") double price,
+                   @JsonProperty("stock") int stock,
+                   @JsonProperty("image") String image) {
         this(description, price, stock, image);
         this.productNumber = productNumber;
     }
@@ -115,14 +137,15 @@ public class Product {
         database.executeUpdate(sql);
     }
 
-    public static Product fromJsonObject(JsonObject object) { //TODO: Some sort of checks on this? Probably don't need it as only data from code should be creating the object
-        Product product = new Product();
-        product.productNumber = object.get("productNumber").getAsInt();
-        product.description = object.get("description").getAsString();
-        product.image = object.get("image").getAsString();
-        product.stock = object.get("stock").getAsInt();
-        product.price = object.get("price").getAsDouble();
-        return product;
+    /**
+     * Formats a double to a specific amount of decimal places
+     *
+     * @param d             The double to convert
+     * @param decimalPlaces The decimal places to format the double into
+     * @return The formatted double
+     */
+    private static double toDecimalPlaces(double d, int decimalPlaces) {
+        return Double.parseDouble(String.format(String.format("%%.%df", decimalPlaces), d));
     }
 
     public int getProductNumber() {
@@ -188,32 +211,16 @@ public class Product {
         database.executeUpdate(sql, productNumber);
     }
 
-    /**
-     * Converts the Product into a Gson JSONObject.
-     * @return A JsonObject conversion of this Product
-     */
-    public JsonObject toJsonObject() {
-        JsonObject object = new JsonObject();
-        object.addProperty("productNumber", productNumber);
-        object.addProperty("description", description);
-        object.addProperty("image", image);
-        object.addProperty("stock", stock);
-        object.addProperty("price", toDecimalPlaces(price, 2));
-        return object;
-    }
-
-    /**
-     * Formats a double to a specific amount of decimal places
-     *
-     * @param d             The double to convert
-     * @param decimalPlaces The decimal places to format the double into
-     * @return The formatted double
-     */
-    private double toDecimalPlaces(double d, int decimalPlaces) {
-        return Double.parseDouble(String.format(String.format("%%.%df", decimalPlaces), d));
-    }
-
     public String getImage() {
         return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        return JsonHelper.objectToNode(this).toString();
     }
 }

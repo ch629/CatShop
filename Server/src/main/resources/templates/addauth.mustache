@@ -9,7 +9,7 @@
                 event.preventDefault();
                 var form = this;
                 var submitButton = form.getElementsByTagName('input');
-                var json = "{ " + "token: \"" + jQuery(submitButton).attr('token') + "\" }";
+                var json = "{ " + "\"token\": \"" + jQuery(submitButton).attr('token') + "\" }";
 
                 $.ajax({
                     type: "POST",

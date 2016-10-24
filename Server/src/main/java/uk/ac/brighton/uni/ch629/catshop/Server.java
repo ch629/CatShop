@@ -1,16 +1,16 @@
 package uk.ac.brighton.uni.ch629.catshop;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.mustache.MustacheTemplateEngine;
-import uk.ac.brighton.uni.ch629.catshop.communication.Request;
-import uk.ac.brighton.uni.ch629.catshop.communication.Response;
-import uk.ac.brighton.uni.ch629.catshop.communication.ResponseCode;
+import uk.ac.brighton.uni.ch629.catshop.communication.*;
 import uk.ac.brighton.uni.ch629.catshop.database.tables.records.AuthToken;
 import uk.ac.brighton.uni.ch629.catshop.database.tables.records.Product;
 
@@ -20,14 +20,15 @@ import java.util.stream.Collectors;
 
 import static spark.Spark.*;
 
-public class Server { //TODO: Authentication using POST requests.
+public class Server { //TODO: Spring instead of Spark?
     public static void main(String[] args) { //TODO: Cache images with Google Guava?
         createDummyData(); //TODO: Use a request system to create correct JSON for the Request similar to HitBox's way (Use ResponseCode and maybe a StatusCode to check if the request was successful on client)
         Spark.staticFileLocation("/public");
+        ObjectMapper mapper = new ObjectMapper();
 
         get("/product/all", (req, res) -> {
-            JsonArray array = new JsonArray();
-            Product.getAll().forEach(product -> array.add(product.toJsonObject()));
+            ArrayNode array = new ArrayNode(new JsonNodeFactory(false));
+            Product.getAll().forEach(array::addPOJO);
             return new Response(ResponseCode.SUCCESS, array);
         });
 
@@ -38,19 +39,18 @@ public class Server { //TODO: Authentication using POST requests.
             Product product = Product.getProduct(Integer.parseInt(idParam));
             if (product == null)
                 return new Response(ResponseCode.PRODUCT_NOT_FOUND, "No product found with id: %s", idParam);
-            return new Response(ResponseCode.SUCCESS, product.toJsonObject());
+            return new Response(ResponseCode.SUCCESS, JsonHelper.objectToNode(product));
         });
 
         before("/protected/*", (req, res) -> { //TODO: Use Request?
-            JsonObject object = (JsonObject) new JsonParser().parse(req.body());
+            JSONObject object = new JSONObject(req.body()); //TODO: Use Jackson JsonObject
             if (object == null) halt(401, "Not valid JSON request!");
             if (object != null && object.has("auth_token")) {
-                if (!AuthToken.hasToken(object.get("auth_token").getAsString())) {
-                    AuthToken.addToken(object.get("auth_token").getAsString());
+                if (!AuthToken.hasToken(object.getString("auth_token"))) {
+                    AuthToken.addToken(object.getString("auth_token"));
                     halt(401, "Your token has been added, please wait for it to be authorized!");
                 } else {
-                    if (!AuthToken.isTokenAccepted(object.get("auth_token").getAsString())) {
-                        System.out.println("h");
+                    if (!AuthToken.isTokenAccepted(object.getString("auth_token"))) {
                         halt(401, "Please wait for your token to be accepted!");
                     }
                 }
@@ -59,8 +59,8 @@ public class Server { //TODO: Authentication using POST requests.
         });
 
         post("/protected/product/add", (req, res) -> {
-            Request request = Request.fromJson((JsonObject) new JsonParser().parse(req.body()));
-            Product product = Product.fromJsonObject(request.getData());
+            Request request = JsonHelper.jsonToObject(req.body(), Request.class);
+            Product product = JsonHelper.jsonNodeToObject(request.getData(), Product.class);
             product.create();
             return "SUCCESS!";
         });
@@ -76,8 +76,8 @@ public class Server { //TODO: Authentication using POST requests.
         });
 
         post("/auth/add", (req, res) -> {
-            JsonObject json = (JsonObject) new JsonParser().parse(req.body());
-            AuthToken token = AuthToken.getAuthToken(json.get("token").getAsString());
+            JsonNode node = mapper.readTree(req.body());
+            AuthToken token = AuthToken.getAuthToken(node.get("token").asText());
             token.accept();
             token.update();
             return "";
@@ -88,6 +88,12 @@ public class Server { //TODO: Authentication using POST requests.
             //NOTE: If the Customer client caches the catalogue for searching, would need to be notified when stock has been decreased
             //TODO: Was thinking about using the Observer pattern, but I don't think this will be easy to implement, because of multiple Product's; which can be duplicates meaning a lot of wasted memory.
             String subscriptionIp = req.ip();
+            int subscriptionPort = req.port();
+            JsonNode node = mapper.readTree(req.body());
+            String subType = node.get("type").asText();
+            Subscription.INSTANCE.subscribe(subscriptionIp, subscriptionPort, SubscriptionType.valueOf(subType.toUpperCase()));
+            JsonNode data = mapper.createObjectNode();
+            Subscription.INSTANCE.sendData(SubscriptionType.PRODUCT, data);
             return "";
         });
 

@@ -1,36 +1,35 @@
 package uk.ac.brighton.uni.ch629.catshop.communication;
 
-import com.google.gson.JsonObject;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
+import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
 
+@JsonAutoDetect
 public class Request {
+    @JsonProperty("auth_token")
     private String authToken;
-    private JsonObject data;
+    @JsonProperty("data")
+    private JsonNode data;
 
-    public Request(String authToken, JsonObject data) {
+    @JsonCreator
+    public Request(@JsonProperty("auth_token") String authToken,
+                   @JsonProperty("data") JsonNode data) {
         this.authToken = authToken;
         this.data = data;
-    }
-
-    public static Request fromJson(JsonObject object) {
-        return object.has("auth_token") ?
-                new Request(
-                        object.get("auth_token").getAsString(),
-                        object.get("data").getAsJsonObject()
-                ) : null;
     }
 
     public String getAuthToken() {
         return authToken;
     }
 
-    public JsonObject getData() {
+    public JsonNode getData() {
         return data;
     }
 
-    public JsonObject toJson() {
-        JsonObject object = new JsonObject();
-        object.addProperty("auth_token", authToken);
-        object.add("data", data);
-        return object;
+    @Override
+    public String toString() {
+        return JsonHelper.objectToNode(this).toString();
     }
 }
