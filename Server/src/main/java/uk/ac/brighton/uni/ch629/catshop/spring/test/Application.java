@@ -19,6 +19,7 @@ public class Application {
     private static void setUp() {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
         try {
+//            sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         } catch (Exception e) {
             StandardServiceRegistryBuilder.destroy(registry);
@@ -57,7 +58,7 @@ public class Application {
 
     public static List<Product> read() {
         Session session = getSessionFactory().openSession();
-        List<Product> products = session.createQuery("FROM Product").list();
+        List<Product> products = session.createQuery("FROM PRODUCT").list();
         session.close();
         return products;
     }
@@ -93,7 +94,7 @@ public class Application {
     public static void deleteAll() {
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
-        Query query = session.createQuery("DELETE FROM Product");
+        Query query = session.createQuery("DELETE FROM PRODUCT");
         query.executeUpdate();
         session.getTransaction().commit();
         session.close();
