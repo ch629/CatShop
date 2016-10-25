@@ -1,36 +1,37 @@
-package uk.ac.brighton.uni.ch629.catshop.spring.test;
+package uk.ac.brighton.uni.ch629.catshop.spring.test.database;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Table(name = "product")
+@Table(name = "PRODUCT")
 @JsonAutoDetect
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ProductNumber")
-    @JsonProperty("productNumber")
+    @Column(name = "PRODUCT_NUMBER")
     private int productNumber;
 
-    @Column(name = "ProductImage")
-    @JsonProperty("image")
+    @Column(name = "PRODUCT_IMAGE")
     private String image;
 
-    @Column(name = "ProductDescription")
-    @JsonProperty("description")
+    @Column(name = "PRODUCT_DESCRIPTION")
     private String description;
 
-    @Column(name = "ProductPrice")
-    @JsonProperty("price")
+    @Column(name = "PRODUCT_PRICE")
     private double price;
 
-    @Column(name = "ProductStock")
-    @JsonProperty("stock")
+    @Column(name = "PRODUCT_STOCK")
     private int stock;
+
+    @JsonIgnore
+    @OneToMany
+    private Set<Order> orders;
 
     public Product() {
     }
