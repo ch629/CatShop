@@ -1,4 +1,4 @@
-package uk.ac.brighton.uni.ch629.catshop.spring.test.database;
+package uk.ac.brighton.uni.ch629.catshop.spring.test.database.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,4 +14,17 @@ public class AuthToken {
 
     @Column(name = "ACCEPTED")
     private boolean accepted;
+
+    public String getToken() {
+        return token;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public AuthToken setAccepted(boolean accepted) {
+        this.accepted = accepted;
+        return this;
+    }
 }

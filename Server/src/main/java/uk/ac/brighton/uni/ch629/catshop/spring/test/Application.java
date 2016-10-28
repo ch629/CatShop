@@ -7,19 +7,24 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.Product;
-
-import javax.persistence.Query;
-import java.util.List;
+import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.Product;
+import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.AuthTokenDao;
+import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.OrderDao;
+import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.ProductDao;
+import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.interfaces.IAuthTokenDao;
+import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.interfaces.IOrderDao;
+import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.interfaces.IProductDao;
 
 @SpringBootApplication
 public class Application {
+    private static final IProductDao PRODUCT_DAO = new ProductDao();
+    private static final IOrderDao ORDER_DAO = new OrderDao();
+    private static final IAuthTokenDao AUTH_TOKEN_DAO = new AuthTokenDao();
     private static SessionFactory sessionFactory;
 
     private static void setUp() {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
         try {
-//            sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,7 +46,7 @@ public class Application {
         setUp();
         createDummyData();
         SpringApplication.run(Application.class, args);
-        System.out.println(findByProductNumber(1).getDescription());
+        System.out.println(PRODUCT_DAO.getProduct(1).getDescription());
     }
 
     public static SessionFactory getSessionFactory() {
@@ -55,49 +60,5 @@ public class Application {
         session.getTransaction().commit();
         session.close();
         return p.getProductNumber();
-    }
-
-    public static List<Product> read() {
-        Session session = getSessionFactory().openSession();
-        List<Product> products = session.createQuery("FROM PRODUCT").list();
-        session.close();
-        return products;
-    }
-
-    public static void update(Product p) {
-        Session session = getSessionFactory().openSession();
-        session.beginTransaction();
-        Product pr = session.load(Product.class, p.getProductNumber());
-        pr.setImage(p.getImage());
-        pr.setDescription(p.getDescription());
-        pr.setPrice(p.getPrice());
-        pr.setStock(p.getStock());
-        session.getTransaction().commit();
-        session.close();
-    }
-
-    public static void delete(int productNumber) {
-        Session session = getSessionFactory().openSession();
-        session.beginTransaction();
-        Product p = findByProductNumber(productNumber);
-        session.delete(p);
-        session.getTransaction().commit();
-        session.close();
-    }
-
-    public static Product findByProductNumber(int productNumber) {
-        Session session = getSessionFactory().openSession();
-        Product p = session.load(Product.class, productNumber);
-        session.close();
-        return p;
-    }
-
-    public static void deleteAll() {
-        Session session = getSessionFactory().openSession();
-        session.beginTransaction();
-        Query query = session.createQuery("DELETE FROM PRODUCT");
-        query.executeUpdate();
-        session.getTransaction().commit();
-        session.close();
     }
 }

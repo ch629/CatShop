@@ -1,4 +1,4 @@
-package uk.ac.brighton.uni.ch629.catshop.spring.test.database;
+package uk.ac.brighton.uni.ch629.catshop.spring.test.database.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -59,39 +59,39 @@ public class Product {
         return productNumber;
     }
 
-    public void setProductNumber(int productNumber) { //TODO: Remove this if possible
-        this.productNumber = productNumber;
-    }
-
     public String getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public Product setImage(String image) {
         this.image = image;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Product setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public Product setPrice(double price) {
         this.price = price;
+        return this;
     }
 
     public int getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public Product setStock(int stock) {
         this.stock = stock;
+        return this;
     }
 }
