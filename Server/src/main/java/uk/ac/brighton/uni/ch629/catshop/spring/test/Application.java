@@ -22,6 +22,7 @@ public class Application {
 //            sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         } catch (Exception e) {
+            e.printStackTrace();
             StandardServiceRegistryBuilder.destroy(registry);
         }
     }

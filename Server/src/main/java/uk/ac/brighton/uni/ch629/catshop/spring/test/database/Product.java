@@ -2,7 +2,6 @@ package uk.ac.brighton.uni.ch629.catshop.spring.test.database;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -29,8 +28,7 @@ public class Product {
     @Column(name = "PRODUCT_STOCK")
     private int stock;
 
-    @JsonIgnore
-    @OneToMany
+    @ManyToMany
     private Set<Order> orders;
 
     public Product() {

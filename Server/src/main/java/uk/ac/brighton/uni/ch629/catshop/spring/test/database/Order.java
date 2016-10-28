@@ -13,7 +13,10 @@ public class Order {
     @Column(name = "ID")
     private int id;
 
+    @Column(name = "QUANTITY")
+    private int quantity;
+
     @JsonIgnore
-    @ManyToOne
-    private Set<OrderProduct> products;
+    @ManyToMany(mappedBy = "orders")
+    private Set<Product> products;
 }
