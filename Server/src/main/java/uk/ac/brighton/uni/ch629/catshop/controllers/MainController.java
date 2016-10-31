@@ -1,7 +1,9 @@
 package uk.ac.brighton.uni.ch629.catshop.controllers;
 
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import uk.ac.brighton.uni.ch629.catshop.database.model.Order;
 import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
@@ -9,6 +11,7 @@ import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.
 import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.OrderService;
 import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.ProductService;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -44,6 +47,14 @@ public class MainController { //TODO: Look into Security
         return orderService.findAll();
     }
 
+    @GetMapping(value = "/test")
+    public ModelAndView getTest(HttpServletRequest request) {
+        ModelAndView result = new ModelAndView();
+        result.addObject("date", new Date());
+        result.addObject("message", "Hello World!");
+        return result;
+    }
+
     @PostMapping(value = "/protected/product")
     public void addProduct(@RequestBody Product product) {
         productService.create(product);
@@ -64,7 +75,7 @@ public class MainController { //TODO: Look into Security
         throw new NotImplementedException();
     }
 
-    @PostMapping(value = "subscribe")
+    @PostMapping(value = "/subscribe")
     public void subscribe() {
         throw new NotImplementedException();
     }
