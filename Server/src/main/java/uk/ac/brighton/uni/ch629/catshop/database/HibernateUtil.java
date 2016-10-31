@@ -1,4 +1,4 @@
-package uk.ac.brighton.uni.ch629.catshop.spring.test.database;
+package uk.ac.brighton.uni.ch629.catshop.database;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

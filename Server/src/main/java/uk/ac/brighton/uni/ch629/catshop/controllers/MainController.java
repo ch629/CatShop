@@ -1,31 +1,54 @@
-package uk.ac.brighton.uni.ch629.catshop;
+package uk.ac.brighton.uni.ch629.catshop.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import spark.ModelAndView;
-import spark.Spark;
-import spark.template.mustache.MustacheTemplateEngine;
-import uk.ac.brighton.uni.ch629.catshop.communication.*;
-import uk.ac.brighton.uni.ch629.catshop.database.tables.records.AuthToken;
-import uk.ac.brighton.uni.ch629.catshop.database.tables.records.Product;
+import org.springframework.web.bind.annotation.*;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import uk.ac.brighton.uni.ch629.catshop.Application;
+import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.List;
 
-import static spark.Spark.*;
+@RestController
+public class MainController {
+    @GetMapping(value = "/product")
+    public Product findProduct(@RequestParam(value = "id") int id) {
+        Product product = Application.getProductDao().getProduct(id);
+        if (product == null) {
+            //TODO: This should probably return a response rather than a product.
+        }
+        return product != null ? product : null;
+    }
 
-public class Server { //TODO: Spring instead of Spark?
-    public static void main(String[] args) { //TODO: Cache images with Google Guava?
-        createDummyData(); //TODO: Use a request system to create correct JSON for the Request similar to HitBox's way (Use ResponseCode and maybe a StatusCode to check if the request was successful on client)
-        Spark.staticFileLocation("/public");
-        ObjectMapper mapper = new ObjectMapper();
+    @GetMapping(value = "/product/all")
+    public List<Product> getAllProducts() {
+        return Application.getProductDao().getProducts();
+    }
 
+    @PostMapping(value = "/protected/product")
+    public void addProduct(@RequestBody Product product) {
+        Application.create(product);
+    }
+
+    @DeleteMapping(value = "/protected/product")
+    public void removeProduct(@RequestParam(value = "id") int id) {
+        Application.getProductDao().deleteProduct(id);
+    }
+
+    @PostMapping(value = "/auth/add")
+    public void addAuth() { //TODO: @RequestBody
+        throw new NotImplementedException();
+    }
+
+    @GetMapping(value = "/auth/add")
+    public void acceptAuth() {
+        throw new NotImplementedException();
+    }
+
+    @PostMapping(value = "subscribe")
+    public void subscribe() {
+        throw new NotImplementedException();
+    }
+
+    /* Old Route Code
         get("/product/all", (req, res) -> {
             ArrayNode array = new ArrayNode(new JsonNodeFactory(false));
             Product.getAll().forEach(array::addPOJO);
@@ -106,34 +129,5 @@ public class Server { //TODO: Spring instead of Spark?
                             .collect(Collectors.toList()));
             return new ModelAndView(map, "addauth.mustache");
         }, new MustacheTemplateEngine());
-    }
-
-    public static void createDummyData() {
-        Product.dropTable();
-        Product.createTable();
-        AuthToken.dropTable();
-        AuthToken.createTable();
-        AuthToken.addToken("test123");
-        AuthToken.addToken("test456");
-        new Product("40 inch LED HD TV", 269.00d, 90, "pic0001.jpg").create();
-        new Product("DAB Radio", 29.99d, 20, "pic0002.jpg").create();
-        new Product("Toaster", 19.99d, 33, "pic0003.jpg").create();
-        new Product("Watch", 29.99d, 10, "pic0004.jpg").create();
-        new Product("Digital Camera", 89.99d, 17, "pic0005.jpg").create();
-        new Product("MP3 Player", 7.99d, 15, "pic0006.jpg").create();
-        new Product("32GB USB2 Drive", 6.99d, 1, "pic0007.jpg").create();
-    }
-
-    public static Logger getLogger() {
-        return LoggerFactory.getLogger(Server.class);
-    }
-
-    private static boolean isInt(String s) {
-        try {
-            Integer.parseInt(s);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+     */
 }

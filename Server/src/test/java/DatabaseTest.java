@@ -1,9 +1,6 @@
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import uk.ac.brighton.uni.ch629.catshop.database.tables.records.Product;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class DatabaseTest {
 

@@ -1,6 +1,6 @@
-package uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.interfaces;
+package uk.ac.brighton.uni.ch629.catshop.database.model.dao.interfaces;
 
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.Order;
+import uk.ac.brighton.uni.ch629.catshop.database.model.Order;
 
 import java.util.List;
 

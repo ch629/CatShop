@@ -1,4 +1,4 @@
-package uk.ac.brighton.uni.ch629.catshop.spring.test.database.model;
+package uk.ac.brighton.uni.ch629.catshop.database.model;
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package uk.ac.brighton.uni.ch629.catshop.spring.test;
+package uk.ac.brighton.uni.ch629.catshop;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,14 +7,14 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.HibernateUtil;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.Product;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.AuthTokenDao;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.OrderDao;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.ProductDao;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.interfaces.IAuthTokenDao;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.interfaces.IOrderDao;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.interfaces.IProductDao;
+import uk.ac.brighton.uni.ch629.catshop.database.HibernateUtil;
+import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
+import uk.ac.brighton.uni.ch629.catshop.database.model.dao.AuthTokenDao;
+import uk.ac.brighton.uni.ch629.catshop.database.model.dao.OrderDao;
+import uk.ac.brighton.uni.ch629.catshop.database.model.dao.ProductDao;
+import uk.ac.brighton.uni.ch629.catshop.database.model.dao.interfaces.IAuthTokenDao;
+import uk.ac.brighton.uni.ch629.catshop.database.model.dao.interfaces.IOrderDao;
+import uk.ac.brighton.uni.ch629.catshop.database.model.dao.interfaces.IProductDao;
 
 @SpringBootApplication
 public class Application {

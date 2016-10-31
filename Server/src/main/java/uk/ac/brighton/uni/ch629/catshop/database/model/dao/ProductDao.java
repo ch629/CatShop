@@ -1,13 +1,11 @@
-package uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao;
+package uk.ac.brighton.uni.ch629.catshop.database.model.dao;
 
 import org.hibernate.Session;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.HibernateUtil;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.Product;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.interfaces.IProductDao;
+import uk.ac.brighton.uni.ch629.catshop.database.HibernateUtil;
+import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
+import uk.ac.brighton.uni.ch629.catshop.database.model.dao.interfaces.IProductDao;
 
 import java.util.List;
-
-import static uk.ac.brighton.uni.ch629.catshop.spring.test.database.HibernateUtil.getSession;
 
 public class ProductDao implements IProductDao {
     @Override
@@ -22,7 +20,7 @@ public class ProductDao implements IProductDao {
 
     @Override
     public void updateProduct(Product product) {
-        Session session = getSession();
+        Session session = HibernateUtil.getSession();
         session.beginTransaction();
         Product oldProduct = session.load(Product.class, product.getProductNumber());
         oldProduct.setDescription(product.getDescription());

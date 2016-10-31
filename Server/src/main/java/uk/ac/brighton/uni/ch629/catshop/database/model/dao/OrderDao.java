@@ -1,9 +1,9 @@
-package uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao;
+package uk.ac.brighton.uni.ch629.catshop.database.model.dao;
 
 import org.hibernate.Session;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.HibernateUtil;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.Order;
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.interfaces.IOrderDao;
+import uk.ac.brighton.uni.ch629.catshop.database.HibernateUtil;
+import uk.ac.brighton.uni.ch629.catshop.database.model.Order;
+import uk.ac.brighton.uni.ch629.catshop.database.model.dao.interfaces.IOrderDao;
 
 import java.util.List;
 

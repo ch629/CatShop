@@ -1,6 +1,6 @@
-package uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.interfaces;
+package uk.ac.brighton.uni.ch629.catshop.database.model.dao.interfaces;
 
-import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.AuthToken;
+import uk.ac.brighton.uni.ch629.catshop.database.model.AuthToken;
 
 import java.util.List;
 
