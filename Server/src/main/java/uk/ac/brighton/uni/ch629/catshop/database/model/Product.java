@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "PRODUCT")
+@Entity
 @Table(name = "PRODUCT")
 @JsonAutoDetect
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

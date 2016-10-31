@@ -10,7 +10,7 @@ import java.util.List;
 public class AuthTokenDao implements IAuthTokenDao {
     @Override
     public List<AuthToken> getAuthTokens() {
-        return HibernateUtil.getAll("AUTH_TOKEN");
+        return HibernateUtil.getAll("AuthToken");
     }
 
     @Override

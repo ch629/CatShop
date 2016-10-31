@@ -10,7 +10,7 @@ import java.util.List;
 public class ProductDao implements IProductDao {
     @Override
     public List<Product> getProducts() {
-        return HibernateUtil.getAll("PRODUCT");
+        return HibernateUtil.getAll("Product");
     }
 
     @Override

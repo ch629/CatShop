@@ -8,7 +8,7 @@ import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
 import java.util.List;
 
 @RestController
-public class MainController {
+public class MainController { //TODO: Look into Security
     @GetMapping(value = "/product")
     public Product findProduct(@RequestParam(value = "id") int id) {
         Product product = Application.getProductDao().getProduct(id);
@@ -49,22 +49,6 @@ public class MainController {
     }
 
     /* Old Route Code
-        get("/product/all", (req, res) -> {
-            ArrayNode array = new ArrayNode(new JsonNodeFactory(false));
-            Product.getAll().forEach(array::addPOJO);
-            return new Response(ResponseCode.SUCCESS, array);
-        });
-
-        get("/product/:id", (req, res) -> {
-            String idParam = req.params(":id");
-            if (!isInt(idParam))
-                return new Response(ResponseCode.INVALID_PARAMETER, "Expected an integer in parameter ':id' but received %s", idParam);
-            Product product = Product.getProduct(Integer.parseInt(idParam));
-            if (product == null)
-                return new Response(ResponseCode.PRODUCT_NOT_FOUND, "No product found with id: %s", idParam);
-            return new Response(ResponseCode.SUCCESS, JsonHelper.objectToNode(product));
-        });
-
         before("/protected/*", (req, res) -> { //TODO: Use Request?
             JSONObject object = new JSONObject(req.body()); //TODO: Use Jackson JsonObject
             if (object == null) halt(401, "Not valid JSON request!");

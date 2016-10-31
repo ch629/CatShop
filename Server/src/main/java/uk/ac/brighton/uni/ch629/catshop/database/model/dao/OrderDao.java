@@ -10,7 +10,7 @@ import java.util.List;
 public class OrderDao implements IOrderDao {
     @Override
     public List<Order> getOrders() {
-        return HibernateUtil.getAll("ORDER");
+        return HibernateUtil.getAll("Product");
     }
 
     @Override
