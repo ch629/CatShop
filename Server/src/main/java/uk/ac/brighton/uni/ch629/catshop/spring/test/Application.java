@@ -35,34 +35,20 @@ public class Application {
 
     private static void createDummyData() {
         System.out.println("CREATING DUMMY DATA");
-        create(new Product("40 inch LED HD TV", 269.00d, 90, "pic0001.jpg"));
-        create(new Product("DAB Radio", 29.99d, 20, "pic0002.jpg"));
-        create(new Product("Toaster", 19.99d, 33, "pic0003.jpg"));
-        create(new Product("Watch", 29.99d, 10, "pic0004.jpg"));
-        create(new Product("Digital Camera", 89.99d, 17, "pic0005.jpg"));
-        create(new Product("MP3 Player", 7.99d, 15, "pic0006.jpg"));
-        create(new Product("32GB USB2 Drive", 6.99d, 1, "pic0007.jpg"));
+        HibernateUtil.create(new Product("40 inch LED HD TV", 269.00d, 90, "pic0001.jpg"));
+        HibernateUtil.create(new Product("DAB Radio", 29.99d, 20, "pic0002.jpg"));
+        HibernateUtil.create(new Product("Toaster", 19.99d, 33, "pic0003.jpg"));
+        HibernateUtil.create(new Product("Watch", 29.99d, 10, "pic0004.jpg"));
+        HibernateUtil.create(new Product("Digital Camera", 89.99d, 17, "pic0005.jpg"));
+        HibernateUtil.create(new Product("MP3 Player", 7.99d, 15, "pic0006.jpg"));
+        HibernateUtil.create(new Product("32GB USB2 Drive", 6.99d, 1, "pic0007.jpg"));
         System.out.println("DONE CREATING DUMMY DATA");
-
-        /*createMany(
-                new Product("40 inch LED HD TV", 269.00d, 90, "pic0001.jpg"),
-                new Product("DAB Radio", 29.99d, 20, "pic0002.jpg"),
-                new Product("Toaster", 19.99d, 33, "pic0003.jpg"),
-                new Product("Watch", 29.99d, 10, "pic0004.jpg"),
-                new Product("Digital Camera", 89.99d, 17, "pic0005.jpg"),
-                new Product("MP3 Player", 7.99d, 15, "pic0006.jpg"),
-                new Product("32GB USB2 Drive", 6.99d, 1, "pic0007.jpg")
-        );*/
-
     }
 
     public static void main(String[] args) {
         setUp();
         createDummyData();
         SpringApplication.run(Application.class, args);
-        if (PRODUCT_DAO == null) System.out.println("PRODUCT_DAO = NULL");
-        if (HibernateUtil.getSession() == null) System.out.println("HIBERNATE_UTIL SESSION = NULL");
-        if (getSessionFactory() == null) System.out.println("THIS SESSION FACTORY = NULL");
         Product product = PRODUCT_DAO.getProduct(1);
         if (product != null) System.out.println(product.getDescription());
         else System.out.println("PRODUCT IS NULL!");
