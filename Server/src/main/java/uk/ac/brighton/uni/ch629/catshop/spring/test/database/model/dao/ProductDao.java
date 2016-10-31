@@ -7,6 +7,8 @@ import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.dao.interface
 
 import java.util.List;
 
+import static uk.ac.brighton.uni.ch629.catshop.spring.test.database.HibernateUtil.getSession;
+
 public class ProductDao implements IProductDao {
     @Override
     public List<Product> getProducts() {
@@ -20,7 +22,7 @@ public class ProductDao implements IProductDao {
 
     @Override
     public void updateProduct(Product product) {
-        Session session = HibernateUtil.getSession();
+        Session session = getSession();
         session.beginTransaction();
         Product oldProduct = session.load(Product.class, product.getProductNumber());
         oldProduct.setDescription(product.getDescription());

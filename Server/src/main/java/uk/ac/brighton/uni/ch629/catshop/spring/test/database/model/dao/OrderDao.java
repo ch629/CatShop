@@ -22,9 +22,8 @@ public class OrderDao implements IOrderDao {
     public void updateOrder(Order order) {
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
-        Order oldOrder = getOrder(order.getId());
-        oldOrder.setQuantity(order.getQuantity());
-        oldOrder.setProducts(order.getProducts());
+        Order oldOrder = getOrder(order.getOrderID());
+        oldOrder.setOrderProducts(order.getOrderProducts());
         session.getTransaction().commit();
         session.close();
     }
@@ -36,6 +35,6 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void deleteOrder(Order order) {
-        deleteOrder(order.getId());
+        deleteOrder(order.getOrderID());
     }
 }

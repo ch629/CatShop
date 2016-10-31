@@ -4,7 +4,7 @@
 
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 
         <!--<property name="hibernate.connection.url">jdbc:mysql://db4free.net/catshop?useSSL=false</property>-->
@@ -16,13 +16,15 @@
         <property name="hibernate.connection.password">pass</property>
 
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
+        <property name="connection.autocommit">true</property>
         <property name="hibernate.enable_lazy_load_no_trans">true</property>
         <property name="connection_pool_size">1</property>
-        <property name="show_sql">false</property>
+        <property name="show_sql">true</property>
         <property name="format-sql">true</property>
 
         <mapping class="uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.Product"/>
         <mapping class="uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.Order"/>
         <mapping class="uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.AuthToken"/>
+        <mapping class="uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.OrderProduct"/>
     </session-factory>
 </hibernate-configuration>

@@ -1,15 +1,17 @@
 package uk.ac.brighton.uni.ch629.catshop.spring.test.database.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "PRODUCT")
-@JsonAutoDetect
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +30,10 @@ public class Product {
     @Column(name = "PRODUCT_STOCK")
     private int stock;
 
-    @ManyToMany
-    private Set<Order> orders;
+    @OneToMany(mappedBy = "product")
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JsonIgnore
+    private List<OrderProduct> orderProducts = new ArrayList<>();
 
     public Product() {
     }

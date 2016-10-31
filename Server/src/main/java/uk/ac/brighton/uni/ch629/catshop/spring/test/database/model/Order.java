@@ -3,41 +3,35 @@ package uk.ac.brighton.uni.ch629.catshop.spring.test.database.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "ORDER")
+@Table(name = "ORDERS") //NOTE: Order is a reserved word.
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private int id;
+    @Column(name = "ORDER_ID")
+    private int orderID;
 
-    @Column(name = "QUANTITY")
-    private int quantity;
-
+    @OneToMany(mappedBy = "order")
     @JsonIgnore
-    @ManyToMany(mappedBy = "orders")
-    private Set<Product> products;
+    private List<OrderProduct> orderProducts = new ArrayList<>();
 
-    public int getId() {
-        return id;
+    public int getOrderID() {
+        return orderID;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public List<Product> getProducts() {
+        return orderProducts.stream().map(OrderProduct::getProduct).collect(Collectors.toList());
     }
 
-    public Order setQuantity(int quantity) {
-        this.quantity = quantity;
-        return this;
+    public List<OrderProduct> getOrderProducts() {
+        return orderProducts;
     }
 
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
+    public void setOrderProducts(List<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
     }
 }

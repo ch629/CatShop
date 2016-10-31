@@ -2,30 +2,31 @@ package uk.ac.brighton.uni.ch629.catshop.spring.test.controllers;
 
 import org.springframework.web.bind.annotation.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import uk.ac.brighton.uni.ch629.catshop.database.tables.records.Product;
+import uk.ac.brighton.uni.ch629.catshop.spring.test.Application;
+import uk.ac.brighton.uni.ch629.catshop.spring.test.database.model.Product;
 
-import java.util.Set;
-
+import java.util.List;
 @RestController
 public class MainController {
     @GetMapping(value = "/product")
     public Product findProduct(@RequestParam(value = "id") int id) {
-        throw new NotImplementedException();
+        Product product = Application.getProductDao().getProduct(id);
+        return product != null ? product : null;
     }
 
     @GetMapping(value = "/product/all")
-    public Set<Product> getAllProducts() {
-        throw new NotImplementedException();
+    public List<Product> getAllProducts() {
+        return Application.getProductDao().getProducts();
     }
 
     @PostMapping(value = "/protected/product")
     public void addProduct(@RequestBody Product product) {
-        throw new NotImplementedException();
+        Application.create(product);
     }
 
     @DeleteMapping(value = "/protected/product")
     public void removeProduct(@RequestParam(value = "id") int id) {
-        throw new NotImplementedException();
+        Application.getProductDao().deleteProduct(id);
     }
 
     @PostMapping(value = "/auth/add")
