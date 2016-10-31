@@ -1,21 +1,24 @@
 package uk.ac.brighton.uni.ch629.catshop;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
-import uk.ac.brighton.uni.ch629.catshop.database.model.data.repositories.ProductRepository;
+import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.AuthTokenService;
+import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.OrderService;
 import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.ProductService;
 
 @SpringBootApplication
 public class Application {
     private static ProductService productService;
+    private static OrderService orderService;
+    private static AuthTokenService authTokenService;
 
     @Autowired
-    public Application(ProductService productService) {
+    public Application(ProductService productService, OrderService orderService, AuthTokenService authTokenService) {
         Application.productService = productService;
+        Application.orderService = orderService;
+        Application.authTokenService = authTokenService;
     }
 
     private static void createDummyData() {
@@ -35,17 +38,15 @@ public class Application {
         System.out.println(productService.findByNumber(1).getDescription());
     }
 
-    @Bean
+    /*@Bean
     public CommandLineRunner demo(ProductRepository repository) {
         return (args) -> {
             repository.save(new Product("40 inch LED HD TV", 269.00d, 90, "pic0001.jpg"));
             repository.findAll().forEach(product -> System.out.println(product.getDescription()));
         };
-    }
+    }*/
 }
 
 /*
 TODO: Spring DAO & ORM
-TODO: Spring Data (Can work with Hibernate)
-TODO: Spring Autowired Annotation (with Hibernate)
  */

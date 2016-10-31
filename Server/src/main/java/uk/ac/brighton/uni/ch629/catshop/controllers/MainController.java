@@ -3,7 +3,10 @@ package uk.ac.brighton.uni.ch629.catshop.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import uk.ac.brighton.uni.ch629.catshop.database.model.Order;
 import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
+import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.AuthTokenService;
+import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.OrderService;
 import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.ProductService;
 
 import java.util.List;
@@ -11,24 +14,34 @@ import java.util.List;
 @RestController
 public class MainController { //TODO: Look into Security
     private final ProductService productService;
+    private final OrderService orderService;
+    private final AuthTokenService authTokenService;
 
     @Autowired
-    public MainController(ProductService productService) {
+    public MainController(ProductService productService, OrderService orderService, AuthTokenService authTokenService) {
         this.productService = productService;
+        this.orderService = orderService;
+        this.authTokenService = authTokenService;
     }
 
-    @GetMapping(value = "/product")
-    public Product findProduct(@RequestParam(value = "id") int id) {
-        Product product = productService.findByNumber(id);
-        if (product == null) {
-            //TODO: This should probably return a response rather than a product.
-        }
-        return product != null ? product : null;
+    @GetMapping(value = {"/product", "/products"})
+    public List<Product> getProducts() {
+        return productService.findAll();
+    }
+
+    @RequestMapping(value = {"/product/{id}", "/products/{id}"})
+    public Product getProduct(@PathVariable("id") int id) {
+        return productService.findByNumber(id);
     }
 
     @GetMapping(value = "/product/all")
     public List<Product> getAllProducts() {
         return productService.findAll();
+    }
+
+    @GetMapping(value = "/order/all")
+    public List<Order> getAllOrders() {
+        return orderService.findAll();
     }
 
     @PostMapping(value = "/protected/product")
