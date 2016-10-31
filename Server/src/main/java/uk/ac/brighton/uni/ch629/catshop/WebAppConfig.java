@@ -34,6 +34,8 @@ public class WebAppConfig {
 
     HIBERNATE_DIALECT = "hibernate.dialect",
             HIBERNATE_SHOW_SQL = "hibernate.show_sql",
+            HIBERNATE_FORMAT_SQL = "hibernate.format_sql",
+            HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto",
 
     ENTITY_MANAGER_PACKAGES_TO_SCAN = "entity-manager.packages-to-scan";
 
@@ -69,6 +71,8 @@ public class WebAppConfig {
         Properties properties = new Properties();
         properties.put(HIBERNATE_DIALECT, env.getRequiredProperty(HIBERNATE_DIALECT));
         properties.put(HIBERNATE_SHOW_SQL, env.getRequiredProperty(HIBERNATE_SHOW_SQL));
+        properties.put(HIBERNATE_FORMAT_SQL, env.getRequiredProperty(HIBERNATE_FORMAT_SQL));
+        properties.put(HIBERNATE_HBM2DDL_AUTO, env.getRequiredProperty(HIBERNATE_HBM2DDL_AUTO));
         return properties;
     }
 

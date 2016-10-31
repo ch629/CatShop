@@ -1,4 +1,4 @@
-package uk.ac.brighton.uni.ch629.catshop.database.model.data;
+package uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces;
 
 import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
 

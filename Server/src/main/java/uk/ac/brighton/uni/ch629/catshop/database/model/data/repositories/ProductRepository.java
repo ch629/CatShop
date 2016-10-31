@@ -1,4 +1,4 @@
-package uk.ac.brighton.uni.ch629.catshop.database.model.data;
+package uk.ac.brighton.uni.ch629.catshop.database.model.data.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 import uk.ac.brighton.uni.ch629.catshop.database.model.Product;

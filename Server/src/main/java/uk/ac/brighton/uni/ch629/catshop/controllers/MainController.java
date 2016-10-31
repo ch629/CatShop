@@ -1,17 +1,25 @@
 package uk.ac.brighton.uni.ch629.catshop.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import uk.ac.brighton.uni.ch629.catshop.Application;
 import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
+import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.ProductService;
 
 import java.util.List;
 
 @RestController
 public class MainController { //TODO: Look into Security
+    private final ProductService productService;
+
+    @Autowired
+    public MainController(ProductService productService) {
+        this.productService = productService;
+    }
+
     @GetMapping(value = "/product")
     public Product findProduct(@RequestParam(value = "id") int id) {
-        Product product = Application.getProductDao().getProduct(id);
+        Product product = productService.findByNumber(id);
         if (product == null) {
             //TODO: This should probably return a response rather than a product.
         }
@@ -20,17 +28,17 @@ public class MainController { //TODO: Look into Security
 
     @GetMapping(value = "/product/all")
     public List<Product> getAllProducts() {
-        return Application.getProductDao().getProducts();
+        return productService.findAll();
     }
 
     @PostMapping(value = "/protected/product")
     public void addProduct(@RequestBody Product product) {
-        Application.create(product);
+        productService.create(product);
     }
 
     @DeleteMapping(value = "/protected/product")
     public void removeProduct(@RequestParam(value = "id") int id) {
-        Application.getProductDao().deleteProduct(id);
+        productService.delete(id);
     }
 
     @PostMapping(value = "/auth/add")
