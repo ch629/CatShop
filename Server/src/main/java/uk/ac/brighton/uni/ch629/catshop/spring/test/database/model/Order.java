@@ -3,13 +3,16 @@ package uk.ac.brighton.uni.ch629.catshop.spring.test.database.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "ORDERS") //NOTE: Order is a reserved word.
-public class Order {
+public class Order implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ORDER_ID")
