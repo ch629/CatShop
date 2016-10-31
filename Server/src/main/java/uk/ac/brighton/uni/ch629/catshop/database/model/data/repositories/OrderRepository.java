@@ -2,13 +2,13 @@ package uk.ac.brighton.uni.ch629.catshop.database.model.data.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
+import uk.ac.brighton.uni.ch629.catshop.database.model.Order;
 
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends CrudRepository<Product, Integer> {
-    List<Product> findAll();
+public interface OrderRepository extends CrudRepository<Order, Integer> {
+    List<Order> findAll();
 
-    Product findByProductNumber(int productNumber);
+    Order findOrderByOrderID(int id);
 }
