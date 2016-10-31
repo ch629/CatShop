@@ -11,6 +11,9 @@ public class MainController {
     @GetMapping(value = "/product")
     public Product findProduct(@RequestParam(value = "id") int id) {
         Product product = Application.getProductDao().getProduct(id);
+        if (product == null) {
+            //TODO: This should probably return a response rather than a product.
+        }
         return product != null ? product : null;
     }
 

@@ -1,18 +1,21 @@
 package uk.ac.brighton.uni.ch629.catshop.spring.test.database.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "PRODUCT")
 @Table(name = "PRODUCT")
-public class Product {
+@JsonAutoDetect
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Product implements Serializable {
+    private long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRODUCT_NUMBER")
@@ -30,9 +33,9 @@ public class Product {
     @Column(name = "PRODUCT_STOCK")
     private int stock;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     @NotFound(action = NotFoundAction.IGNORE)
-    @JsonIgnore
+    @JsonIgnore //Not sure why this isn't just ignoring the lazy loading, so have to put JsonIgnoreProperties annotation
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
     public Product() {
@@ -63,6 +66,7 @@ public class Product {
         return productNumber;
     }
 
+    @JsonGetter("image")
     public String getImage() {
         return image;
     }
@@ -72,6 +76,7 @@ public class Product {
         return this;
     }
 
+    @JsonGetter("description")
     public String getDescription() {
         return description;
     }
@@ -81,6 +86,7 @@ public class Product {
         return this;
     }
 
+    @JsonGetter("price")
     public double getPrice() {
         return price;
     }
@@ -90,6 +96,7 @@ public class Product {
         return this;
     }
 
+    @JsonGetter("stock")
     public int getStock() {
         return stock;
     }

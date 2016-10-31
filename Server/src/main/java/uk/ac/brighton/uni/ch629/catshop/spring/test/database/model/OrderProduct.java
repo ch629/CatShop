@@ -7,12 +7,12 @@ import java.io.Serializable;
 @Table(name = "ORDER_PRODUCT")
 public class OrderProduct implements Serializable {
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "PRODUCT_NUMBER", insertable = false, updatable = false, nullable = false)
     private Product product;
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ORDER_ID", insertable = false, updatable = false, nullable = false)
     private Order order;
 

@@ -15,7 +15,7 @@ public class Order {
     @Column(name = "ORDER_ID")
     private int orderID;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
