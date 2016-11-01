@@ -1,6 +1,6 @@
 package uk.ac.brighton.uni.ch629.catshop;
 
-import org.hibernate.ejb.HibernatePersistence;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +12,8 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -23,7 +25,7 @@ import java.util.Properties;
 @ComponentScan("uk.ac.brighton.uni.ch629.catshop")
 @PropertySource("classpath:application.properties")
 @EnableJpaRepositories(basePackages = {"uk.ac.brighton.uni.ch629.catshop.database.model.data"})
-public class WebAppConfig {
+public class WebAppConfig extends WebMvcConfigurerAdapter {
     private static final String
             DATABASE_DRIVER = "db.driver",
             DATABASE_PASSWORD = "db.password",
@@ -56,7 +58,7 @@ public class WebAppConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource());
-        entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistence.class);
+        entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         entityManagerFactoryBean.setPackagesToScan(env.
                 getRequiredProperty(ENTITY_MANAGER_PACKAGES_TO_SCAN));
 
@@ -79,5 +81,11 @@ public class WebAppConfig {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
         return transactionManager;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        registry.addResourceHandler("/public/**").addResourceLocations("classpath:/META-INF/resources/public/");
     }
 }

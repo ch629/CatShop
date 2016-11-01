@@ -3,6 +3,7 @@ package uk.ac.brighton.uni.ch629.catshop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import uk.ac.brighton.uni.ch629.catshop.database.model.AuthToken;
 import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
 import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.AuthTokenService;
 import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.OrderService;
@@ -31,6 +32,8 @@ public class Application {
         productService.create(new Product("MP3 Player", 7.99d, 15, "pic0006.jpg"));
         productService.create(new Product("32GB USB2 Drive", 6.99d, 1, "pic0007.jpg"));
         System.out.println("DONE CREATING DUMMY DATA");
+
+        authTokenService.create(new AuthToken("abc123"));
     }
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

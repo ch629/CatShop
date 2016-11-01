@@ -1,6 +1,8 @@
 package uk.ac.brighton.uni.ch629.catshop.database.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +19,21 @@ public class AuthToken {
 
     @Column(name = "ACCEPTED")
     private boolean accepted;
+
+    public AuthToken() {
+        this.accepted = false;
+    }
+
+    public AuthToken(String token) {
+        this(token, false);
+    }
+
+    @JsonCreator
+    public AuthToken(@JsonProperty("token") String token,
+                     @JsonProperty("accepted") boolean accepted) {
+        this.token = token;
+        this.accepted = accepted;
+    }
 
     public String getToken() {
         return token;

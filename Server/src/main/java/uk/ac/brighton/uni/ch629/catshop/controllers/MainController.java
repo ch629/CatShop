@@ -1,79 +1,11 @@
 package uk.ac.brighton.uni.ch629.catshop.controllers;
 
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import uk.ac.brighton.uni.ch629.catshop.database.model.Order;
-import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
-import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.AuthTokenService;
-import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.OrderService;
-import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.ProductService;
 
-import java.util.Date;
-import java.util.List;
-
-@RestController
+@RestController("/")
 public class MainController { //TODO: Look into Security
-    private final ProductService productService;
-    private final OrderService orderService;
-    private final AuthTokenService authTokenService;
-
-    @Autowired
-    public MainController(ProductService productService, OrderService orderService, AuthTokenService authTokenService) {
-        this.productService = productService;
-        this.orderService = orderService;
-        this.authTokenService = authTokenService;
-    }
-
-    @GetMapping(value = {"/product", "/products"})
-    public List<Product> getProducts() {
-        return productService.findAll();
-    }
-
-    @RequestMapping(value = {"/product/{id}", "/products/{id}"})
-    public Product getProduct(@PathVariable("id") int id) {
-        return productService.findByNumber(id);
-    }
-
-    @GetMapping(value = "/product/all")
-    public List<Product> getAllProducts() {
-        return productService.findAll();
-    }
-
-    @GetMapping(value = "/order/all")
-    public List<Order> getAllOrders() {
-        return orderService.findAll();
-    }
-
-    @GetMapping(value = "/test")
-    public ModelAndView getTest(HttpServletRequest request) {
-        ModelAndView result = new ModelAndView();
-        result.addObject("date", new Date());
-        result.addObject("message", "Hello World!");
-        return result;
-    }
-
-    @PostMapping(value = "/protected/product")
-    public void addProduct(@RequestBody Product product) {
-        productService.create(product);
-    }
-
-    @DeleteMapping(value = "/protected/product")
-    public void removeProduct(@RequestParam(value = "id") int id) {
-        productService.delete(id);
-    }
-
-    @PostMapping(value = "/auth/add")
-    public void addAuth() { //TODO: @RequestBody
-        throw new NotImplementedException();
-    }
-
-    @GetMapping(value = "/auth/add")
-    public void acceptAuth() {
-        throw new NotImplementedException();
-    }
 
     @PostMapping(value = "/subscribe")
     public void subscribe() {
@@ -143,7 +75,7 @@ public class MainController { //TODO: Look into Security
                             .stream()
                             .filter(token -> !token.isAccepted())
                             .collect(Collectors.toList()));
-            return new ModelAndView(map, "addauth.mustache");
+            return new ModelAndView(map, "addauth.html");
         }, new MustacheTemplateEngine());
      */
 }

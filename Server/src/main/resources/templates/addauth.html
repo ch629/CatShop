@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Authorize Tokens</title>
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $('button').on('click', function (e) {
+                e.preventDefault();
+                var button = this;
+                var token = $(button).attr('token');
+                var action = $(button).attr('action');
+                var row = document.getElementById(token);
+
+                var json = '{'
+                        + '"action": "' + action + '", '
+                        + '"token": "' + token + '"'
+                        + '}';
+
+                console.log(json);
+
+                $.ajax({
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    type: "POST",
+                    url: "/auth/add/",
+                    data: json,
+                    dataType: "json"
+                });
+
+                if (action === "decline" || action === "revoke") row.parentElement.removeChild(row);
+                return false;
+            })
+        });
+    </script>
+
+    <link rel="stylesheet" href="/webjars/normalize.css/3.0.1/normalize.css">
+    <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="/public/css/test.css" > NOTE: This is still 404-->
+</head>
+
+<body>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-3">Authorize Tokens</h1>
+        <!--<p class="lead"> Jumbotron Fluid</p>-->
+    </div>
+</div>
+
+<table class="table">
+    <thead class="thead-inverse">
+    <tr>
+        <th>Token</th>
+        <th>Date Requested</th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {{#requests}}
+    <tr id="{{token}}">
+        <th scope="row">{{token}}</th>
+        <th>Date</th>
+        <th>
+            {{#accepted}}
+            <button action="revoke" token="{{token}}" type="button" class="btn btn-danger">Revoke</button>
+            {{/accepted}}
+
+            {{^accepted}}
+            <button action="accept" token='{{token}}' type="button" class="btn btn-success">Accept</button>
+            <button action="decline" token='{{token}}' type="button" class="btn btn-danger">Decline</button>
+            {{/accepted}}
+        </th>
+    </tr>
+    {{/requests}}
+    </tbody>
+</table>
+</body>
+</html>
