@@ -21,10 +21,18 @@ public class AuthController {
     }
 
     @PostMapping(value = "/auth/add")
-    public void addAuth(@RequestBody AuthPostWrapper authPost) { //TODO: @RequestBody
-        System.out.println("Adding Auth");
-        System.out.println(authPost.getAction());
-//        throw new NotImplementedException();
+    public void addAuth(@RequestBody AuthPostWrapper authPost) {
+        switch (authPost.getAction()) {
+            case ACCEPT:
+                authTokenService.update(authTokenService.findByToken(authPost.getToken()).setAccepted(true));
+                break;
+            case REVOKE:
+                authTokenService.update(authTokenService.findByToken(authPost.getToken()).setAccepted(false));
+                break;
+            case DECLINE:
+                authTokenService.delete(authPost.getToken());
+                break;
+        }
     }
 
     @GetMapping(value = "/auth/add")
@@ -33,7 +41,8 @@ public class AuthController {
         modelAndView.addObject("requests",
                 authTokenService
                         .findAll()
-                        .stream()
+                        .stream().sorted((o1, o2) ->
+                        Boolean.compare(o1.isAccepted(), o2.isAccepted()))
                         .collect(Collectors.toList()));
         return modelAndView;
     }
@@ -41,26 +50,26 @@ public class AuthController {
 
 @JsonAutoDetect
 class AuthPostWrapper {
-    private String action;
+    private AuthAction action;
     private String token;
 
     public AuthPostWrapper() {
     }
 
     @JsonCreator
-    public AuthPostWrapper(@JsonProperty("action") String action,
+    public AuthPostWrapper(@JsonProperty("action") AuthAction action,
                            @JsonProperty("token") String token) {
         this.action = action;
         this.token = token;
     }
 
     @JsonGetter("action")
-    public String getAction() {
+    public AuthAction getAction() {
         return action;
     }
 
     @JsonSetter("action")
-    public void setAction(String action) {
+    public void setAction(AuthAction action) {
         this.action = action;
     }
 
@@ -72,5 +81,9 @@ class AuthPostWrapper {
     @JsonSetter("token")
     public void setToken(String token) {
         this.token = token;
+    }
+
+    enum AuthAction {
+        ACCEPT, DECLINE, REVOKE
     }
 }
