@@ -11,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "PRODUCT")
-@JsonAutoDetect
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -36,7 +35,7 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     @NotFound(action = NotFoundAction.IGNORE)
     @JsonIgnore //Not sure why this isn't just ignoring the lazy loading, so have to put JsonIgnoreProperties annotation
-    private List<OrderProduct> orderProducts = new ArrayList<>();
+    private List<OrderProduct> orderProducts = new ArrayList<>(); //NOTE: Could remove this, as product's don't really need to know about orders directly; maybe need it to see how many have been sold.
 
     public Product() {
     }
@@ -62,6 +61,7 @@ public class Product implements Serializable {
 
     }
 
+    @JsonGetter("productNumber")
     public int getProductNumber() {
         return productNumber;
     }
@@ -71,6 +71,7 @@ public class Product implements Serializable {
         return image;
     }
 
+    @JsonSetter("image")
     public Product setImage(String image) {
         this.image = image;
         return this;
@@ -81,6 +82,7 @@ public class Product implements Serializable {
         return description;
     }
 
+    @JsonSetter("description")
     public Product setDescription(String description) {
         this.description = description;
         return this;
@@ -91,6 +93,7 @@ public class Product implements Serializable {
         return price;
     }
 
+    @JsonSetter("price")
     public Product setPrice(double price) {
         this.price = price;
         return this;
@@ -101,6 +104,7 @@ public class Product implements Serializable {
         return stock;
     }
 
+    @JsonSetter("stock")
     public Product setStock(int stock) {
         this.stock = stock;
         return this;

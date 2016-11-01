@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import uk.ac.brighton.uni.ch629.catshop.database.model.AuthToken;
+import uk.ac.brighton.uni.ch629.catshop.database.model.Order;
 import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
 import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.AuthTokenService;
 import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.OrderService;
@@ -34,6 +35,21 @@ public class Application {
         System.out.println("DONE CREATING DUMMY DATA");
 
         authTokenService.create(new AuthToken("abc123"));
+
+        Order testOrder = new Order();
+        testOrder.addProduct(productService.findByNumber(1), 5);
+        testOrder.addProduct(productService.findByNumber(2), 2);
+
+        orderService.create(testOrder);
+
+        Order order1 = orderService.findByID(1);
+        Product product1 = productService.findByNumber(1);
+
+        System.out.println("Order ID: " + order1.getOrderID());
+        System.out.println("Product Number: " + product1.getProductNumber());
+
+        orderService.addProduct(order1, product1, 5); //Not doing anything?
+
     }
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
