@@ -18,7 +18,7 @@ public class ProductController {
 
     @RequestMapping(value = {"/product/{id}", "/products/{id}"})
     public Product getProduct(@PathVariable("id") int id) {
-        return productService.findByNumber(id);
+        return productService.findByProductNumber(id);
     }
 
     @GetMapping(value = {"/product", "/products", "/product/all"})

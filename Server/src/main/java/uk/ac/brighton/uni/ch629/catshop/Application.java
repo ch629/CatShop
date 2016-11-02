@@ -37,35 +37,16 @@ public class Application {
         authTokenService.create(new AuthToken("abc123"));
 
         Order testOrder = new Order();
-        testOrder.addProduct(productService.findByNumber(1), 5);
-        testOrder.addProduct(productService.findByNumber(2), 2);
+        testOrder.addProduct(productService.findByProductNumber(1), 5);
+        testOrder.addProduct(productService.findByProductNumber(2), 2);
 
+        System.out.println("CREATING ORDER");
         orderService.create(testOrder);
-
-        Order order1 = orderService.findByID(1);
-        Product product1 = productService.findByNumber(1);
-
-        System.out.println("Order ID: " + order1.getOrderID());
-        System.out.println("Product Number: " + product1.getProductNumber());
-
-        orderService.addProduct(order1, product1, 5); //Not doing anything?
-
+        System.out.println("FINISHED CREATING ORDER");
     }
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
         createDummyData();
-        System.out.println(productService.findByNumber(1).getDescription());
+        System.out.println(productService.findByProductNumber(1).getDescription());
     }
-
-    /*@Bean
-    public CommandLineRunner demo(ProductRepository repository) {
-        return (args) -> {
-            repository.save(new Product("40 inch LED HD TV", 269.00d, 90, "pic0001.jpg"));
-            repository.findAll().forEach(product -> System.out.println(product.getDescription()));
-        };
-    }*/
 }
-
-/*
-TODO: Spring DAO & ORM
- */

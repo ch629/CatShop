@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product findByNumber(int id) {
-        return productRepository.findByProductNumber(id);
+    public Product findByProductNumber(int id) {
+        return productRepository.findOne(id);
     }
 }

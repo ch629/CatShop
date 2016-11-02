@@ -10,12 +10,12 @@ import java.io.Serializable;
 @Table(name = "ORDER_PRODUCT")
 public class OrderProduct implements Serializable {
     @Id
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "PRODUCT_NUMBER", insertable = false, updatable = false, nullable = false)
     private Product product;
 
     @Id
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "ORDER_ID", insertable = false, updatable = false, nullable = false)
     @JsonIgnore //Hiding this, so it doesn't infinitely loop between Order & OrderProduct json
     private Order order;

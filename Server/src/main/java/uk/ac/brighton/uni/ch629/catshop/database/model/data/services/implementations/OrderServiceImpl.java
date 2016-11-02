@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order findByID(int id) {
-        return orderRepository.findOrderByOrderID(id);
+        return orderRepository.findOne(id);
     }
 
     @Override

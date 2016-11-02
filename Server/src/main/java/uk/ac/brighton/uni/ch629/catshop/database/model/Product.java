@@ -32,7 +32,7 @@ public class Product implements Serializable {
     @Column(name = "PRODUCT_STOCK")
     private int stock;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product")
     @NotFound(action = NotFoundAction.IGNORE)
     @JsonIgnore //Not sure why this isn't just ignoring the lazy loading, so have to put JsonIgnoreProperties annotation
     private List<OrderProduct> orderProducts = new ArrayList<>(); //NOTE: Could remove this, as product's don't really need to know about orders directly; maybe need it to see how many have been sold.

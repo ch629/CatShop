@@ -21,7 +21,7 @@ public class Order implements Serializable {
     @Column(name = "ORDER_ID")
     private int orderID;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
     public Order() {
