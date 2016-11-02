@@ -1,5 +1,6 @@
 package uk.ac.brighton.uni.ch629.catshop.database.model.data.services.implementations;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.brighton.uni.ch629.catshop.database.model.Order;
@@ -55,6 +56,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order addProduct(Order order, Product product, int quantity) { //TODO: Test that this works.
+        order.getOrderProducts().size();
+//        Hibernate.initialize(order.getOrderProducts());
         order.addOrderProduct(new OrderProduct(product, order, quantity));
         return update(order); //Doesn't work
     }
@@ -62,6 +65,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order addProduct(OrderProduct product) {
+        Hibernate.initialize(product.getOrder().getOrderProducts());
         product.getOrder().addOrderProduct(product);
         return product.getOrder();
     }

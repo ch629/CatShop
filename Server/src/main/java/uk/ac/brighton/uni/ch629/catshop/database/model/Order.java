@@ -6,9 +6,10 @@ import javafx.util.Pair;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -22,13 +23,13 @@ public class Order implements Serializable {
     private int orderID;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<OrderProduct> orderProducts = new ArrayList<>();
+    private Set<OrderProduct> orderProducts = new HashSet<>();
 
     public Order() {
     }
 
     public Order(OrderProduct... orderProducts) {
-        this.orderProducts = Arrays.asList(orderProducts);
+        this.orderProducts = new HashSet<>(Arrays.asList(orderProducts));
     }
 
     @JsonGetter("orderID")
@@ -37,12 +38,12 @@ public class Order implements Serializable {
     }
 
     @JsonGetter("products")
-    public List<OrderProduct> getOrderProducts() {
+    public Set<OrderProduct> getOrderProducts() {
         return orderProducts;
     }
 
     @JsonSetter("products")
-    public Order setOrderProducts(List<OrderProduct> orderProducts) {
+    public Order setOrderProducts(Set<OrderProduct> orderProducts) {
         this.orderProducts = orderProducts;
         return this;
     }
@@ -65,5 +66,28 @@ public class Order implements Serializable {
         orderProducts.clear();
         products.forEach(product -> orderProducts.add(new OrderProduct(product.getKey(), this, product.getValue())));
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderID=" + orderID +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Order order = (Order) o;
+
+        return orderID == order.orderID;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return orderID;
     }
 }

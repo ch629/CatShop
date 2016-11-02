@@ -9,14 +9,16 @@ import java.io.Serializable;
 @Entity
 @Table(name = "ORDER_PRODUCT")
 public class OrderProduct implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @ManyToOne
-    @JoinColumn(name = "PRODUCT_NUMBER", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "PRODUCT_NUMBER")
     private Product product;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "ORDER_ID", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "ORDER_ID")
     @JsonIgnore //Hiding this, so it doesn't infinitely loop between Order & OrderProduct json
     private Order order;
 
@@ -67,5 +69,36 @@ public class OrderProduct implements Serializable {
     @JsonSetter("quantity")
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        OrderProduct that = (OrderProduct) o;
+
+        if (quantity != that.quantity) return false;
+        if (product != null ? !product.equals(that.product) : that.product != null) return false;
+//        if (order != null ? !order.equals(that.order) : that.order != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = product != null ? product.hashCode() : 0;
+//        result = 31 * result + (order != null ? order.hashCode() : 0);
+        result = 31 * result + quantity;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderProduct{" +
+                "product=" + product +
+//                ", order=" + order +
+                ", quantity=" + quantity +
+                '}';
     }
 }

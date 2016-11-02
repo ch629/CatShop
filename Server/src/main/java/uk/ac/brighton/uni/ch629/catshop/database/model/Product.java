@@ -1,13 +1,9 @@
 package uk.ac.brighton.uni.ch629.catshop.database.model;
 
 import com.fasterxml.jackson.annotation.*;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "PRODUCT")
@@ -32,10 +28,10 @@ public class Product implements Serializable {
     @Column(name = "PRODUCT_STOCK")
     private int stock;
 
-    @OneToMany(mappedBy = "product")
-    @NotFound(action = NotFoundAction.IGNORE)
-    @JsonIgnore //Not sure why this isn't just ignoring the lazy loading, so have to put JsonIgnoreProperties annotation
-    private List<OrderProduct> orderProducts = new ArrayList<>(); //NOTE: Could remove this, as product's don't really need to know about orders directly; maybe need it to see how many have been sold.
+//    @OneToMany(mappedBy = "product")
+//    @NotFound(action = NotFoundAction.IGNORE)
+//    @JsonIgnore //Not sure why this isn't just ignoring the lazy loading, so have to put JsonIgnoreProperties annotation
+//    private List<OrderProduct> orderProducts = new ArrayList<>(); //NOTE: Could remove this, as product's don't really need to know about orders directly; maybe need it to see how many have been sold.
 
     public Product() {
     }
@@ -108,5 +104,44 @@ public class Product implements Serializable {
     public Product setStock(int stock) {
         this.stock = stock;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productNumber=" + productNumber +
+                ", image='" + image + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", stock=" + stock +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        if (productNumber != product.productNumber) return false;
+        if (Double.compare(product.price, price) != 0) return false;
+        if (stock != product.stock) return false;
+        if (!image.equals(product.image)) return false;
+        return description.equals(product.description);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = productNumber;
+        result = 31 * result + image.hashCode();
+        result = 31 * result + description.hashCode();
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + stock;
+        return result;
     }
 }
