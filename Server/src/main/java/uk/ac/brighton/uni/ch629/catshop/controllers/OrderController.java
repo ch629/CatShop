@@ -17,14 +17,14 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping(value = {"/order/all", "/order", "/order/orders"})
-    public List<Order> getAllOrders() {
-        return orderService.findAll();
-    }
-
     @GetMapping(value = "/order/{id}")
     public Order getOrder(@PathVariable int id) {
         return orderService.findByID(id);
+    }
+
+    @GetMapping(value = {"/order/all", "/order", "/orders"})
+    public List<Order> getAllOrders() {
+        return orderService.findAll();
     }
 
     @PostMapping(value = {"/order"})

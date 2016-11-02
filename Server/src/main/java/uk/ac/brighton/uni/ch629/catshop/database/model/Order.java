@@ -1,6 +1,8 @@
 package uk.ac.brighton.uni.ch629.catshop.database.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import javafx.util.Pair;
 
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "ORDERS") //NOTE: Order is a reserved word.
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Order implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -22,7 +25,7 @@ public class Order implements Serializable {
     @Column(name = "ORDER_ID")
     private int orderID;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order"/*, fetch = FetchType.EAGER*/, cascade = CascadeType.ALL)
     private Set<OrderProduct> orderProducts = new HashSet<>();
 
     public Order() {
@@ -58,11 +61,13 @@ public class Order implements Serializable {
         return this;
     }
 
+    @JsonIgnore
     public List<Pair<Product, Integer>> getProducts() {
         return orderProducts.stream().map(OrderProduct::getAsPair).collect(Collectors.toList());
     }
 
-    public Order setProducts(List<Pair<Product, Integer>> products) {
+    @JsonIgnore
+    public Order setProducts(Set<Pair<Product, Integer>> products) {
         orderProducts.clear();
         products.forEach(product -> orderProducts.add(new OrderProduct(product.getKey(), this, product.getValue())));
         return this;

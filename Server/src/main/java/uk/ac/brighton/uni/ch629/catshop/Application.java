@@ -48,6 +48,7 @@ public class Application {
         System.out.println("BEFORE FIND");
         Order newOrder = orderService.findByID(1); //NOTE: Causes StackOverflowException
         System.out.println("AFTER FIND");
+        System.out.println("ID: " + newOrder.getOrderID());
         System.out.println("b");
         Product newProduct = productService.findByProductNumber(3);
         System.out.println("c");

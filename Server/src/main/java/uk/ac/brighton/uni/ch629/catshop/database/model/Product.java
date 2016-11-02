@@ -127,8 +127,8 @@ public class Product implements Serializable {
         if (productNumber != product.productNumber) return false;
         if (Double.compare(product.price, price) != 0) return false;
         if (stock != product.stock) return false;
-        if (!image.equals(product.image)) return false;
-        return description.equals(product.description);
+        if (image != null ? !image.equals(product.image) : product.image != null) return false;
+        return description != null ? description.equals(product.description) : product.description == null;
 
     }
 
@@ -137,8 +137,8 @@ public class Product implements Serializable {
         int result;
         long temp;
         result = productNumber;
-        result = 31 * result + image.hashCode();
-        result = 31 * result + description.hashCode();
+        result = 31 * result + (image != null ? image.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
         temp = Double.doubleToLongBits(price);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + stock;

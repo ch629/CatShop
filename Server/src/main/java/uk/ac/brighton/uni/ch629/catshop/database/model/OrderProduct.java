@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "ORDER_PRODUCT")
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class OrderProduct implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -72,6 +73,15 @@ public class OrderProduct implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "OrderProduct{" +
+                "product=" + product +
+                ", order=" + order +
+                ", quantity=" + quantity +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -80,25 +90,15 @@ public class OrderProduct implements Serializable {
 
         if (quantity != that.quantity) return false;
         if (product != null ? !product.equals(that.product) : that.product != null) return false;
-//        if (order != null ? !order.equals(that.order) : that.order != null) return false;
+        return order != null ? order.equals(that.order) : that.order == null;
 
-        return true;
     }
 
     @Override
     public int hashCode() {
         int result = product != null ? product.hashCode() : 0;
-//        result = 31 * result + (order != null ? order.hashCode() : 0);
+        result = 31 * result + (order != null ? order.hashCode() : 0);
         result = 31 * result + quantity;
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderProduct{" +
-                "product=" + product +
-//                ", order=" + order +
-                ", quantity=" + quantity +
-                '}';
     }
 }
