@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "AUTH_TOKEN")
@@ -19,6 +17,10 @@ public class AuthToken {
 
     @Column(name = "ACCEPTED")
     private boolean accepted;
+
+    @Column(name = "DATE_REQUESTED", columnDefinition = "DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date requestDate = new Date(); //Initialize it to the Date created.
 
     public AuthToken() {
         this.accepted = false;
