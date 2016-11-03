@@ -1,9 +1,6 @@
 package uk.ac.brighton.uni.ch629.catshop.database.model;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.*;
 import javafx.util.Pair;
 
 import javax.persistence.*;
@@ -26,6 +23,7 @@ public class Order implements Serializable {
     private int orderID;
 
     @OneToMany(mappedBy = "order"/*, fetch = FetchType.EAGER*/, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<OrderProduct> orderProducts = new HashSet<>();
 
     public Order() {
@@ -57,6 +55,7 @@ public class Order implements Serializable {
     }
 
     public Order addOrderProduct(OrderProduct orderProduct) {
+        orderProducts.size();
         orderProducts.add(orderProduct);
         return this;
     }
@@ -87,8 +86,8 @@ public class Order implements Serializable {
 
         Order order = (Order) o;
 
-        return orderID == order.orderID;
-
+        if (orderID != order.orderID) return false;
+        return orderProducts != null ? orderProducts.equals(order.orderProducts) : order.orderProducts == null;
     }
 
     @Override

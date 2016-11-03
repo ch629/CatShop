@@ -31,6 +31,7 @@ public class Product implements Serializable {
 //    @OneToMany(mappedBy = "product")
 //    @NotFound(action = NotFoundAction.IGNORE)
 //    @JsonIgnore //Not sure why this isn't just ignoring the lazy loading, so have to put JsonIgnoreProperties annotation
+//    @JsonManagedReference
 //    private List<OrderProduct> orderProducts = new ArrayList<>(); //NOTE: Could remove this, as product's don't really need to know about orders directly; maybe need it to see how many have been sold.
 
     public Product() {
@@ -134,14 +135,6 @@ public class Product implements Serializable {
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = productNumber;
-        result = 31 * result + (image != null ? image.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        temp = Double.doubleToLongBits(price);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + stock;
-        return result;
+        return productNumber;
     }
 }

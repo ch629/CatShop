@@ -1,6 +1,5 @@
 package uk.ac.brighton.uni.ch629.catshop.database.model.data.services.implementations;
 
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.brighton.uni.ch629.catshop.database.model.Order;
@@ -50,24 +49,32 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order findByID(int id) {
-//        return orderRepository.getOne(id);
-        return orderRepository.findOne(id);
+        Order order = orderRepository.findOne(id);
+        order.getOrderProducts().size(); //Load the OrderProducts
+        return order;
     }
 
     @Override
     @Transactional
-    public Order addProduct(Order order, Product product, int quantity) { //TODO: Test that this works.
-        order.getOrderProducts().size();
-//        Hibernate.initialize(order.getOrderProducts());
-        order.addOrderProduct(new OrderProduct(product, order, quantity));
-        return update(order); //Doesn't work
+    public Order addProduct(Order order, Product product, int quantity) {
+        Order newOrder = findByID(order.getOrderID());
+        newOrder.addProduct(product, quantity);
+        return newOrder;
     }
 
     @Override
     @Transactional
     public Order addProduct(OrderProduct product) {
-        Hibernate.initialize(product.getOrder().getOrderProducts());
-        product.getOrder().addOrderProduct(product);
-        return product.getOrder();
+        Order order = findByID(product.getOrder().getOrderID());
+        order.addProduct(product.getProduct(), product.getQuantity());
+        return order;
+    }
+
+    @Override
+    @Transactional
+    public Order addProduct(int orderID, Product product, int quantity) {
+        Order order = findByID(orderID);
+        order.addProduct(product, quantity);
+        return order;
     }
 }

@@ -8,19 +8,19 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "ORDER_PRODUCT")
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class OrderProduct implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "PRODUCT_NUMBER")
+    @JsonManagedReference
     private Product product;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    @JsonIgnore //Hiding this, so it doesn't infinitely loop between Order & OrderProduct json
+    @JsonBackReference
     private Order order;
 
     @Column(name = "QUANTITY")
@@ -76,7 +76,7 @@ public class OrderProduct implements Serializable {
     public String toString() {
         return "OrderProduct{" +
                 "product=" + product +
-                ", order=" + order +
+//                ", order=" + order +
                 ", quantity=" + quantity +
                 '}';
     }

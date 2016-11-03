@@ -40,22 +40,9 @@ public class Application {
         testOrder.addProduct(productService.findByProductNumber(1), 5);
         testOrder.addProduct(productService.findByProductNumber(2), 2);
 
-        System.out.println("CREATING ORDER");
         orderService.create(testOrder);
-        System.out.println("FINISHED CREATING ORDER");
-
-        System.out.println("a");
-        System.out.println("BEFORE FIND");
-        Order newOrder = orderService.findByID(1); //NOTE: Causes StackOverflowException
-        System.out.println("AFTER FIND");
-        System.out.println("ID: " + newOrder.getOrderID());
-        System.out.println("b");
         Product newProduct = productService.findByProductNumber(3);
-        System.out.println("c");
-//        orderService.addProduct(newOrder, newProduct, 7);
-//        newOrder.addProduct(newProduct, 7);
-        System.out.println("d");
-
+        orderService.addProduct(1, newProduct, 7);
     }
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
