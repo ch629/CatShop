@@ -11,9 +11,10 @@ apply plugin: 'spring-boot'
 
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
-//    compile 'org.springframework.boot:spring-boot-starter-security:1.4.1.RELEASE'
+//    compile 'org.springframework.boot:spring-boot-starter-security'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-mustache'
+    compile 'org.springframework.boot:spring-boot-devtools'
     compile 'org.springframework.boot:spring-boot-devtools'
     compile 'org.hibernate:hibernate-core:5.2.3.Final'
     compile 'org.hibernate:hibernate-annotations:3.5.6-Final'
@@ -22,5 +23,5 @@ dependencies {
     compile 'org.webjars:bootstrap:4.0.0-alpha.5'
     compile 'org.webjars:normalize.css:3.0.2'
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test:1.4.1.RELEASE'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }

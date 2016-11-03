@@ -8,9 +8,10 @@
             $('button').on('click', function (e) {
                 e.preventDefault();
                 var button = this;
-                var token = $(button).attr('token');
+                var th = button.parentElement;
+                var row = th.parentElement;
+                var token = row.id;
                 var action = $(button).attr('action');
-                var row = document.getElementById(token);
 
                 var json = '{'
                         + '"action": "' + action + '", '
@@ -31,12 +32,26 @@
                 });
 
                 if (action === "DECLINE" || action === "REVOKE") row.parentElement.removeChild(row);
+                else {
+                    var buttons = th.getElementsByTagName("button");
+                    th.removeChild(buttons[0]); //Accept
+                    th.removeChild(buttons[0]); //Decline
+                    var revokeButton = document.createElement("button");
+                    var textNode = document.createTextNode("Revoke");
+                    revokeButton.setAttribute("action", "REVOKE");
+                    revokeButton.setAttribute("token", token);
+                    revokeButton.setAttribute("type", "button");
+                    revokeButton.setAttribute("class", "btn btn-danger")
+                    revokeButton.appendChild(textNode);
+                    th.appendChild(revokeButton);
+                }
                 return false;
             })
         });
     </script>
 
-    <link rel="stylesheet" href="/webjars/normalize.css/3.0.1/normalize.css">
+    <link rel="stylesheet" href="/webjars/normalize.css/3.0.2/normalize.css">
+    <!-- TODO: Maybe use the NPM versions, not sure if they have a better file structure for updates(Won't need to change the filepath every time they update -->
     <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css">
     <!--<link rel="stylesheet" href="/public/css/test.css" > NOTE: This is still 404-->
 </head>
@@ -44,7 +59,7 @@
 <body>
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <h1 class="display-3">Authorize Tokens</h1>
+        <h1 class="display-3">Authorization Tokens</h1>
         <!--<p class="lead"> Jumbotron Fluid</p>-->
     </div>
 </div>
@@ -79,3 +94,5 @@
 </table>
 </body>
 </html>
+
+<!--TODO: Maybe add decline all and accept all buttons-->
