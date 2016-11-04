@@ -49,4 +49,12 @@ public class AuthToken {
         this.accepted = accepted;
         return this;
     }
+
+    public Date getRequestDate() {
+        return requestDate;
+    }
+
+    public void setRequestDate(Date requestDate) {
+        this.requestDate = requestDate;
+    }
 }

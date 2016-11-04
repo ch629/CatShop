@@ -3,6 +3,8 @@
 <head>
     <title>Authorize Tokens</title>
     <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/handlebars/4.0.5/handlebars.min.js"></script>
+    <script src="/webjars/momentjs/2.15.1/min/moment.min.js"></script>
     <script>
         $(function () {
             $('button').on('click', function (e) {
@@ -46,7 +48,7 @@
                     th.appendChild(revokeButton);
                 }
                 return false;
-            })
+            });
         });
     </script>
 
@@ -77,7 +79,7 @@
     {{#requests}}
     <tr id="{{token}}">
         <th scope="row">{{token}}</th>
-        <th>{{requestDate}}</th>
+        <th>{{formatDate requestDate}}</th>
         <th>
             {{#accepted}}
             <button action="REVOKE" token="{{token}}" type="button" class="btn btn-danger">Revoke</button>
