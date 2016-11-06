@@ -1,21 +1,35 @@
 package uk.ac.brighton.uni.ch629.catshop.data;
 
+import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.request.GetRequest;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class RequestUtil {
     public static final String serverURL = "localhost:8080/"; //TODO: Make a configuration file for this, could use Java Properties.
 
-    public static Response sendGet(Request request, String url) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        GetRequest getRequest = Unirest.get(serverURL + url);
-        InputStream is = getRequest.getBody().getEntity().getContent();
-        Scanner scanner = new Scanner(is);
-        scanner.forEachRemaining(sb::append);
-        return JsonHelper.jsonToObject(sb.toString(), Response.class); //TODO: Checks to avoid errors with converting to Response.
+    static {
+        Unirest.setObjectMapper(new ObjectMapper() {
+            @Override
+            public <T> T readValue(String value, Class<T> valueType) {
+                return JsonHelper.jsonToObject(value, valueType);
+            }
+
+            @Override
+            public String writeValue(Object value) {
+                return JsonHelper.objectToNode(value).asText(); //Note: Not sure if this should be toString or asText?
+            }
+        });
+    }
+
+    public static Response sendGet(String url) throws UnirestException {
+        return Unirest.get(serverURL + url).asObject(Response.class).getBody();
+    }
+
+    public static Response sendPost(Request request, String url) throws UnirestException {
+        return Unirest.post(serverURL + url).body(request).asObject(Response.class).getBody();
+    }
+
+    public static Response sendDelete(Request request, String url) throws UnirestException {
+        return Unirest.delete(serverURL + url).body(request).asObject(Response.class).getBody();
     }
 }
