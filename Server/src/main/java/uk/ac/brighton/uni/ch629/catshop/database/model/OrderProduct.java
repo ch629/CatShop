@@ -14,7 +14,6 @@ public class OrderProduct implements Serializable {
     @Id
     @ManyToOne
     @JoinColumn(name = "PRODUCT_NUMBER")
-    @JsonManagedReference
     private Product product;
 
     @Id
@@ -70,35 +69,5 @@ public class OrderProduct implements Serializable {
     @JsonSetter("quantity")
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderProduct{" +
-                "product=" + product +
-//                ", order=" + order +
-                ", quantity=" + quantity +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        OrderProduct that = (OrderProduct) o;
-
-        if (quantity != that.quantity) return false;
-        if (product != null ? !product.equals(that.product) : that.product != null) return false;
-        return order != null ? order.equals(that.order) : that.order == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = product != null ? product.hashCode() : 0;
-        result = 31 * result + (order != null ? order.hashCode() : 0);
-        result = 31 * result + quantity;
-        return result;
     }
 }

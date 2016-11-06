@@ -28,12 +28,6 @@ public class Product implements Serializable {
     @Column(name = "PRODUCT_STOCK")
     private int stock;
 
-//    @OneToMany(mappedBy = "product")
-//    @NotFound(action = NotFoundAction.IGNORE)
-//    @JsonIgnore //Not sure why this isn't just ignoring the lazy loading, so have to put JsonIgnoreProperties annotation
-//    @JsonManagedReference
-//    private List<OrderProduct> orderProducts = new ArrayList<>(); //NOTE: Could remove this, as product's don't really need to know about orders directly; maybe need it to see how many have been sold.
-
     public Product() {
     }
 
@@ -105,36 +99,5 @@ public class Product implements Serializable {
     public Product setStock(int stock) {
         this.stock = stock;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "productNumber=" + productNumber +
-                ", image='" + image + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", stock=" + stock +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Product product = (Product) o;
-
-        if (productNumber != product.productNumber) return false;
-        if (Double.compare(product.price, price) != 0) return false;
-        if (stock != product.stock) return false;
-        if (image != null ? !image.equals(product.image) : product.image != null) return false;
-        return description != null ? description.equals(product.description) : product.description == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        return productNumber;
     }
 }
