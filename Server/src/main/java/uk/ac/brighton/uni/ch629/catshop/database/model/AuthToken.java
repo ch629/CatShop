@@ -2,7 +2,6 @@ package uk.ac.brighton.uni.ch629.catshop.database.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -31,8 +30,7 @@ public class AuthToken {
     }
 
     @JsonCreator
-    public AuthToken(@JsonProperty("token") String token,
-                     @JsonProperty("accepted") boolean accepted) {
+    public AuthToken(String token, boolean accepted) {
         this.token = token;
         this.accepted = accepted;
     }

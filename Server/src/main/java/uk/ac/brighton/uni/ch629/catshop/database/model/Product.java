@@ -1,6 +1,8 @@
 package uk.ac.brighton.uni.ch629.catshop.database.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,6 +10,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "PRODUCT")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonAutoDetect
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -39,11 +42,7 @@ public class Product implements Serializable {
     }
 
     @JsonCreator
-    public Product(@JsonProperty("productNumber") int productNumber,
-                   @JsonProperty("description") String description,
-                   @JsonProperty("price") double price,
-                   @JsonProperty("stock") int stock,
-                   @JsonProperty("image") String image) {
+    public Product(int productNumber, String description, double price, int stock, String image) {
         this.productNumber = productNumber;
         this.description = description;
         this.price = price;
@@ -52,50 +51,41 @@ public class Product implements Serializable {
 
     }
 
-    @JsonGetter("productNumber")
     public int getProductNumber() {
         return productNumber;
     }
 
-    @JsonGetter("image")
     public String getImage() {
         return image;
     }
 
-    @JsonSetter("image")
     public Product setImage(String image) {
         this.image = image;
         return this;
     }
 
-    @JsonGetter("description")
     public String getDescription() {
         return description;
     }
 
-    @JsonSetter("description")
     public Product setDescription(String description) {
         this.description = description;
         return this;
     }
 
-    @JsonGetter("price")
     public double getPrice() {
         return price;
     }
 
-    @JsonSetter("price")
     public Product setPrice(double price) {
         this.price = price;
         return this;
     }
 
-    @JsonGetter("stock")
     public int getStock() {
         return stock;
     }
 
-    @JsonSetter("stock")
     public Product setStock(int stock) {
         this.stock = stock;
         return this;

@@ -1,6 +1,8 @@
 package uk.ac.brighton.uni.ch629.catshop.database.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javafx.util.Pair;
 
 import javax.persistence.*;
@@ -29,20 +31,16 @@ public class OrderProduct implements Serializable {
     }
 
     @JsonCreator
-    public OrderProduct(@JsonProperty("product") Product product,
-                        @JsonProperty("order") Order order,
-                        @JsonProperty("quantity") int quantity) {
+    public OrderProduct(Product product, Order order, int quantity) {
         this.product = product;
         this.order = order;
         this.quantity = quantity;
     }
 
-    @JsonGetter("product")
     public Product getProduct() {
         return product;
     }
 
-    @JsonSetter("product")
     public void setProduct(Product product) {
         this.product = product;
     }
@@ -52,7 +50,6 @@ public class OrderProduct implements Serializable {
         return new Pair<>(product, quantity);
     }
 
-    @JsonIgnore
     public Order getOrder() {
         return order;
     }
@@ -61,12 +58,10 @@ public class OrderProduct implements Serializable {
         this.order = order;
     }
 
-    @JsonGetter("quantity")
     public int getQuantity() {
         return quantity;
     }
 
-    @JsonSetter("quantity")
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }

@@ -1,6 +1,9 @@
 package uk.ac.brighton.uni.ch629.catshop.database.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javafx.util.Pair;
 
 import javax.persistence.*;
@@ -14,6 +17,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "ORDERS") //NOTE: Order is a reserved word.
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonAutoDetect
 public class Order implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -22,7 +26,7 @@ public class Order implements Serializable {
     @Column(name = "ORDER_ID")
     private int orderID;
 
-    @OneToMany(mappedBy = "order"/*, fetch = FetchType.EAGER*/, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<OrderProduct> orderProducts = new HashSet<>();
 
@@ -33,17 +37,14 @@ public class Order implements Serializable {
         this.orderProducts = new HashSet<>(Arrays.asList(orderProducts));
     }
 
-    @JsonGetter("orderID")
     public int getOrderID() {
         return orderID;
     }
 
-    @JsonGetter("products")
     public Set<OrderProduct> getOrderProducts() {
         return orderProducts;
     }
 
-    @JsonSetter("products")
     public Order setOrderProducts(Set<OrderProduct> orderProducts) {
         this.orderProducts = orderProducts;
         return this;
