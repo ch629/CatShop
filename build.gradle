@@ -23,6 +23,7 @@ subprojects {
         dependencies {
             compile 'com.mashape.unirest:unirest-java:1.4.9'
             compile 'com.google.guava:guava:20.0-rc1'
+            compile project(':ClientCommon')
         }
     }
 
