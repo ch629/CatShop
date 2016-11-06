@@ -1,5 +1,6 @@
 package uk.ac.brighton.uni.ch629.catshop.database.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -10,6 +11,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "ORDER_PRODUCT")
+@JsonAutoDetect
 public class OrderProduct implements Serializable {
     private static final long serialVersionUID = 1L;
 
