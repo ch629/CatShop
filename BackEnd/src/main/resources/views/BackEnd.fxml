@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="400.0" maxWidth="600.00" minHeight="400.0" minWidth="600.0"
+            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60"
+            fx:controller="uk.ac.uni.brighton.ch629.catshop.client.controllers.BackDoorController">
+    <children>
+        <SplitPane dividerPositions="0.33" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0"
+                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <items>
+                <AnchorPane maxHeight="398.0" maxWidth="200.0" minHeight="398.0" minWidth="200.0" prefHeight="398.0"
+                            prefWidth="200.0">
+                    <children>
+                        <TableView fx:id="productTable" prefHeight="398.0" prefWidth="175.0"
+                                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <columns>
+                                <TableColumn fx:id="idColumn" editable="false" prefWidth="63.0" text="ID"/>
+                                <TableColumn fx:id="descriptionColumn" editable="false" prefWidth="135.0" text="Name"/>
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                            </columnResizePolicy>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+                <AnchorPane fx:id="rightSplit" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                        <TabPane prefHeight="398.0" prefWidth="392.0" tabClosingPolicy="UNAVAILABLE"
+                                 AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                 AnchorPane.topAnchor="0.0">
+                            <tabs>
+                                <Tab text="Details">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <Label layoutX="14.0" layoutY="14.0" text="Description"/>
+                                                <TextField fx:id="description" layoutX="14.0" layoutY="32.0"
+                                                           prefHeight="25.0" prefWidth="274.0"/>
+                                                <Label layoutX="14.0" layoutY="66.0" text="Price"/>
+                                                <TextField fx:id="price" layoutX="14.0" layoutY="84.0" prefHeight="25.0"
+                                                           prefWidth="74.0"/>
+                                                <Label layoutX="14.0" layoutY="122.0" text="Image"/>
+                                                <ImageView fx:id="image" fitHeight="64.0" fitWidth="64.0"
+                                                           layoutX="188.0" layoutY="70.0" pickOnBounds="true"
+                                                           preserveRatio="true"/>
+                                                <TextField fx:id="imageLocation" layoutX="14.0" layoutY="141.0"
+                                                           prefHeight="25.0" prefWidth="267.0"/>
+                                                <Button layoutX="290.0" layoutY="141.0" mnemonicParsing="false"
+                                                        onAction="#onBrowse" text="Browse"/>
+                                                <Label layoutX="127.0" layoutY="75.0" text="Preview"/>
+                                                <Button layoutX="264.0" layoutY="330.0" mnemonicParsing="false"
+                                                        onAction="#onCancel" text="Cancel"/>
+                                                <Button layoutX="325.0" layoutY="330.0" mnemonicParsing="false"
+                                                        onAction="#onSave" text="Save"/>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                            </tabs>
+                        </TabPane>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>

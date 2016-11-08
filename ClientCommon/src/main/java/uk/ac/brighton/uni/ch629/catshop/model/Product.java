@@ -9,16 +9,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 @JsonAutoDetect
-public class Product implements Serializable {
+public class Product implements Serializable { //TODO: Add methods to get product from the server and to update products
     private static final long serialVersionUID = 1L;
-
-    private int productNumber, price, stock;
+    private int productNumber, stock;
+    private float price;
     private String image, description;
     @JsonBackReference
     private Set<OrderProduct> orders = new HashSet<>();
 
     @JsonCreator
-    public Product(int productNumber, int price, int stock, String image, String description) {
+    public Product(int productNumber, float price, int stock, String image, String description) {
         this.productNumber = productNumber;
         this.price = price;
         this.stock = stock;
@@ -30,11 +30,11 @@ public class Product implements Serializable {
         return productNumber;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
