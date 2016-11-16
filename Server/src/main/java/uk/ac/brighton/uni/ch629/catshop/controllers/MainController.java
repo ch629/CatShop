@@ -1,81 +1,23 @@
 package uk.ac.brighton.uni.ch629.catshop.controllers;
 
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.Map;
 
 @RestController("/")
 public class MainController { //TODO: Look into Security
 
     @PostMapping(value = "/subscribe")
-    public void subscribe() {
-        throw new NotImplementedException();
+    //NOTE: Client should probably send a packet back when it receives an update, so the server knows to keep communication between them
+    public void subscribe(@RequestBody Map<String, Object> payload, HttpServletRequest request) {
+        //Replace payload with an object if I can. Would make life easier.
+        //Request allows me to get the IP address that sent the request
+
+        String ip = request.getRemoteHost();
+        int requestPort = request.getRemotePort(); //Probably wont use this for the communication, or may do not sure. Maybe because of using Uni computers I should just let it be this.
+
     }
-
-    /* Old Route Code
-        before("/protected/*", (req, res) -> { //TODO: Use Request?
-            JSONObject object = new JSONObject(req.body()); //TODO: Use Jackson JsonObject
-            if (object == null) halt(401, "Not valid JSON request!");
-            if (object != null && object.has("auth_token")) {
-                if (!AuthToken.hasToken(object.getString("auth_token"))) {
-                    AuthToken.addToken(object.getString("auth_token"));
-                    halt(401, "Your token has been added, please wait for it to be authorized!");
-                } else {
-                    if (!AuthToken.isTokenAccepted(object.getString("auth_token"))) {
-                        halt(401, "Please wait for your token to be accepted!");
-                    }
-                }
-            }
-            if (!object.has("auth_token")) halt(401, "Unauthorised Access, please add your auth_token to the request!");
-        });
-
-        post("/protected/product/add", (req, res) -> {
-            Request request = JsonHelper.jsonToObject(req.body(), Request.class);
-            Product product = JsonHelper.jsonNodeToObject(request.getData(), Product.class);
-            product.create();
-            return "SUCCESS!";
-        });
-
-        delete("/protected/product/:id", (req, res) -> {
-            String productId = req.params(":id");
-            Product product = Product.getProduct(Integer.parseInt(productId));
-            if (product != null) {
-                product.delete();
-                return new Response(ResponseCode.SUCCESS, "Product %s was deleted successfully!", productId);
-            }
-            return new Response(ResponseCode.PRODUCT_NOT_FOUND, "No product found with id: %s", productId);
-        });
-
-        post("/auth/add", (req, res) -> {
-            JsonNode node = mapper.readTree(req.body());
-            AuthToken token = AuthToken.getAuthToken(node.get("token").asText());
-            token.accept();
-            token.update();
-            return "";
-        });
-
-        post("/subscribe", (req, res) -> { //NOTE: Subscribe to updates (Warehouse and ShopDisplay will need this)
-            //NOTE: Hold data about what exactly to listen for (Updates to Product or Orders)
-            //NOTE: If the Customer client caches the catalogue for searching, would need to be notified when stock has been decreased
-            //TODO: Was thinking about using the Observer pattern, but I don't think this will be easy to implement, because of multiple Product's; which can be duplicates meaning a lot of wasted memory.
-            String subscriptionIp = req.ip();
-            int subscriptionPort = req.port();
-            JsonNode node = mapper.readTree(req.body());
-            String subType = node.get("type").asText();
-            Subscription.INSTANCE.subscribe(subscriptionIp, subscriptionPort, SubscriptionType.valueOf(subType.toUpperCase()));
-            JsonNode data = mapper.createObjectNode();
-            Subscription.INSTANCE.sendData(SubscriptionType.PRODUCT, data);
-            return "";
-        });
-
-        get("/auth/add", (req, res) -> {
-            Map map = new HashMap();
-            map.put("requests",
-                    AuthToken.getAll()
-                            .stream()
-                            .filter(token -> !token.isAccepted())
-                            .collect(Collectors.toList()));
-            return new ModelAndView(map, "addauth.html");
-        }, new MustacheTemplateEngine());
-     */
 }
