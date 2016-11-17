@@ -1,4 +1,4 @@
-package uk.ac.brighton.uni.ch629.catshop.data;
+package uk.ac.brighton.uni.ch629.catshop;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

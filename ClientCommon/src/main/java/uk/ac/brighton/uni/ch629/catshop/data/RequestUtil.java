@@ -3,6 +3,7 @@ package uk.ac.brighton.uni.ch629.catshop.data;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
 
 public class RequestUtil {
     public static final String serverURL = "localhost:8080/"; //TODO: Make a configuration file for this, could use Java Properties.

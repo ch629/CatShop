@@ -1,7 +1,12 @@
 package uk.ac.brighton.uni.ch629.catshop.connections;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
+import uk.ac.brighton.uni.ch629.catshop.OrderUpdate;
+import uk.ac.brighton.uni.ch629.catshop.Update;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -45,15 +50,27 @@ public class SubscriptionManager {
         }
     }
 
-    public void sendProductUpdate() { //TODO: Add object to be sent for the update
-        synchronized (productSubscriptions) {
-            throw new NotImplementedException();
+    private void sendUpdateToSubscription(Subscription subscription, Update update) {
+        try {
+            Socket socket = new Socket(subscription.getIP(), subscription.getPort());
+            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+            dos.writeUTF(JsonHelper.objectToNode(update).toString());
+            dos.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void sendOrderUpdate() { //TODO: Add object to be sent for the update
-        synchronized (orderSubscriptions) {
-            throw new NotImplementedException();
+    public void sendUpdate(Update update) {
+        if (update instanceof OrderUpdate) {
+            synchronized (orderSubscriptions) {
+                orderSubscriptions.forEach(subscription -> sendUpdateToSubscription(subscription, update));
+            }
+        } else {
+            synchronized (productSubscriptions) {
+                productSubscriptions.forEach(subscription -> sendUpdateToSubscription(subscription, update));
+            }
         }
     }
 }
