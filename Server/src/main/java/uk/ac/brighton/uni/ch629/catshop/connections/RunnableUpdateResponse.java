@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class RunnableUpdateResponse implements Runnable { //TODO: Rename this to something better
+    //TODO: Could use a ServerSocket waiting for a response from the clients, would save making a lot of normal Sockets.
     private final int TIMEOUT = 100;
     private Socket socket;
     private String ip;

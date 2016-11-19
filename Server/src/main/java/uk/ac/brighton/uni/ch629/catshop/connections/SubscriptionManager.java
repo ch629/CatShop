@@ -40,14 +40,21 @@ public class SubscriptionManager {
         }
     }
 
-    public void removeSubscription(String ip, int port) {
+    public boolean removeSubscription(String ip, int port) {
+        boolean ret;
         synchronized (productSubscriptions) {
-            productSubscriptions.removeIf(subscription -> subscription.getIP().equals(ip) && subscription.getPort() == port);
+            ret = productSubscriptions.removeIf(subscription -> subscription.getIP().equals(ip) && subscription.getPort() == port);
         }
 
         synchronized (orderSubscriptions) {
-            orderSubscriptions.removeIf(subscription -> subscription.getIP().equals(ip) && subscription.getPort() == port);
+            boolean tmp = orderSubscriptions.removeIf(subscription -> subscription.getIP().equals(ip) && subscription.getPort() == port);
+            if (!ret) ret = tmp;
         }
+        return ret;
+    }
+
+    protected boolean timeoutSubscription(String ip, int port) {
+        return removeSubscription(ip, port);
     }
 
     private void sendUpdateToSubscription(Subscription subscription, Update update) {
