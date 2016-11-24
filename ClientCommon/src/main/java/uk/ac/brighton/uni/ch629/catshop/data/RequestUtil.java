@@ -4,6 +4,11 @@ import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
+import uk.ac.brighton.uni.ch629.catshop.Response;
+import uk.ac.brighton.uni.ch629.catshop.model.Order;
+import uk.ac.brighton.uni.ch629.catshop.model.Product;
+
+import java.util.List;
 
 public class RequestUtil {
     public static final String serverURL = "localhost:8080/"; //TODO: Make a configuration file for this, could use Java Properties.
@@ -32,5 +37,30 @@ public class RequestUtil {
 
     public static Response sendDelete(Request request, String url) throws UnirestException {
         return Unirest.delete(serverURL + url).body(request).asObject(Response.class).getBody();
+    }
+
+    public static <T> T getType(Class<T> clazz, int identifier, String accessUrl) throws UnirestException {
+        return Unirest.get(serverURL + "/" + String.format(accessUrl, identifier)).asObject(clazz).getBody();
+    }
+
+    public static <T> T getTypeNoException(Class<T> clazz, int identifier, String accessUrl) {
+        try {
+            return getType(clazz, identifier, accessUrl);
+        } catch (UnirestException e) {
+            e.printStackTrace(); //Connection error.
+        }
+        return null;
+    }
+
+    public static Product getProduct(int productNumber) {
+        return getTypeNoException(Product.class, productNumber, "product/%d");
+    }
+
+    public static List<Product> getAllProducts() {
+        return getTypeNoException(List.class, 0, "product/all"); //This should be the right type of List.
+    }
+
+    public static Order getOrder(int orderID) {
+        return getTypeNoException(Order.class, orderID, "order/%d");
     }
 }

@@ -6,6 +6,7 @@ import uk.ac.brighton.uni.ch629.catshop.database.model.Order;
 import uk.ac.brighton.uni.ch629.catshop.database.model.OrderProduct;
 import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
 import uk.ac.brighton.uni.ch629.catshop.database.model.data.repositories.OrderRepository;
+import uk.ac.brighton.uni.ch629.catshop.database.model.data.repositories.ProductRepository;
 import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.OrderService;
 
 import javax.annotation.Resource;
@@ -15,6 +16,9 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
     @Resource
     private OrderRepository orderRepository;
+
+    @Resource
+    private ProductRepository productRepository;
 
     @Override
     @Transactional
@@ -74,6 +78,15 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order addProduct(int orderID, Product product, int quantity) {
         Order order = findByID(orderID);
+        order.addProduct(product, quantity);
+        return order;
+    }
+
+    @Override
+    @Transactional
+    public Order addProduct(int orderID, int productID, int quantity) {
+        Order order = findByID(orderID);
+        Product product = productRepository.findOne(productID);
         order.addProduct(product, quantity);
         return order;
     }

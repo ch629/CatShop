@@ -22,4 +22,6 @@ public interface OrderService { //NOTE: Might not need all the addProduct method
     Order addProduct(OrderProduct product);
 
     Order addProduct(int orderID, Product product, int quantity);
+
+    Order addProduct(int orderID, int productID, int quantity);
 }

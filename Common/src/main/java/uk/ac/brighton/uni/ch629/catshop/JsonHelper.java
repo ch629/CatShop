@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 
-public class JsonHelper { //TODO: Maybe make another dependency for everything, with this in it?
+public class JsonHelper {
     private static ObjectMapper objectMapper = new ObjectMapper();
 
     public static ObjectNode objectToNode(Object object) {

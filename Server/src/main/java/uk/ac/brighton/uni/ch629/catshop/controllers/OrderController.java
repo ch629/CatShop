@@ -2,6 +2,7 @@ package uk.ac.brighton.uni.ch629.catshop.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import uk.ac.brighton.uni.ch629.catshop.OrderAddProduct;
 import uk.ac.brighton.uni.ch629.catshop.database.model.Order;
 import uk.ac.brighton.uni.ch629.catshop.database.model.OrderProduct;
 import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.OrderService;
@@ -35,5 +36,9 @@ public class OrderController {
     @PostMapping(value = "/order/product")
     public void addProductToOrder(@RequestBody OrderProduct orderProduct) {
         orderService.addProduct(orderProduct);
+    }
+
+    public void addProductToOrder(@RequestBody OrderAddProduct orderAddProduct) {
+
     }
 }
