@@ -7,11 +7,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @JsonAutoDetect
 public class OrderProduct {
     @JsonManagedReference //Might need to be JsonBackReference
-            Order order;
+    private Order order;
 
     @JsonManagedReference
-    Product product;
-    int quantity;
+    private Product product;
+    private int quantity;
 
     @JsonCreator
     public OrderProduct(Order order, Product product, int quantity) {

@@ -1,24 +1,24 @@
 package uk.ac.brighton.uni.ch629.catshop.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @JsonAutoDetect
 public class Product implements Serializable { //TODO: Add methods to get product from the server and to update products
     private static final long serialVersionUID = 1L;
     private int productNumber, stock;
-    private float price;
+    private double price;
     private String image, description;
-    @JsonBackReference
-    private Set<OrderProduct> orders = new HashSet<>();
 
     @JsonCreator
-    public Product(int productNumber, float price, int stock, String image, String description) {
+    public Product(@JsonProperty("productNumber") int productNumber,
+                   @JsonProperty("description") String description,
+                   @JsonProperty("price") double price,
+                   @JsonProperty("stock") int stock,
+                   @JsonProperty("image") String image) {
         this.productNumber = productNumber;
         this.price = price;
         this.stock = stock;
@@ -30,11 +30,11 @@ public class Product implements Serializable { //TODO: Add methods to get produc
         return productNumber;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -60,9 +60,5 @@ public class Product implements Serializable { //TODO: Add methods to get produc
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Set<OrderProduct> getOrders() {
-        return orders;
     }
 }

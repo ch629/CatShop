@@ -11,7 +11,7 @@ import uk.ac.brighton.uni.ch629.catshop.model.Product;
 import java.util.List;
 
 public class RequestUtil {
-    public static final String serverURL = "localhost:8080/"; //TODO: Make a configuration file for this, could use Java Properties.
+    public static final String serverURL = "http://localhost:8090/"; //TODO: Make a configuration file for this, could use Java Properties.
 
     static {
         Unirest.setObjectMapper(new ObjectMapper() {

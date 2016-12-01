@@ -4,6 +4,7 @@ package uk.ac.brighton.uni.ch629.catshop.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -21,7 +22,8 @@ public class Order implements Serializable {
     private Set<OrderProduct> products = new HashSet<>();
 
     @JsonCreator
-    public Order(int orderID, Set<OrderProduct> products) {
+    public Order(@JsonProperty("orderID") int orderID,
+                 @JsonProperty("products") Set<OrderProduct> products) {
         this.orderID = orderID;
         this.products = products;
     }
