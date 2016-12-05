@@ -3,10 +3,12 @@ package uk.ac.brighton.uni.ch629.catshop.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.brighton.uni.ch629.catshop.OrderAddProduct;
-import uk.ac.brighton.uni.ch629.catshop.database.model.Order;
-import uk.ac.brighton.uni.ch629.catshop.database.model.OrderProduct;
-import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.OrderService;
+import uk.ac.brighton.uni.ch629.catshop.data.Order;
+import uk.ac.brighton.uni.ch629.catshop.data.OrderProduct;
+import uk.ac.brighton.uni.ch629.catshop.data.Product;
+import uk.ac.brighton.uni.ch629.catshop.data.services.interfaces.OrderService;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController("order")
@@ -28,8 +30,23 @@ public class OrderController {
         return orderService.findAll();
     }
 
+    @GetMapping(value = {"/order/{id}/hash"})
+    public HashMap<Product, Integer> getHashOrders(@PathVariable int id) {
+        HashMap<Product, Integer> hashMap = new HashMap<>();
+        Order order = orderService.findByID(id);
+        order.getProducts().forEach(pair -> hashMap.put(pair.getProduct(), pair.getQuantity()));
+        return hashMap;
+    }
+
+//    @PostMapping(value = {"/order"})
+//    public void addOrder(@RequestBody Order order) { //TODO: Return the OrderID, and accept an Order without the ID
+//        Order createdOrder = orderService.create(order);
+//        return createdOrder.getOrderID();
+//    }
+
     @PostMapping(value = {"/order"})
-    public void addOrder(@RequestBody Order order) {
+    public void addBasketToOrder(@RequestBody HashMap<Product, Integer> products) {
+        Order order = new Order(products);
         orderService.create(order);
     }
 
@@ -38,7 +55,7 @@ public class OrderController {
         orderService.addProduct(orderProduct);
     }
 
-    public void addProductToOrder(@RequestBody OrderAddProduct orderAddProduct) {
+    public void addProductToOrder(@RequestBody OrderAddProduct orderAddProduct) { //NOTE: This will probably never be called, because the Basket is sent.
 
     }
 }

@@ -3,7 +3,7 @@ package uk.ac.brighton.uni.ch629.catshop.controls;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import uk.ac.brighton.uni.ch629.catshop.model.Product;
+import uk.ac.brighton.uni.ch629.catshop.data.Product;
 
 public class ProductItem { //Not sure whether this should extend Control
     @FXML

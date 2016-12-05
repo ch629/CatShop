@@ -22,9 +22,14 @@
         <property name="show_sql">false</property>
         <property name="format-sql">true</property>
 
-        <mapping class="uk.ac.brighton.uni.ch629.catshop.database.model.Product"/>
-        <mapping class="uk.ac.brighton.uni.ch629.catshop.database.model.Order"/>
-        <mapping class="uk.ac.brighton.uni.ch629.catshop.database.model.AuthToken"/>
-        <mapping class="uk.ac.brighton.uni.ch629.catshop.database.model.OrderProduct"/>
+        <!--<mapping class="uk.ac.brighton.uni.ch629.catshop.data.Product"/>-->
+        <!--<mapping class="uk.ac.brighton.uni.ch629.catshop.data.Order"/>-->
+        <!--<mapping class="uk.ac.brighton.uni.ch629.catshop.data.OrderProduct"/>-->
+
+        <!--<mapping resource="Product.hbm.xml"/>-->
+        <!--<mapping resource="Order.hbm.xml"/>-->
+        <!--<mapping resource="OrderProduct.hbm.xml"/>-->
+
+        <mapping resource="Entities.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

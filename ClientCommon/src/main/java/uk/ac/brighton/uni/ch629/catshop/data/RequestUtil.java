@@ -5,8 +5,6 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
 import uk.ac.brighton.uni.ch629.catshop.Response;
-import uk.ac.brighton.uni.ch629.catshop.model.Order;
-import uk.ac.brighton.uni.ch629.catshop.model.Product;
 
 import java.util.List;
 
@@ -62,5 +60,9 @@ public class RequestUtil {
 
     public static Order getOrder(int orderID) {
         return getTypeNoException(Order.class, orderID, "order/%d");
+    }
+
+    public static void addOrder(Order order) {
+
     }
 }

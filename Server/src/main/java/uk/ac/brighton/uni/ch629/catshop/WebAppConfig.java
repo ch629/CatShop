@@ -22,9 +22,9 @@ import java.util.Properties;
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
-@ComponentScan("uk.ac.brighton.uni.ch629.catshop")
+@ComponentScan("uk.ac.brighton.uni.ch629.catshop.data")
 @PropertySource("classpath:application.properties")
-@EnableJpaRepositories(basePackages = {"uk.ac.brighton.uni.ch629.catshop.database.model.data"})
+@EnableJpaRepositories(basePackages = {"uk.ac.brighton.uni.ch629.catshop.data"})
 public class WebAppConfig extends WebMvcConfigurerAdapter {
     private static final String
             DATABASE_DRIVER = "db.driver",
@@ -62,7 +62,9 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         entityManagerFactoryBean.setPackagesToScan(env.
                 getRequiredProperty(ENTITY_MANAGER_PACKAGES_TO_SCAN));
 
+        entityManagerFactoryBean.setMappingResources("Entities.hbm.xml");
         entityManagerFactoryBean.setJpaProperties(hibProperties());
+//        entityManagerFactoryBean.setMappingResources("Product.hbm.xml", "Order.hbm.xml", "OrderProduct.hbm.xml");
 
         return entityManagerFactoryBean;
     }

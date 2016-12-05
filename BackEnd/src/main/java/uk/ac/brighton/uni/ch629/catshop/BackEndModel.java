@@ -1,7 +1,7 @@
 package uk.ac.brighton.uni.ch629.catshop;
 
 import javafx.scene.image.Image;
-import uk.ac.brighton.uni.ch629.catshop.model.Product;
+import uk.ac.brighton.uni.ch629.catshop.data.Product;
 
 public class BackEndModel {
     public static Image defaultProductImage = new Image(BackEndModel.class.getResourceAsStream("/images/none.jpg")); //TODO: Maybe put this in Product.

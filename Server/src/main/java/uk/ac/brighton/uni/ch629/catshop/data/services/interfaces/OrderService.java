@@ -1,8 +1,9 @@
-package uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces;
+package uk.ac.brighton.uni.ch629.catshop.data.services.interfaces;
 
-import uk.ac.brighton.uni.ch629.catshop.database.model.Order;
-import uk.ac.brighton.uni.ch629.catshop.database.model.OrderProduct;
-import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
+
+import uk.ac.brighton.uni.ch629.catshop.data.Order;
+import uk.ac.brighton.uni.ch629.catshop.data.OrderProduct;
+import uk.ac.brighton.uni.ch629.catshop.data.Product;
 
 import java.util.List;
 

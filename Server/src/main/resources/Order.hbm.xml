@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="uk.ac.brighton.uni.ch629.catshop.data.Order" table="ORDERS">
+        <meta attribute="class-description">
+            Details about Orders
+        </meta>
+        <id name="orderID" type="int" column="id">
+            <generator class="native"/>
+        </id>
+
+        <set name="orderProducts" table="ORDER_PRODUCT">
+            <key>
+                <column name="ORDER_ID" not-null="true"/>
+            </key>
+            <one-to-many class="uk.ac.brighton.uni.ch629.catshop.data.OrderProduct"/>
+        </set>
+    </class>
+</hibernate-mapping>

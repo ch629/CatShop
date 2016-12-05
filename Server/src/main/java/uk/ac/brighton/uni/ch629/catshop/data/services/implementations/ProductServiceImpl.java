@@ -1,10 +1,10 @@
-package uk.ac.brighton.uni.ch629.catshop.database.model.data.services.implementations;
+package uk.ac.brighton.uni.ch629.catshop.data.services.implementations;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
-import uk.ac.brighton.uni.ch629.catshop.database.model.data.repositories.ProductRepository;
-import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.ProductService;
+import uk.ac.brighton.uni.ch629.catshop.data.Product;
+import uk.ac.brighton.uni.ch629.catshop.data.repositories.ProductRepository;
+import uk.ac.brighton.uni.ch629.catshop.data.services.interfaces.ProductService;
 
 import javax.annotation.Resource;
 import java.util.List;

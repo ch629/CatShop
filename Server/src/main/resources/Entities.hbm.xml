@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="uk.ac.brighton.uni.ch629.catshop.data.Order" table="ORDERS">
+        <meta attribute="class-description">
+            Details about Orders
+        </meta>
+        <id name="orderID" type="int" column="id">
+            <generator class="identity"/>
+        </id>
+
+        <set name="orderProducts" table="ORDER_PRODUCT">
+            <key>
+                <column name="ORDER_ID" not-null="true"/>
+            </key>
+            <one-to-many class="uk.ac.brighton.uni.ch629.catshop.data.OrderProduct"/>
+        </set>
+    </class>
+
+    <class name="uk.ac.brighton.uni.ch629.catshop.data.Product" table="PRODUCT">
+        <meta attribute="class-description">
+            Details about Products
+        </meta>
+        <id name="productNumber" type="int" column="id">
+            <generator class="identity"/>
+        </id>
+
+        <property name="description" column="PRODUCT_DESCRIPTION" type="string"/>
+        <property name="image" column="PRODUCT_IMAGE" type="string"/>
+        <property name="price" column="PRODUCT_PRICE" type="float"/>
+        <property name="stock" column="PRODUCT_STOCK" type="int"/>
+    </class>
+
+    <class name="uk.ac.brighton.uni.ch629.catshop.data.OrderProduct" table="ORDER_PRODUCT">
+        <meta attribute="class-description">
+            Join table between Orders and Products
+        </meta>
+
+        <composite-id name="orderProductId"
+                      class="uk.ac.brighton.uni.ch629.catshop.data.OrderProductId">
+            <key-property name="orderID" type="int" column="ORDER_ID"/>
+            <key-property name="productNumber" type="int" column="PRODUCT_NUMBER"/>
+        </composite-id>
+
+        <many-to-one name="order" column="ORDER_ID"
+                     class="uk.ac.brighton.uni.ch629.catshop.data.Order"
+                     insert="false" update="false"/>
+        <many-to-one name="product" column="PRODUCT_NUMBER"
+                     class="uk.ac.brighton.uni.ch629.catshop.data.Product"
+                     insert="false" update="false"/>
+
+        <property name="quantity" column="QUANTITY" type="int"/>
+    </class>
+</hibernate-mapping>

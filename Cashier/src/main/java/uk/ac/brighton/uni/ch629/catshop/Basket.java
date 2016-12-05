@@ -1,8 +1,8 @@
 package uk.ac.brighton.uni.ch629.catshop;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import uk.ac.brighton.uni.ch629.catshop.model.Order;
-import uk.ac.brighton.uni.ch629.catshop.model.Product;
+import uk.ac.brighton.uni.ch629.catshop.data.Order;
+import uk.ac.brighton.uni.ch629.catshop.data.Product;
 
 import java.util.HashMap;
 
@@ -37,10 +37,13 @@ public class Basket extends HashMap<Product, Integer> {
     }
 
     public Order toOrder() {
-        throw new NotImplementedException();
+        Order order = new Order();
+        entrySet().forEach(entry -> order.addProduct(entry.getKey(), entry.getValue()));
+        return order;
     }
 
     public void sendToServer() { //NOTE: Should I use this method? It will just send the basket as an order to the server, which is then sent to the Warehouse
+        Order order = toOrder();
         throw new NotImplementedException();
     }
 }

@@ -2,8 +2,8 @@ package uk.ac.brighton.uni.ch629.catshop.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.brighton.uni.ch629.catshop.database.model.Product;
-import uk.ac.brighton.uni.ch629.catshop.database.model.data.services.interfaces.ProductService;
+import uk.ac.brighton.uni.ch629.catshop.data.Product;
+import uk.ac.brighton.uni.ch629.catshop.data.services.interfaces.ProductService;
 
 import java.util.List;
 
