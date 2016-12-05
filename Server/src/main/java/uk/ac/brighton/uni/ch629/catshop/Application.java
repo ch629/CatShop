@@ -30,13 +30,17 @@ public class Application {
         productService.create(new Product("32GB USB2 Drive", 6.99f, 1, "pic0007.jpg"));
         System.out.println("DONE CREATING DUMMY DATA");
 
+        System.out.println("CREATING TEST ORDER");
         Order testOrder = new Order();
         testOrder.addProduct(productService.findByProductNumber(1), 5);
         testOrder.addProduct(productService.findByProductNumber(2), 2);
 
-        orderService.create(testOrder);
+        orderService.create(testOrder); //TODO: For some reason the OrderProduct doesn't insert.
+        System.out.println("AFTER CREATE");
         Product newProduct = productService.findByProductNumber(3);
+        System.out.println("ADD PRODUCT");
         orderService.addProduct(1, newProduct, 7);
+        System.out.println("DONE TEST ORDER");
     }
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

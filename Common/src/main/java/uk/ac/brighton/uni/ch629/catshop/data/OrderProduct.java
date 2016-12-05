@@ -5,8 +5,6 @@ import java.io.Serializable;
 public class OrderProduct implements Serializable {
     private static final long serialVersionUID = 1L;
     private OrderProductId orderProductId;
-    private Order order;
-    private Product product;
     private int quantity;
 
     public OrderProduct() {
@@ -18,19 +16,19 @@ public class OrderProduct implements Serializable {
     }
 
     public Product getProduct() {
-        return product;
+        return orderProductId.getProduct();
     }
 
     public void setProduct(Product product) {
-        this.product = product;
+        this.orderProductId.setProduct(product);
     }
 
     public Order getOrder() {
-        return order;
+        return orderProductId.getOrder();
     }
 
     public void setOrder(Order order) {
-        this.order = order;
+        this.orderProductId.setOrder(order);
     }
 
     public OrderProductId getOrderProductId() {
