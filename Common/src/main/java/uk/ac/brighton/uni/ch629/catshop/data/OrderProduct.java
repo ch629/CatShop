@@ -1,14 +1,13 @@
 package uk.ac.brighton.uni.ch629.catshop.data;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.io.Serializable;
 
 @JsonAutoDetect
 public class OrderProduct implements Serializable {
     private static final long serialVersionUID = 1L;
+    @JsonIgnore
     private OrderProductId orderProductId;
     private int quantity;
 
@@ -23,18 +22,22 @@ public class OrderProduct implements Serializable {
         this.quantity = quantity;
     }
 
+    @JsonGetter("product") //NOTE: These should allow me to just ignore the composite key class.
     public Product getProduct() {
         return orderProductId.getProduct();
     }
 
+    @JsonSetter("product")
     public void setProduct(Product product) {
         this.orderProductId.setProduct(product);
     }
 
+    @JsonGetter("order")
     public Order getOrder() {
         return orderProductId.getOrder();
     }
 
+    @JsonSetter("order")
     public void setOrder(Order order) {
         this.orderProductId.setOrder(order);
     }
