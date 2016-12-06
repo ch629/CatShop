@@ -1,9 +1,6 @@
 package uk.ac.brighton.uni.ch629.catshop.data;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -50,6 +47,7 @@ public class Order implements Serializable {
         orderProducts.add(new OrderProduct(this, product, quantity));
     }
 
+    @JsonIgnore
     public Set<ProductQuantity> getProducts() {
         Set<ProductQuantity> productQuantities = new HashSet<>();
         orderProducts.forEach(orderProduct -> productQuantities.add(new ProductQuantity(orderProduct.getProduct(), orderProduct.getQuantity())));

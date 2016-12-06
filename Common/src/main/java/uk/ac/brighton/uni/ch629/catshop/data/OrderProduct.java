@@ -22,7 +22,7 @@ public class OrderProduct implements Serializable {
         this.quantity = quantity;
     }
 
-    @JsonGetter("product") //NOTE: These should allow me to just ignore the composite key class.
+    @JsonProperty("product") //NOTE: These should allow me to just ignore the composite key class.
     public Product getProduct() {
         return orderProductId.getProduct();
     }
@@ -32,7 +32,8 @@ public class OrderProduct implements Serializable {
         this.orderProductId.setProduct(product);
     }
 
-    @JsonGetter("order")
+    @JsonProperty("order")
+    @JsonBackReference
     public Order getOrder() {
         return orderProductId.getOrder();
     }

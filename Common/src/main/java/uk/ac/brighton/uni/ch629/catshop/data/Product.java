@@ -2,7 +2,7 @@ package uk.ac.brighton.uni.ch629.catshop.data;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -16,7 +16,7 @@ public class Product implements Serializable {
     private float price;
     private String description, image;
 
-    @JsonManagedReference
+    @JsonIgnore
     private Set<OrderProduct> orderProducts = new HashSet<>();
 
     public Product() {
