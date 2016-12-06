@@ -1,6 +1,9 @@
 package uk.ac.brighton.uni.ch629.catshop.data;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -12,12 +15,18 @@ public class Product implements Serializable {
     private int productNumber, stock;
     private float price;
     private String description, image;
+
+    @JsonManagedReference
     private Set<OrderProduct> orderProducts = new HashSet<>();
 
     public Product() {
     }
 
-    public Product(String description, float price, int stock, String image) {
+    @JsonCreator
+    public Product(@JsonProperty("description") String description,
+                   @JsonProperty("price") float price,
+                   @JsonProperty("sotkc") int stock,
+                   @JsonProperty("image") String image) {
         this.description = description;
         this.price = price;
         this.stock = stock;

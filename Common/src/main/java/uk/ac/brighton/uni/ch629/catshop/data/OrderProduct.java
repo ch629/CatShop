@@ -1,7 +1,12 @@
 package uk.ac.brighton.uni.ch629.catshop.data;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
+@JsonAutoDetect
 public class OrderProduct implements Serializable {
     private static final long serialVersionUID = 1L;
     private OrderProductId orderProductId;
@@ -10,7 +15,10 @@ public class OrderProduct implements Serializable {
     public OrderProduct() {
     }
 
-    public OrderProduct(Order order, Product product, int quantity) {
+    @JsonCreator
+    public OrderProduct(@JsonProperty("order") Order order,
+                        @JsonProperty("product") Product product,
+                        @JsonProperty("quantity") int quantity) {
         orderProductId = new OrderProductId(order, product);
         this.quantity = quantity;
     }
