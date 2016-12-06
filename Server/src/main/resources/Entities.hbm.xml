@@ -11,7 +11,8 @@
             <generator class="identity"/>
         </id>
 
-        <set name="orderProducts" table="ORDER_PRODUCT" inverse="true" lazy="true" fetch="select">
+        <set name="orderProducts" table="ORDER_PRODUCT" inverse="true" lazy="true" fetch="select" cascade="all"
+             access="field">
             <key column="ORDER_ID"/>
             <one-to-many class="uk.ac.brighton.uni.ch629.catshop.data.OrderProduct"/>
         </set>
@@ -31,7 +32,9 @@
         <property name="stock" column="PRODUCT_STOCK" type="int"/>
 
         <set name="orderProducts" table="ORDER_PRODUCT" inverse="true" lazy="true" fetch="select">
-            <key column="PRODUCT_NUMBER"/>
+            <key>
+                <column name="PRODUCT_NUMBER" not-null="true"/>
+            </key>
             <one-to-many class="uk.ac.brighton.uni.ch629.catshop.data.OrderProduct"/>
         </set>
     </class>
@@ -43,16 +46,10 @@
 
         <composite-id name="orderProductId"
                       class="uk.ac.brighton.uni.ch629.catshop.data.OrderProductId">
-            <key-property name="order" type="int" column="ORDER_ID"/>
-            <key-property name="product" type="int" column="PRODUCT_NUMBER"/>
+            <key-many-to-one name="order" class="uk.ac.brighton.uni.ch629.catshop.data.Order" column="ORDER_ID"/>
+            <key-many-to-one name="product" class="uk.ac.brighton.uni.ch629.catshop.data.Product"
+                             column="PRODUCT_NUMBER"/>
         </composite-id>
-
-        <many-to-one name="order" column="ORDER_ID"
-                     class="uk.ac.brighton.uni.ch629.catshop.data.Order"
-                     insert="false" update="false" fetch="select"/>
-        <many-to-one name="product" column="PRODUCT_NUMBER"
-                     class="uk.ac.brighton.uni.ch629.catshop.data.Product"
-                     insert="false" update="false" fetch="select"/>
 
         <property name="quantity" column="QUANTITY" type="int"/>
     </class>
