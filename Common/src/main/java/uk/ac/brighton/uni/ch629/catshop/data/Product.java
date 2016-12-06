@@ -3,6 +3,8 @@ package uk.ac.brighton.uni.ch629.catshop.data;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @JsonAutoDetect
 public class Product implements Serializable {
@@ -10,6 +12,7 @@ public class Product implements Serializable {
     private int productNumber, stock;
     private float price;
     private String description, image;
+    private Set<OrderProduct> orderProducts = new HashSet<>();
 
     public Product() {
     }
@@ -59,5 +62,13 @@ public class Product implements Serializable {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public Set<OrderProduct> getOrderProducts() {
+        return orderProducts;
+    }
+
+    public void setOrderProducts(Set<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
     }
 }

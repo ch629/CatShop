@@ -29,6 +29,11 @@
         <property name="image" column="PRODUCT_IMAGE" type="string"/>
         <property name="price" column="PRODUCT_PRICE" type="float"/>
         <property name="stock" column="PRODUCT_STOCK" type="int"/>
+
+        <set name="orderProducts" table="ORDER_PRODUCT" inverse="true" lazy="true" fetch="select">
+            <key column="PRODUCT_NUMBER"/>
+            <one-to-many class="uk.ac.brighton.uni.ch629.catshop.data.OrderProduct"/>
+        </set>
     </class>
 
     <class name="uk.ac.brighton.uni.ch629.catshop.data.OrderProduct" table="ORDER_PRODUCT">
