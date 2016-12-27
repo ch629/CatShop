@@ -1,6 +1,8 @@
 package uk.ac.brighton.uni.ch629.catshop.connections;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
+import uk.ac.brighton.uni.ch629.catshop.Update;
 
 import java.net.Socket;
 import java.util.Arrays;
@@ -14,7 +16,8 @@ public class Subscription {
         this.types = types;
     }
 
-    public void sendUpdate() { //TODO: Add Update Object
+    public void sendUpdate(Update update) { //TODO: Add Update Object
+        String json = JsonHelper.objectToNode(update).toString();
         throw new NotImplementedException();
     }
 

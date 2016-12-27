@@ -19,6 +19,10 @@ public class TTLRunnable implements Runnable {
         this.onFinish = onFinish;
     }
 
+    public static void makeThread(int timeToLive, Runnable onFinish) {
+        new Thread(new TTLRunnable(timeToLive, onFinish)).start();
+    }
+
     @Override
     public void run() {
         while (timeToLive > 0) {

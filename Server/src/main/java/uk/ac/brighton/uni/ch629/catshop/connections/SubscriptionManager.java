@@ -1,17 +1,15 @@
 package uk.ac.brighton.uni.ch629.catshop.connections;
 
-import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import uk.ac.brighton.uni.ch629.catshop.OrderUpdate;
 import uk.ac.brighton.uni.ch629.catshop.Update;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 public class SubscriptionManager {
+    public static final int TIMEOUT = 120;
     public static final SubscriptionManager INSTANCE = new SubscriptionManager();
     private final Set<Subscription> productSubscriptions = new ConcurrentSkipListSet<>(), orderSubscriptions = new ConcurrentSkipListSet<>(); //Maybe use Synchronized List/Set. Separating these so that multiple things can happen at the same time.
 
@@ -40,7 +38,7 @@ public class SubscriptionManager {
         }
     }
 
-    public boolean removeSubscription(String ip, int port) {
+    private boolean removeSubscription(String ip, int port) {
         boolean ret;
         synchronized (productSubscriptions) {
             ret = productSubscriptions.removeIf(subscription -> subscription.getIP().equals(ip) && subscription.getPort() == port);
@@ -53,20 +51,33 @@ public class SubscriptionManager {
         return ret;
     }
 
+    private boolean removeSubscription(Subscription subscription) {
+        boolean ret;
+
+        synchronized (productSubscriptions) {
+            ret = productSubscriptions.remove(subscription);
+        }
+
+        synchronized (orderSubscriptions) {
+            boolean tmp = orderSubscriptions.remove(subscription);
+            if (!ret) ret = tmp;
+        }
+        return ret;
+    }
+
     protected boolean timeoutSubscription(String ip, int port) {
         return removeSubscription(ip, port);
     }
 
-    private void sendUpdateToSubscription(Subscription subscription, Update update) {
-        try {
-            Socket socket = new Socket(subscription.getIP(), subscription.getPort());
-            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-            dos.writeUTF(JsonHelper.objectToNode(update).toString());
-            dos.close();
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void sendUpdateToSubscription(Subscription subscription, Update update) { //TODO: Maybe change Update a bit
+        subscription.sendUpdate(update);
+        TTLRunnable.makeThread(TIMEOUT, () -> {
+            if (!hadResponse(subscription)) removeSubscription(subscription);
+        });
+    }
+
+    private boolean hadResponse(Subscription subscription) {
+        throw new NotImplementedException();
     }
 
     public void sendUpdate(Update update) {
