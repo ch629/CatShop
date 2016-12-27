@@ -7,13 +7,13 @@ import uk.ac.brighton.uni.ch629.catshop.Update;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class SubscriptionManager {
     public static final SubscriptionManager INSTANCE = new SubscriptionManager();
-    private final Set<Subscription> productSubscriptions = new HashSet<>(), orderSubscriptions = new HashSet<>(); //Maybe use Synchronized List/Set. Separating these so that multiple things can happen at the same time.
+    private final Set<Subscription> productSubscriptions = new ConcurrentSkipListSet<>(), orderSubscriptions = new ConcurrentSkipListSet<>(); //Maybe use Synchronized List/Set. Separating these so that multiple things can happen at the same time.
 
     private SubscriptionManager() {
     }

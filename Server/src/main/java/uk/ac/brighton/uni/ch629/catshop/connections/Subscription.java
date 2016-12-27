@@ -2,14 +2,15 @@ package uk.ac.brighton.uni.ch629.catshop.connections;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class Subscription { //NOTE: Could use RMI for this communication?
-    private String ip;
-    private int port;
-    private SubscriptionType[] types; //Can have many types of connections to listen to
+import java.net.Socket;
+import java.util.Arrays;
 
-    public Subscription(String ip, int port, SubscriptionType... types) {
-        this.ip = ip;
-        this.port = port;
+public class Subscription {
+    private SubscriptionType[] types; //Can have many types of connections to listen to
+    private Socket socket;
+
+    public Subscription(Socket socket, SubscriptionType... types) {
+        this.socket = socket;
         this.types = types;
     }
 
@@ -18,14 +19,18 @@ public class Subscription { //NOTE: Could use RMI for this communication?
     }
 
     public String getIP() {
-        return ip;
+        return socket.getRemoteSocketAddress().toString(); //TODO: Check this is correct
     }
 
     public int getPort() {
-        return port;
+        return socket.getPort();
     }
 
     public SubscriptionType[] getTypes() {
         return types;
+    }
+
+    public boolean hasType(SubscriptionType type) {
+        return Arrays.stream(types).anyMatch(subscriptionType -> subscriptionType.equals(type));
     }
 }
