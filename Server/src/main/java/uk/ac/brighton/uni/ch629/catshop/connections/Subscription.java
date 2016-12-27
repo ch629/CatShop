@@ -1,9 +1,11 @@
 package uk.ac.brighton.uni.ch629.catshop.connections;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
 import uk.ac.brighton.uni.ch629.catshop.Update;
+import uk.ac.brighton.uni.ch629.catshop.subscription.SubscriptionType;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
 
@@ -17,8 +19,15 @@ public class Subscription {
     }
 
     public void sendUpdate(Update update) { //TODO: Add Update Object
-        String json = JsonHelper.objectToNode(update).toString();
-        throw new NotImplementedException();
+        try {
+            String json = JsonHelper.objectToNode(update).toString();
+            PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
+            printWriter.println(json);
+            printWriter.flush();
+            printWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getIP() {

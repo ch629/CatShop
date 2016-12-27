@@ -3,15 +3,20 @@ package uk.ac.brighton.uni.ch629.catshop.connections;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import uk.ac.brighton.uni.ch629.catshop.OrderUpdate;
 import uk.ac.brighton.uni.ch629.catshop.Update;
+import uk.ac.brighton.uni.ch629.catshop.subscription.SubscriptionType;
 
+import java.net.Socket;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 public class SubscriptionManager {
-    public static final int TIMEOUT = 120;
     public static final SubscriptionManager INSTANCE = new SubscriptionManager();
-    private final Set<Subscription> productSubscriptions = new ConcurrentSkipListSet<>(), orderSubscriptions = new ConcurrentSkipListSet<>(); //Maybe use Synchronized List/Set. Separating these so that multiple things can happen at the same time.
+    private static final int TIMEOUT = 120;
+    private final Set<Subscription>
+            productSubscriptions = new ConcurrentSkipListSet<>(),
+            orderSubscriptions = new ConcurrentSkipListSet<>();
+    private final Set<String> responses = new ConcurrentSkipListSet<>();
 
     private SubscriptionManager() {
     }
@@ -51,7 +56,7 @@ public class SubscriptionManager {
         return ret;
     }
 
-    private boolean removeSubscription(Subscription subscription) {
+    private boolean removeSubscription(Subscription subscription) { //TODO: Might be more efficient to check which types of updates each wants, before removing. Not 100% sure on the efficiency
         boolean ret;
 
         synchronized (productSubscriptions) {
@@ -76,8 +81,14 @@ public class SubscriptionManager {
         });
     }
 
+    public void addResponse(String ip, int port) {
+        synchronized (responses) {
+            responses.add(ip + ":" + port);
+        }
+    }
+
     private boolean hadResponse(Subscription subscription) {
-        throw new NotImplementedException();
+        return responses.remove(subscription.getIP() + ":" + subscription.getPort());
     }
 
     public void sendUpdate(Update update) {
@@ -90,5 +101,10 @@ public class SubscriptionManager {
                 productSubscriptions.forEach(subscription -> sendUpdateToSubscription(subscription, update));
             }
         }
+    }
+
+    public void createSubscription(Socket socket) {
+        throw new NotImplementedException();
+        //TODO: Communicate to get the Subscription Types in another thread(Just use a new Json Object)
     }
 }
