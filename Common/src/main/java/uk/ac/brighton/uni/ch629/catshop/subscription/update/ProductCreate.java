@@ -9,7 +9,7 @@ public class ProductCreate extends Update {
 
     @JsonCreator
     public ProductCreate(@JsonProperty("product") Product product) {
-        super(UpdateType.CREATE);
+        super(UpdateType.PRODUCT_CREATE);
         this.product = product;
     }
 

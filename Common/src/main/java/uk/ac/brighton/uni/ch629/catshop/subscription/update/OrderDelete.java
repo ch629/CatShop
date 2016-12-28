@@ -8,7 +8,7 @@ public class OrderDelete extends Update {
 
     @JsonCreator
     public OrderDelete(@JsonProperty("orderID") int orderID) {
-        super(UpdateType.DELETE);
+        super(UpdateType.ORDER_DELETE);
         this.orderID = orderID;
     }
 

@@ -9,7 +9,7 @@ public class OrderCreate extends Update {
 
     @JsonCreator
     public OrderCreate(@JsonProperty("order") Order order) {
-        super(UpdateType.CREATE);
+        super(UpdateType.ORDER_CREATE);
         this.order = order;
     }
 

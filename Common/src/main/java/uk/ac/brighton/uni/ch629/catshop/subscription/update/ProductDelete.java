@@ -8,7 +8,7 @@ public class ProductDelete extends Update {
 
     @JsonCreator
     public ProductDelete(@JsonProperty("productNumber") int productNumber) {
-        super(UpdateType.DELETE);
+        super(UpdateType.PRODUCT_DELETE);
         this.productNumber = productNumber;
     }
 

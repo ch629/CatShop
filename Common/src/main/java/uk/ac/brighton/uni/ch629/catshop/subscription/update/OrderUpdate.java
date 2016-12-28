@@ -13,7 +13,7 @@ public class OrderUpdate extends Update { //TODO: Needs to contain data about th
     @JsonCreator
     public OrderUpdate(@JsonProperty("oldID") int oldID,
                        @JsonProperty("newOrder") Order newOrder) {
-        super(UpdateType.UPDATE);
+        super(UpdateType.ORDER_UPDATE);
         this.oldID = oldID;
         this.newOrder = newOrder;
     }

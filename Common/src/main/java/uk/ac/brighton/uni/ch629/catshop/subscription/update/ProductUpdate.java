@@ -13,7 +13,7 @@ public class ProductUpdate extends Update {
     @JsonCreator
     public ProductUpdate(@JsonProperty("oldID") int oldID,
                          @JsonProperty("newProduct") Product newProduct) {
-        super(UpdateType.UPDATE);
+        super(UpdateType.PRODUCT_UPDATE);
         this.oldID = oldID;
         this.newProduct = newProduct;
     }
