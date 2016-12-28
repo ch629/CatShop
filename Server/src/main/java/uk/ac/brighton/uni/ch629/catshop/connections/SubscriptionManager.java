@@ -1,9 +1,9 @@
 package uk.ac.brighton.uni.ch629.catshop.connections;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import uk.ac.brighton.uni.ch629.catshop.OrderUpdate;
-import uk.ac.brighton.uni.ch629.catshop.Update;
 import uk.ac.brighton.uni.ch629.catshop.subscription.SubscriptionType;
+import uk.ac.brighton.uni.ch629.catshop.subscription.update.OrderUpdate;
+import uk.ac.brighton.uni.ch629.catshop.subscription.update.Update;
 
 import java.net.Socket;
 import java.util.Objects;

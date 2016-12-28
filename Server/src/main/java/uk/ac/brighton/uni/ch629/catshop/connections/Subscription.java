@@ -1,8 +1,8 @@
 package uk.ac.brighton.uni.ch629.catshop.connections;
 
 import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
-import uk.ac.brighton.uni.ch629.catshop.Update;
 import uk.ac.brighton.uni.ch629.catshop.subscription.SubscriptionType;
+import uk.ac.brighton.uni.ch629.catshop.subscription.update.Update;
 
 import java.io.IOException;
 import java.io.PrintWriter;
