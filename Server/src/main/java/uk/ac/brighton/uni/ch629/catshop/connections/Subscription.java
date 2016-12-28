@@ -3,6 +3,7 @@ package uk.ac.brighton.uni.ch629.catshop.connections;
 import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
 import uk.ac.brighton.uni.ch629.catshop.subscription.SubscriptionType;
 import uk.ac.brighton.uni.ch629.catshop.subscription.update.Update;
+import uk.ac.brighton.uni.ch629.catshop.subscription.update.UpdateResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,7 +21,8 @@ public class Subscription {
 
     public void sendUpdate(Update update) { //TODO: Add Update Object
         try {
-            String json = JsonHelper.objectToNode(update).toString();
+            UpdateResponse response = new UpdateResponse(update);
+            String json = JsonHelper.objectToNode(response).toString();
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
             printWriter.println(json);
             printWriter.flush();
