@@ -25,8 +25,7 @@ public class TTLRunnable implements Runnable {
 
     @Override
     public void run() {
-        while (timeToLive > 0) {
-            timeToLive--;
+        for (; timeToLive >= 0; timeToLive--) {
             try {
                 Thread.sleep(1000L);
             } catch (InterruptedException e) {
