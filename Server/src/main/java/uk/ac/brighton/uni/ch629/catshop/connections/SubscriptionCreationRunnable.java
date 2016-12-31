@@ -16,6 +16,10 @@ public class SubscriptionCreationRunnable implements Runnable {
         this.socket = socket;
     }
 
+    public static void makeThread(Socket socket) {
+        new Thread(new SubscriptionCreationRunnable(socket)).start();
+    }
+
     @Override
     public void run() {
         try {
