@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController("/")
-public class MainController { //TODO: Look into Security
+public class MainController {
 
     @PostMapping(value = "/subscribe")
+    //TODO: Could use this to create the socket, but not sure how that all works; will have to look it up to figure out how to make both the client and the server sockets
     //NOTE: Client should probably send a packet back when it receives an update, so the server knows to keep communication between them
     public void subscribe(@RequestBody Map<String, Object> payload, HttpServletRequest request) {
         //Replace payload with an object if I can. Would make life easier.

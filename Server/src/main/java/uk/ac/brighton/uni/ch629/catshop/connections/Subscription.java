@@ -45,6 +45,6 @@ public class Subscription {
     }
 
     public boolean hasType(SubscriptionType type) {
-        return Arrays.stream(types).anyMatch(subscriptionType -> subscriptionType.equals(type));
+        return Arrays.stream(types).anyMatch(subType -> subType == type);
     }
 }

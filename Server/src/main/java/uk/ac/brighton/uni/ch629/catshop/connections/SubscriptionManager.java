@@ -1,11 +1,9 @@
 package uk.ac.brighton.uni.ch629.catshop.connections;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import uk.ac.brighton.uni.ch629.catshop.subscription.SubscriptionType;
 import uk.ac.brighton.uni.ch629.catshop.subscription.update.OrderUpdate;
 import uk.ac.brighton.uni.ch629.catshop.subscription.update.Update;
 
-import java.net.Socket;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -56,17 +54,30 @@ public class SubscriptionManager {
         return ret;
     }
 
-    private boolean removeSubscription(Subscription subscription) { //TODO: Might be more efficient to check which types of updates each wants, before removing. Not 100% sure on the efficiency
-        boolean ret;
+    private boolean removeSubscription(Subscription subscription) {
+        boolean ret = false;
 
-        synchronized (productSubscriptions) {
+        if (subscription.hasType(SubscriptionType.PRODUCT)) { //NOTE: May be more efficient this way, also it may be more efficient to just convert the list into a List then check that list twice, as currently it converts it twice
+            synchronized (productSubscriptions) {
+                ret = productSubscriptions.remove(subscription);
+            }
+        }
+
+        if (subscription.hasType(SubscriptionType.ORDER)) {
+            synchronized (orderSubscriptions) {
+                boolean tmp = orderSubscriptions.remove(subscription);
+                if (!ret) ret = tmp;
+            }
+        }
+
+        /*synchronized (productSubscriptions) {
             ret = productSubscriptions.remove(subscription);
         }
 
         synchronized (orderSubscriptions) {
             boolean tmp = orderSubscriptions.remove(subscription);
             if (!ret) ret = tmp;
-        }
+        }*/
         return ret;
     }
 
@@ -74,7 +85,7 @@ public class SubscriptionManager {
         return removeSubscription(ip, port);
     }
 
-    private void sendUpdateToSubscription(Subscription subscription, Update update) { //TODO: Maybe change Update a bit
+    private void sendUpdateToSubscription(Subscription subscription, Update update) {
         subscription.sendUpdate(update);
         TTLRunnable.makeThread(TIMEOUT, () -> {
             if (!hadResponse(subscription)) removeSubscription(subscription);
@@ -101,10 +112,5 @@ public class SubscriptionManager {
                 productSubscriptions.forEach(subscription -> sendUpdateToSubscription(subscription, update));
             }
         }
-    }
-
-    public void createSubscription(Socket socket) {
-        throw new NotImplementedException();
-        //TODO: Communicate to get the Subscription Types in another thread(Just use a new Json Object)
     }
 }
