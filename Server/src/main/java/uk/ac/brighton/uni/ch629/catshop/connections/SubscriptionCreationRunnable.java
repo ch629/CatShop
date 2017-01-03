@@ -2,7 +2,6 @@ package uk.ac.brighton.uni.ch629.catshop.connections;
 
 import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
 import uk.ac.brighton.uni.ch629.catshop.RequestSubscription;
-import uk.ac.brighton.uni.ch629.catshop.subscription.SubscriptionType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,11 +26,8 @@ public class SubscriptionCreationRunnable implements Runnable {
             String in = reader.readLine();
             if (!in.isEmpty()) {
                 RequestSubscription request = JsonHelper.jsonToObject(in, RequestSubscription.class);
-                if (request != null) {
-                    Subscription subscription = new Subscription(socket, request.getTypes());
-                    for (SubscriptionType subscriptionType : request.getTypes())
-                        SubscriptionManager.getInstance().addSubscription(subscriptionType, subscription);
-                }
+                if (request != null)
+                    SubscriptionManager.getInstance().addSubscription(new Subscription(socket, request.getTypes()));
             }
         } catch (IOException e) {
             e.printStackTrace();

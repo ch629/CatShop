@@ -1,9 +1,8 @@
 package uk.ac.brighton.uni.ch629.catshop.connections;
 
 import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
-import uk.ac.brighton.uni.ch629.catshop.subscription.SubscriptionType;
-import uk.ac.brighton.uni.ch629.catshop.subscription.update.Update;
-import uk.ac.brighton.uni.ch629.catshop.subscription.update.UpdateResponse;
+import uk.ac.brighton.uni.ch629.catshop.update.Update;
+import uk.ac.brighton.uni.ch629.catshop.update.UpdateWrapper;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,18 +10,19 @@ import java.net.Socket;
 import java.util.Arrays;
 
 public class Subscription {
-    private SubscriptionType[] types; //Can have many types of connections to listen to
+    private Class<? extends Update>[] subscriptionTypes;
     private Socket socket;
 
-    public Subscription(Socket socket, SubscriptionType... types) {
+    @SafeVarargs
+    public Subscription(Socket socket, Class<? extends Update>... types) {
         this.socket = socket;
-        this.types = types;
+        this.subscriptionTypes = types;
     }
 
-    public void sendUpdate(Update update) { //TODO: Add Update Object
+    public void sendUpdate(Update update) {
         try {
-            UpdateResponse response = new UpdateResponse(update);
-            String json = JsonHelper.objectToNode(response).toString();
+            UpdateWrapper wrapper = new UpdateWrapper(update);
+            String json = JsonHelper.objectToNode(wrapper).toString();
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
             printWriter.println(json);
             printWriter.flush();
@@ -40,11 +40,11 @@ public class Subscription {
         return socket.getPort();
     }
 
-    public SubscriptionType[] getTypes() {
-        return types;
+    public Class<? extends Update>[] getTypes() {
+        return subscriptionTypes;
     }
 
-    public boolean hasType(SubscriptionType type) {
-        return Arrays.stream(types).anyMatch(subType -> subType == type);
+    public boolean hasType(Class<? extends Update> type) {
+        return Arrays.stream(subscriptionTypes).anyMatch(subType -> subType.equals(type));
     }
 }
