@@ -7,16 +7,17 @@ import uk.ac.brighton.uni.ch629.catshop.update.UpdateWrapper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
-public class Subscription {
-    private Class<? extends Update>[] subscriptionTypes;
+public class Subscription { //TODO: This with the Set of UpdateTypes is only really needed to request the subscription, so I only really need to store the Socket in a Wrapper for dealing with them on the Server Side.
+    private final Set<String> updateTypes; //NOTE: This is really like a listener
     private Socket socket;
 
-    @SafeVarargs
-    public Subscription(Socket socket, Class<? extends Update>... types) {
+    public Subscription(Socket socket, String updateType) {
         this.socket = socket;
-        this.subscriptionTypes = types;
+        updateTypes = new HashSet<>();
+        updateTypes.add(updateType);
     }
 
     public void sendUpdate(Update update) {
@@ -40,11 +41,19 @@ public class Subscription {
         return socket.getPort();
     }
 
-    public Class<? extends Update>[] getTypes() {
-        return subscriptionTypes;
+    private synchronized void addUpdateType(String updateType) {
+        updateTypes.add(updateType);
     }
 
-    public boolean hasType(Class<? extends Update> type) {
-        return Arrays.stream(subscriptionTypes).anyMatch(subType -> subType.equals(type));
+    private synchronized boolean removeUpdateType(String updateType) {
+        return updateTypes.remove(updateType);
+    }
+
+    public synchronized Set<String> getUpdateTypes() {
+        return updateTypes;
+    }
+
+    public synchronized boolean hasType(String updateType) {
+        return updateTypes.contains(updateType);
     }
 }

@@ -5,16 +5,14 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import uk.ac.brighton.uni.ch629.catshop.update.Update;
 
-import java.util.*;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-public class SubscriptionManager {
-    public static final SubscriptionManager INSTANCE = new SubscriptionManager();
+public class SubscriptionManager { //TODO: Potentially it may be easier to redo most of this, to clean it all up and make it as efficient as possible (Especially objects sent between server and client)
+    public static final SubscriptionManager INSTANCE = new SubscriptionManager(); //TODO: Could also look into Google Guava's EventBus, but that would be more just client based rather than Client-Server
     private static final int TIMEOUT = 120;
-    @Deprecated //TODO: Might need to keep this dependant on concurrency
-    private final Map<Class<? extends Update>, List<Subscription>> subscriptions = new HashMap<>(); //TODO: Might need a Queue for tasks (LIFO)
     private final Set<Subscription> responses = new ConcurrentSkipListSet<>();
-    private final Multimap<Class<? extends Update>, Subscription> subscriptionsNew = HashMultimap.create(); //HashSet values
+    private final Multimap<String, Subscription> subscriptionsNew = HashMultimap.create(); //HashSet values TODO: Might need a LIFO Queue to handle sending updates
 
     private SubscriptionManager() {
     }
@@ -24,43 +22,27 @@ public class SubscriptionManager {
     }
 
     public void addSubscription(Subscription subscription) {
-        Arrays.stream(subscription.getTypes()).forEach(type -> subscriptions.get(type).add(subscription));
-        Arrays.stream(subscription.getTypes()).forEach(type -> subscriptionsNew.put(type, subscription));
+        subscription.getUpdateTypes().forEach(type -> subscriptionsNew.put(type, subscription));
     }
 
     private boolean removeSubscriptions(String ip, int port) {
         boolean ret = false;
 
         synchronized (subscriptionsNew) {
-            Multimap<Class<? extends Update>, Subscription> filteredSubs = Multimaps.filterEntries(subscriptionsNew, sub -> {
+            Multimap<String, Subscription> filteredSubs = Multimaps.filterEntries(subscriptionsNew, sub -> {
                 assert sub != null;
                 return sub.getValue().getIP().equals(ip) && sub.getValue().getPort() == port;
             });
             filteredSubs.entries().forEach(entry -> subscriptionsNew.remove(entry.getKey(), entry.getValue()));
         }
-
-        synchronized (subscriptions) {
-            for (Class<? extends Update> updateClass : subscriptions.keySet()) {
-                boolean tmp = subscriptions.get(updateClass).removeIf(subscription -> subscription.getIP().equals(ip) && subscription.getPort() == port);
-                if (!ret) ret = tmp;
-            }
-        }
-
-        return ret;
+        return ret; //TODO: Check this return, as it's always false
     }
 
     private boolean removeSubscription(Subscription subscription) {
         boolean ret = false;
 
         synchronized (subscriptionsNew) {
-            Arrays.stream(subscription.getTypes()).forEach(subType -> subscriptionsNew.remove(subType, subscription));
-        }
-
-        synchronized (subscriptions) {
-            for (Class<? extends Update> clazz : subscriptions.keySet()) {
-                boolean tmp = subscriptions.get(clazz).remove(subscription);
-                if (!ret) ret = tmp;
-            }
+            subscription.getUpdateTypes().forEach(subType -> subscriptionsNew.remove(subType, subscription));
         }
         return ret;
     }
@@ -84,12 +66,7 @@ public class SubscriptionManager {
 
     private void sendUpdate(Update update) {
         synchronized (subscriptionsNew) {
-            subscriptionsNew.get(update.getType()).forEach(subscription -> subscription.sendUpdate(update));
-        }
-
-        synchronized (subscriptions) {
-            List<Subscription> subs = subscriptions.get(update.getType());
-            subs.forEach(sub -> sub.sendUpdate(update));
+            subscriptionsNew.get(update.getType().getSimpleName()).forEach(subscription -> subscription.sendUpdate(update));
         }
     }
 }
