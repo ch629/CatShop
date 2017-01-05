@@ -1,22 +1,29 @@
 package uk.ac.brighton.uni.ch629.catshop.update;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import uk.ac.brighton.uni.ch629.catshop.data.Order;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import uk.ac.brighton.uni.ch629.catshop.data.Basket;
 
 @JsonAutoDetect
 public class AddOrder implements Update { //Cashier -> Server -> Warehouse
-    private final Order order;
+    private final Basket basket;
 
-    public AddOrder(Order order) {
-        this.order = order;
+    public AddOrder() {
+        basket = new Basket();
     }
 
-    @Override
+    @JsonCreator
+    public AddOrder(@JsonProperty("basket") Basket basket) {
+        this.basket = basket;
+    }
+
+    @Override //TODO: Could JsonIgnore this
     public String getType() {
         return "AddOrder";
     }
 
-    public Order getOrder() {
-        return order;
+    public Basket getBasket() {
+        return basket;
     }
 }

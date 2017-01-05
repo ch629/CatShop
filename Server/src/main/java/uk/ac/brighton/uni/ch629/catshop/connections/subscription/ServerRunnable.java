@@ -28,4 +28,8 @@ public class ServerRunnable implements Runnable {
             }
         }
     }
+
+    public int getPort() {
+        return serverSocket.getLocalPort();
+    }
 }

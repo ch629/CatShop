@@ -2,13 +2,14 @@ package uk.ac.brighton.uni.ch629.catshop.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.brighton.uni.ch629.catshop.OrderAddProduct;
 import uk.ac.brighton.uni.ch629.catshop.connections.subscription.SubscriptionManager;
 import uk.ac.brighton.uni.ch629.catshop.data.Order;
 import uk.ac.brighton.uni.ch629.catshop.data.OrderProduct;
 import uk.ac.brighton.uni.ch629.catshop.data.Product;
 import uk.ac.brighton.uni.ch629.catshop.data.services.interfaces.OrderService;
 import uk.ac.brighton.uni.ch629.catshop.update.AddOrder;
+import uk.ac.brighton.uni.ch629.catshop.update.CollectOrder;
+import uk.ac.brighton.uni.ch629.catshop.update.PickOrder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,21 @@ public class OrderController {
     @Autowired
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
+    }
+
+    @PostMapping(value = "/order/{id}/collect")
+    public void collectOrder(@PathVariable int id) {
+        SubscriptionManager.getInstance().sendUpdate(new CollectOrder(id));
+    }
+
+    @PostMapping(value = "/order/{id}/pick")
+    public void pickOrder(@PathVariable int id) {
+        SubscriptionManager.getInstance().sendUpdate(new PickOrder(id));
+    }
+
+    @PostMapping(value = "/order/product")
+    public void addProductToOrder(@RequestBody OrderProduct orderProduct) {
+        orderService.addProduct(orderProduct);
     }
 
     @GetMapping(value = "/order/{id}")
@@ -41,7 +57,7 @@ public class OrderController {
     }
 
     @PostMapping(value = "/order")
-    public int addOrder(@RequestBody AddOrder addOrder) { //The Cashier needs to tell the customer the OrderID
+    public int addOrder(@RequestBody AddOrder addOrder) { //For the Cashier to tell the Customer
         Order createdOrder = orderService.create(addOrder.getOrder());
         //TODO: Send AddOrder with the new OrderID to the Warehouse & Maybe just send the OrderID to the Collection
         AddOrder newAddOrder = new AddOrder(createdOrder);
@@ -49,18 +65,11 @@ public class OrderController {
         return createdOrder.getOrderID();
     }
 
-    @PostMapping(value = {"/order"})
+    @PostMapping(value = {"/order/basket"})
     public void addBasketToOrder(@RequestBody HashMap<Product, Integer> products) {
         Order order = new Order(products);
         orderService.create(order);
     }
-
-    @PostMapping(value = "/order/product")
-    public void addProductToOrder(@RequestBody OrderProduct orderProduct) {
-        orderService.addProduct(orderProduct);
-    }
-
-    public void addProductToOrder(@RequestBody OrderAddProduct orderAddProduct) { //NOTE: This will probably never be called, because the Basket is sent.
-
-    }
 }
+
+//TODO: Error Failed to evaluate Jackson deserialization for type [[simple type, class uk.ac.brighton.uni.ch629.catshop.update.AddOrder]]: com.fasterxml.jackson.databind.JsonMappingException: Could not find creator property with name 'order' (in class uk.ac.brighton.uni.ch629.catshop.data.OrderProduct)

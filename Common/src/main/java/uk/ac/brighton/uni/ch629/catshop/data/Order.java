@@ -27,6 +27,13 @@ public class Order implements Serializable {
         this.orderProducts = orderProducts;
     }
 
+    /*@JsonCreator
+    public Order(@JsonProperty("orderID") int orderID,
+                 @JsonProperty("orderProducts") Set<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
+        this.orderID = orderID;
+    }*/
+
     public int getOrderID() {
         return orderID;
     }
