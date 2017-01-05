@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import uk.ac.brighton.uni.ch629.catshop.data.Order;
 
 @JsonAutoDetect
-public class AddOrder implements Update { //Cashier -> Server -> (Warehouse, ShopDisplay)
-    private Order order;
+public class AddOrder implements Update { //Cashier -> Server -> Warehouse
+    private final Order order;
 
     public AddOrder(Order order) {
         this.order = order;

@@ -1,18 +1,15 @@
 package uk.ac.brighton.uni.ch629.catshop.update;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-
-@JsonAutoDetect
-public class CollectOrder implements Update { //Collection -> Server -> ShopDisplay
+public class UpdateOrderID implements Update { //Server -> (Cashier, ShopDisplay)
     private final int orderID;
 
-    public CollectOrder(int orderID) {
+    public UpdateOrderID(int orderID) {
         this.orderID = orderID;
     }
 
     @Override
     public String getType() {
-        return "CollectOrder";
+        return "UpdateOrderID";
     }
 
     public int getOrderID() {
