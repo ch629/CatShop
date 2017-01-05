@@ -1,10 +1,10 @@
-package uk.ac.brighton.uni.ch629.catshop.connections;
+package uk.ac.brighton.uni.ch629.catshop.connections.subscription;
 
 /**
  * Time To Live Runnable
  * Runs in a separate thread to run a method after a set time
  */
-public class TTLRunnable implements Runnable {
+public class TTLRunnable implements Runnable { //TODO: This may not be used anymore so could be deprecated
     private int timeToLive;
     private Runnable onFinish;
 

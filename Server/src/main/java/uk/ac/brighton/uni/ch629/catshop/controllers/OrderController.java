@@ -3,10 +3,12 @@ package uk.ac.brighton.uni.ch629.catshop.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.brighton.uni.ch629.catshop.OrderAddProduct;
+import uk.ac.brighton.uni.ch629.catshop.connections.subscription.SubscriptionManager;
 import uk.ac.brighton.uni.ch629.catshop.data.Order;
 import uk.ac.brighton.uni.ch629.catshop.data.OrderProduct;
 import uk.ac.brighton.uni.ch629.catshop.data.Product;
 import uk.ac.brighton.uni.ch629.catshop.data.services.interfaces.OrderService;
+import uk.ac.brighton.uni.ch629.catshop.update.AddOrder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,11 +40,14 @@ public class OrderController {
         return hashMap;
     }
 
-//    @PostMapping(value = {"/order"})
-//    public void addOrder(@RequestBody Order order) { //TODO: Return the OrderID, and accept an Order without the ID
-//        Order createdOrder = orderService.create(order);
-//        return createdOrder.getOrderID();
-//    }
+    @PostMapping(value = "/order")
+    public int addOrder(@RequestBody AddOrder addOrder) { //The Cashier needs to tell the customer the OrderID
+        Order createdOrder = orderService.create(addOrder.getOrder());
+        //TODO: Send AddOrder with the new OrderID to the Warehouse & Maybe just send the OrderID to the Collection
+        AddOrder newAddOrder = new AddOrder(createdOrder);
+        SubscriptionManager.getInstance().sendUpdate(newAddOrder);
+        return createdOrder.getOrderID();
+    }
 
     @PostMapping(value = {"/order"})
     public void addBasketToOrder(@RequestBody HashMap<Product, Integer> products) {

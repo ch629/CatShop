@@ -3,7 +3,7 @@ package uk.ac.brighton.uni.ch629.catshop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import uk.ac.brighton.uni.ch629.catshop.connections.ServerRunnable;
+import uk.ac.brighton.uni.ch629.catshop.connections.subscription.ServerRunnable;
 import uk.ac.brighton.uni.ch629.catshop.data.Order;
 import uk.ac.brighton.uni.ch629.catshop.data.Product;
 import uk.ac.brighton.uni.ch629.catshop.data.services.interfaces.OrderService;
