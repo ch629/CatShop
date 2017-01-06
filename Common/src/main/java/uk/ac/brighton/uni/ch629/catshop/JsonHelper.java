@@ -29,7 +29,7 @@ public class JsonHelper {
     }
 
     public static <T> T jsonToObject(String json, Class<T> clazz) {
-        if (clazz.isInstance(CustomSerialization.class)) {
+        if (CustomSerialization.class.isAssignableFrom(clazz)) {
             try {
                 return (T) ((CustomSerialization) clazz.newInstance()).deserializeJson(json);
             } catch (InstantiationException | IllegalAccessException e) {
