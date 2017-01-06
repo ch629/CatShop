@@ -3,11 +3,13 @@ package uk.ac.brighton.uni.ch629.catshop.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.brighton.uni.ch629.catshop.connections.subscription.SubscriptionManager;
+import uk.ac.brighton.uni.ch629.catshop.data.Basket;
 import uk.ac.brighton.uni.ch629.catshop.data.Order;
 import uk.ac.brighton.uni.ch629.catshop.data.OrderProduct;
 import uk.ac.brighton.uni.ch629.catshop.data.Product;
 import uk.ac.brighton.uni.ch629.catshop.data.services.interfaces.OrderService;
-import uk.ac.brighton.uni.ch629.catshop.update.AddOrder;
+import uk.ac.brighton.uni.ch629.catshop.update.AddOrderToShopDisplay;
+import uk.ac.brighton.uni.ch629.catshop.update.AddOrderToWarehouse;
 import uk.ac.brighton.uni.ch629.catshop.update.CollectOrder;
 import uk.ac.brighton.uni.ch629.catshop.update.PickOrder;
 
@@ -57,13 +59,25 @@ public class OrderController {
     }
 
     @PostMapping(value = "/order")
+    public int addOrder(@RequestBody Basket basket) { //TODO: Could take a Map<Product, Integer> instead
+        Order createdOrder = orderService.create(basket.asOrder());
+
+        SubscriptionManager.getInstance().sendUpdate(new AddOrderToWarehouse(createdOrder));
+        SubscriptionManager.getInstance().sendUpdate(new AddOrderToShopDisplay(createdOrder.getOrderID()));
+
+        //TODO: Reduce Stock of Products
+
+        return createdOrder.getOrderID();
+    }
+
+    /*@PostMapping(value = "/order")
     public int addOrder(@RequestBody AddOrder addOrder) { //For the Cashier to tell the Customer
         Order createdOrder = orderService.create(addOrder.getOrder());
         //TODO: Send AddOrder with the new OrderID to the Warehouse & Maybe just send the OrderID to the Collection
         AddOrder newAddOrder = new AddOrder(createdOrder);
         SubscriptionManager.getInstance().sendUpdate(newAddOrder);
         return createdOrder.getOrderID();
-    }
+    }*/
 
     @PostMapping(value = {"/order/basket"})
     public void addBasketToOrder(@RequestBody HashMap<Product, Integer> products) {

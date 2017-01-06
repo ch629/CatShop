@@ -31,3 +31,5 @@ public class Subscription { //TODO: If I don't have enough time I could remove t
         sendString(JsonHelper.objectToNode(new UpdateWrapper(update)).toString()); //TODO: Check toString or asText
     }
 }
+
+//TODO: The way this would usually work, is that the client would poll the server every x seconds to check for updates, rather than the server sending updates itself.
