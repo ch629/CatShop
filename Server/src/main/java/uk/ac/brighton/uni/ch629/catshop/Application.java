@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import uk.ac.brighton.uni.ch629.catshop.connections.subscription.ServerRunnable;
+import uk.ac.brighton.uni.ch629.catshop.data.Basket;
 import uk.ac.brighton.uni.ch629.catshop.data.Order;
 import uk.ac.brighton.uni.ch629.catshop.data.Product;
 import uk.ac.brighton.uni.ch629.catshop.data.services.interfaces.OrderService;
 import uk.ac.brighton.uni.ch629.catshop.data.services.interfaces.ProductService;
-import uk.ac.brighton.uni.ch629.catshop.update.AddOrder;
 
 @SpringBootApplication
 public class Application {
@@ -45,8 +45,9 @@ public class Application {
         orderService.addProduct(1, newProduct, 7);
         System.out.println("DONE CREATING TEST ORDER");
 
-        AddOrder order = new AddOrder(newTestOrder);
-        System.out.println(JsonHelper.objectToNode(order).toString());
+        Basket basket = newTestOrder.asBasket();
+//        System.out.println(JsonHelper.objectToNode(basket).toString());
+        System.out.println(JsonHelper.objectToString(basket));
     }
 
     public static void main(String[] args) {

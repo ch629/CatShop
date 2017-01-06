@@ -3,12 +3,16 @@ package uk.ac.brighton.uni.ch629.catshop.data;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import uk.ac.brighton.uni.ch629.catshop.CustomSerialization;
+import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @JsonAutoDetect
-public class Basket {
+public class Basket implements CustomSerialization {
     private final Map<Product, Integer> items;
 
     public Basket() {
@@ -107,5 +111,22 @@ public class Basket {
 
     public Order asOrder() {
         return new Order(getItems());
+    }
+
+    public String serializeJson() {
+        List<SimpleOrderProduct> itemQuantities = new ArrayList<>();
+        items.forEach((p, q) -> itemQuantities.add(new SimpleOrderProduct(p, q)));
+        return JsonHelper.objectToString(itemQuantities);
+    }
+
+    public CustomSerialization deserializeJson(String json) {
+        List<SimpleOrderProduct> itemQuantities = JsonHelper.jsonToCollectionObject(json, ArrayList.class, SimpleOrderProduct.class);
+
+        if (itemQuantities != null) {
+            Basket basket = new Basket();
+            itemQuantities.forEach(itemQuantity -> basket.addItem(itemQuantity.getProduct(), itemQuantity.getQuantity()));
+            return basket;
+        }
+        return null;
     }
 }

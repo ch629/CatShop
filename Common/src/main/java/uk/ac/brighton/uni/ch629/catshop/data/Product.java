@@ -25,7 +25,7 @@ public class Product implements Serializable {
     @JsonCreator
     public Product(@JsonProperty("description") String description,
                    @JsonProperty("price") float price,
-                   @JsonProperty("sotkc") int stock,
+                   @JsonProperty("stock") int stock,
                    @JsonProperty("image") String image) {
         this.description = description;
         this.price = price;

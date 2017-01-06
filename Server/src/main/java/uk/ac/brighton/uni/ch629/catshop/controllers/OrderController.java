@@ -58,7 +58,7 @@ public class OrderController {
         return hashMap;
     }
 
-    @PostMapping(value = "/order")
+    /*@PostMapping(value = "/order")
     public int addOrder(@RequestBody Basket basket) { //TODO: Could take a Map<Product, Integer> instead
         Order createdOrder = orderService.create(basket.asOrder());
 
@@ -68,6 +68,24 @@ public class OrderController {
         //TODO: Reduce Stock of Products
 
         return createdOrder.getOrderID();
+    }*/
+
+    @PostMapping(value = "/order")
+    public int addOrder(@RequestBody String basketJson) { //TODO: Could take a Map<Product, Integer> instead
+//        Basket basket = JsonHelper.jsonToObject(basketJson, Basket.class);
+        Basket basket = new Basket();
+        basket = (Basket) basket.deserializeJson(basketJson);
+        if (basket != null) {
+            Order createdOrder = orderService.create(basket.asOrder());
+
+            SubscriptionManager.getInstance().sendUpdate(new AddOrderToWarehouse(createdOrder));
+            SubscriptionManager.getInstance().sendUpdate(new ShopDisplayUpdate(createdOrder.getOrderID(), ShopDisplayUpdate.UpdateReason.ADD));
+
+            //TODO: Reduce Stock of Products
+
+            return createdOrder.getOrderID();
+        }
+        return -1;
     }
 
     /*@PostMapping(value = "/order")

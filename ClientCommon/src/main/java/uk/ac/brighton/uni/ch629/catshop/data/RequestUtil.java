@@ -20,7 +20,7 @@ public class RequestUtil {
 
             @Override
             public String writeValue(Object value) {
-                return JsonHelper.objectToNode(value).asText(); //Note: Not sure if this should be toString or asText?
+                return JsonHelper.objectToString(value); //Note: Not sure if this should be toString or asText?
             }
         });
     }

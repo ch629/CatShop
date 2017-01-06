@@ -1,11 +1,10 @@
 package uk.ac.brighton.uni.ch629.catshop.data;
 
 import com.fasterxml.jackson.annotation.*;
+import javafx.util.Pair;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @JsonAutoDetect
 public class Order implements Serializable {
@@ -33,6 +32,22 @@ public class Order implements Serializable {
         this.orderProducts = orderProducts;
         this.orderID = orderID;
     }*/
+
+    public Map<Product, Integer> asMap() {
+        Map<Product, Integer> map = new HashMap<>();
+        orderProducts.forEach(orderProduct -> map.put(orderProduct.getProduct(), orderProduct.getQuantity()));
+        return map;
+    }
+
+    public List<Pair<Product, Integer>> asPairs() {
+        List<Pair<Product, Integer>> pairs = new ArrayList<>();
+        orderProducts.forEach(orderProduct -> pairs.add(new Pair<>(orderProduct.getProduct(), orderProduct.getQuantity())));
+        return pairs;
+    }
+
+    public Basket asBasket() {
+        return new Basket(asMap());
+    }
 
     public int getOrderID() {
         return orderID;

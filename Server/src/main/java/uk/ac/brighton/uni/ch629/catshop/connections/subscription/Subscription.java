@@ -28,7 +28,7 @@ public class Subscription { //TODO: If I don't have enough time I could remove t
     }
 
     public void sendUpdate(Update update) {
-        sendString(JsonHelper.objectToNode(new UpdateWrapper(update)).toString()); //TODO: Check toString or asText
+        sendString(JsonHelper.objectToString(new UpdateWrapper(update)));
     }
 }
 
