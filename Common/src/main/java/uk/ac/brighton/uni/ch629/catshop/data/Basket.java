@@ -109,16 +109,23 @@ public class Basket implements CustomSerialization {
         return items;
     }
 
+    /**
+     * Convert the Basket into and Order without it's OrderID
+     *
+     * @return The equivalent Order
+     */
     public Order asOrder() {
         return new Order(getItems());
     }
 
+    @Override
     public String serializeJson() {
         List<SimpleOrderProduct> itemQuantities = new ArrayList<>();
         items.forEach((p, q) -> itemQuantities.add(new SimpleOrderProduct(p, q)));
         return JsonHelper.objectToString(itemQuantities);
     }
 
+    @Override
     public CustomSerialization deserializeJson(String json) {
         List<SimpleOrderProduct> itemQuantities = JsonHelper.jsonToCollectionObject(json, ArrayList.class, SimpleOrderProduct.class);
 
