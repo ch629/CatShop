@@ -11,6 +11,7 @@ import java.util.List;
 public class RequestUtil {
     public static final String serverURL = "http://localhost:8090/"; //TODO: Make a configuration file for this, could use Java Properties.
 
+    //TODO: Downloading Images & Caching them.
     static {
         Unirest.setObjectMapper(new ObjectMapper() {
             @Override
@@ -25,7 +26,11 @@ public class RequestUtil {
         });
     }
 
-    public static Response sendGet(String url) throws UnirestException {
+    public static String sendStringGet(String url) throws UnirestException {
+        return Unirest.get(serverURL + url).asObject(String.class).getBody();
+    }
+
+    public static Response sendGet(String url) throws UnirestException { //TODO: Response may be redundant, check this properly.
         return Unirest.get(serverURL + url).asObject(Response.class).getBody();
     }
 
