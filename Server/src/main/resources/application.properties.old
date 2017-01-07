@@ -1,10 +1,10 @@
 #DB Properties
-db.url=jdbc:derby:catshop;create=true
-db.driver=org.apache.derby.jdbc.EmbeddedDriver
+db.url=jdbc:mysql://localhost/catshop?useSSL=false
+db.driver=com.mysql.jdbc.Driver
 db.username=root
-db.password=root
+db.password=pass
 #Hibernate Properties
-hibernate.dialect=org.hibernate.dialect.DerbyTenSevenDialect
+hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
 hibernate.show_sql=true
 hibernate.format_sql=false
 hibernate.hbm2ddl.auto=create-drop

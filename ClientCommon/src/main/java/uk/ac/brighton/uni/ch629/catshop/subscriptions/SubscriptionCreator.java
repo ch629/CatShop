@@ -1,10 +1,34 @@
 package uk.ac.brighton.uni.ch629.catshop.subscriptions;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
+import uk.ac.brighton.uni.ch629.catshop.JsonHelper;
+import uk.ac.brighton.uni.ch629.catshop.RequestSubscription;
 import uk.ac.brighton.uni.ch629.catshop.data.RequestUtil;
+import uk.ac.brighton.uni.ch629.catshop.update.Update;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 public class SubscriptionCreator {
     public static int serverSubscriptionPort = -1; //TODO: This should probably be in Request or somewhere else, as SubscriptionCreator needs it.
+    //TODO: Somewhere to store the hostname of the server & the port
+    //TODO: Try the server with Derby so I can just hand it all in like that, rather than needing to setup a server.
+
+    public SubscriptionCreator(Class<? extends Update> updateClass) {
+        checkPort();
+        try {
+            Socket socket = new Socket("http://localhost", serverSubscriptionPort);
+            RequestSubscription requestSubscription = new RequestSubscription(updateClass);
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+            writer.println(JsonHelper.objectToString(requestSubscription));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void getSubscriptionPort() {
         try {

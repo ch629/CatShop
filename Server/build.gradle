@@ -16,6 +16,7 @@ dependencies {
     compile 'org.hibernate:hibernate-core:5.2.3.Final'
     compile 'mysql:mysql-connector-java:5.1.39'
     compile 'com.google.guava:guava:20.0'
+    compile 'org.apache.derby:derby:10.13.1.1'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
