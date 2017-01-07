@@ -12,7 +12,6 @@ import uk.ac.brighton.uni.ch629.catshop.data.services.interfaces.ProductService;
 
 @SpringBootApplication
 public class Application {
-    private static final int SERVER_SUBSCRIPTION_PORT = 8091;
     private static ProductService productService;
     private static OrderService orderService;
     private static Thread serverThread; //TODO: Not sure if I should keep this like this so I can check if it's still running, or I may need it to close the ServerSocket when closing the server
