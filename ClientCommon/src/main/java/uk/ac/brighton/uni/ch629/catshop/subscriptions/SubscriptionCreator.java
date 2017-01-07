@@ -14,9 +14,8 @@ import java.net.Socket;
 public class SubscriptionCreator {
     public static int serverSubscriptionPort = -1; //TODO: This should probably be in Request or somewhere else, as SubscriptionCreator needs it.
     //TODO: Somewhere to store the hostname of the server & the port
-    //TODO: Try the server with Derby so I can just hand it all in like that, rather than needing to setup a server.
 
-    public SubscriptionCreator(Class<? extends Update> updateClass) {
+    public SubscriptionCreator(Class<? extends Update> updateClass, SubscriptionClientRunnable runnable) {
         checkPort();
         try {
             Socket socket = new Socket("http://localhost", serverSubscriptionPort);
@@ -25,6 +24,8 @@ public class SubscriptionCreator {
             writer.println(JsonHelper.objectToString(requestSubscription));
             writer.flush();
             writer.close();
+
+            SubscriptionListener.makeThread(socket, runnable);
         } catch (IOException e) {
             e.printStackTrace();
         }
