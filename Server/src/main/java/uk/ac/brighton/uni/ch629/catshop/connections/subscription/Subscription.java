@@ -28,7 +28,10 @@ public class Subscription { //TODO: If I don't have enough time I could remove t
     }
 
     public void sendUpdate(Update update) {
-        sendString(JsonHelper.objectToString(new UpdateWrapper(update)));
+        if (!socket.isClosed()) {
+            sendString(JsonHelper.objectToString(new UpdateWrapper(update)));
+        } else
+            SubscriptionManager.getInstance().removeSubscription(this); //Remove the Subscription if the Socket is closed.
     }
 }
 
