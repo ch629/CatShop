@@ -6,7 +6,7 @@ import uk.ac.brighton.uni.ch629.catshop.Application;
 
 @RestController("/")
 public class MainController {
-    @GetMapping(value = "/subscibe/port")
+    @GetMapping(value = "/subscribe/port")
     public int getSubscriptionPort() {
         return Application.getSubscriptionPort();
     }
