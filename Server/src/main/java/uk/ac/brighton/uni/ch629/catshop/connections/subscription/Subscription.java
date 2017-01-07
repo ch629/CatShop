@@ -24,7 +24,6 @@ public class Subscription { //TODO: If I don't have enough time I could remove t
     private void sendString(String string) {
         printWriter.println(string);
         printWriter.flush();
-        printWriter.close();
     }
 
     public void sendUpdate(Update update) {

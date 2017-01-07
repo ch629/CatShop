@@ -27,7 +27,7 @@ public class SubscriptionCreationRunnable implements Runnable {
             if (!in.isEmpty()) {
                 RequestSubscription request = JsonHelper.jsonToObject(in, RequestSubscription.class);
                 if (request != null)
-                    SubscriptionManager.getInstance().addSubscription(request.getUpdateType(), new Subscription(socket));
+                    SubscriptionManager.getInstance().addSubscription(request.getUpdateName(), new Subscription(socket));
             }
         } catch (IOException e) {
             e.printStackTrace();

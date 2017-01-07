@@ -29,10 +29,12 @@ public class SubscriptionListener implements Runnable {
 
     @Override
     public void run() {
-        while (socket.isConnected() && !socket.isClosed()) {
+        while (!socket.isClosed()) {
+            System.out.println("WHILE SOCKET");
             String line;
             try {
                 while ((line = reader.readLine()) != null) {
+                    System.out.println("Received: " + line);
                     UpdateWrapper updateWrapper = JsonHelper.jsonToObject(line, UpdateWrapper.class);
                     runnable.onUpdateReceived(updateWrapper);
                 }

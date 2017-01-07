@@ -18,7 +18,7 @@ public class RequestSubscription {
         this.updateName = updateName;
     }
 
-    public String getUpdateType() {
+    public String getUpdateName() {
         return updateName;
     }
 }

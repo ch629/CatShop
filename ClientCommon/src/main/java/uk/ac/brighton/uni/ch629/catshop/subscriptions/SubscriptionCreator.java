@@ -10,22 +10,27 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubscriptionCreator {
     public static int serverSubscriptionPort = -1; //TODO: This should probably be in Request or somewhere else, as SubscriptionCreator needs it.
     //TODO: Somewhere to store the hostname of the server & the port
+    private static List<Socket> openSockets = new ArrayList<>();
 
     public SubscriptionCreator(Class<? extends Update> updateClass, SubscriptionClientRunnable runnable) {
         checkPort();
         try {
-            Socket socket = new Socket("http://localhost", serverSubscriptionPort);
+            Socket socket = new Socket("localhost", serverSubscriptionPort);
             RequestSubscription requestSubscription = new RequestSubscription(updateClass);
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
             writer.println(JsonHelper.objectToString(requestSubscription));
             writer.flush();
-            writer.close();
+//            writer.close(); //NOTE: This closes the socket
 
-            SubscriptionListener.makeThread(socket, runnable);
+//            openSockets.add(socket);
+
+            SubscriptionListener.makeThread(socket, runnable).start();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -16,7 +16,7 @@ public class SubscriptionManager {
         return INSTANCE;
     }
 
-    public void addSubscription(String updateType, Subscription subscription) {
+    public void addSubscription(String updateType, Subscription subscription) { //TODO: When adding the subscription after closing it, the server crashes
         synchronized (subscriptions) {
             subscriptions.put(updateType, subscription);
         }
