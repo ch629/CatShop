@@ -7,10 +7,10 @@ import uk.ac.brighton.uni.ch629.catshop.update.Update;
 
 @JsonAutoDetect
 public class RequestSubscription {
-    private final String updateName; //TODO: Either this or an Enum, but this will be more expandable than an enum, which'll need manual modification for each type of update
+    private final String updateName;
 
     public RequestSubscription(Class<? extends Update> updateClass) {
-        this.updateName = updateClass.getSimpleName(); //TODO: Check whether I should use getSimpleName() or getName()
+        this.updateName = updateClass.getSimpleName();
     }
 
     @JsonCreator

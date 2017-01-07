@@ -26,9 +26,6 @@ public class SubscriptionCreator {
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
             writer.println(JsonHelper.objectToString(requestSubscription));
             writer.flush();
-//            writer.close(); //NOTE: This closes the socket
-
-//            openSockets.add(socket);
 
             SubscriptionListener.makeThread(socket, runnable).start();
         } catch (IOException e) {

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Subscription { //TODO: If I don't have enough time I could remove the response system
+public class Subscription {
     private final Socket socket;
     private PrintWriter printWriter; //TODO: Check whether I should leave this open all the time or not.
 
@@ -33,5 +33,3 @@ public class Subscription { //TODO: If I don't have enough time I could remove t
             SubscriptionManager.getInstance().removeSubscription(this); //Remove the Subscription if the Socket is closed.
     }
 }
-
-//TODO: The way this would usually work, is that the client would poll the server every x seconds to check for updates, rather than the server sending updates itself.

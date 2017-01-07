@@ -46,7 +46,6 @@ public class Application {
         System.out.println("DONE CREATING TEST ORDER");
 
         Basket basket = newTestOrder.asBasket();
-//        System.out.println(JsonHelper.objectToNode(basket).toString());
         System.out.println(JsonHelper.objectToString(basket));
     }
 
@@ -64,6 +63,3 @@ public class Application {
         return subscriptionPort;
     }
 }
-
-//TODO: Could have a page on the website to get the port for subscriptions, to allow the server's port to change without changing client settings
-//TODO: Need some way to tell the Cashier the new Order ID, for the Customer (Potentially the receipt) -> Could do this with a Subscription Update

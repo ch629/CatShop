@@ -19,4 +19,3 @@ public class CustomerApp extends Application {
         primaryStage.show();
     }
 }
-//TODO: Come up with some designs and build in SceneBuilder. Communicate with server to check for orders and products(including images? May need to cache them)

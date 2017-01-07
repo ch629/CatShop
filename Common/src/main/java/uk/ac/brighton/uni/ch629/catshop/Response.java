@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
  * A Response from the Server
  */
 @JsonAutoDetect
-public class Response { //This will only be created from JSON and then read as this object.
-    private int responseCode; //TODO: Make enum
+public class Response { //TODO: Potentially redundant now
+    private int responseCode;
 
     @JsonCreator
     private Response(int responseCode/*, Object data*/) {

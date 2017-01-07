@@ -12,6 +12,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = PickOrder.class, name = "PickOrder"),
         @JsonSubTypes.Type(value = ShopDisplayUpdate.class, name = "ShopDisplayUpdate"),
 })
-public interface Update { //TODO: Could make an Update class and have subclasses for all the types?
+public interface Update {
     String getType();
 }

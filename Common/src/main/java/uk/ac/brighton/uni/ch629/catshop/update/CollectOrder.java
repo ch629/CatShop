@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class CollectOrder implements Update { //Collection -> Server -> ShopDisplay
     private final int orderID;
 
-    public CollectOrder(int orderID) { //TODO: It may be better to do these with Composition, just have an OrderID and an Enum to notify what to do with the Order
+    public CollectOrder(int orderID) {
         this.orderID = orderID;
     }
 

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.ac.brighton.uni.ch629.catshop.data.Order;
 
 @JsonAutoDetect
-public class AddOrderToWarehouse implements Update { //TODO: There must be a better way to do this, but it'll do for now. This is a problem with Inheritance
+public class AddOrderToWarehouse implements Update {
     private final Order order;
 
     @JsonCreator

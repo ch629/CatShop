@@ -7,7 +7,7 @@ import uk.ac.brighton.uni.ch629.catshop.data.Product;
 
 import java.util.List;
 
-public interface OrderService { //NOTE: Might not need all the addProduct methods, just figure out which one's to keep when implementing this.
+public interface OrderService {
     Order create(Order order);
 
     Order delete(int id);

@@ -20,6 +20,6 @@ public interface CustomSerialization {
     CustomSerialization deserializeJson(String json);
 
     default <T> T deserializeJson(String json, Class<T> clazz) {
-        return clazz.cast(deserializeJson(json)); //TODO: Check
+        return clazz.cast(deserializeJson(json));
     }
 }

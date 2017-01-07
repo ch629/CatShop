@@ -19,7 +19,7 @@ public class AddOrder implements Update { //Cashier -> Server -> Warehouse
         this.basket = basket;
     }
 
-    @Override //TODO: Could JsonIgnore this
+    @Override
     @JsonIgnore
     public String getType() {
         return "AddOrder";

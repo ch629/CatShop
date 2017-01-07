@@ -17,7 +17,7 @@ public class OrderProduct implements Serializable {
     @JsonCreator
     public OrderProduct(@JsonProperty("product") Product product,
                         @JsonProperty("quantity") int quantity) {
-        this(null, product, quantity); //TODO: Check this.
+        this(null, product, quantity); //TODO: Check if this is needed anymore.
     }
 
     @JsonCreator
