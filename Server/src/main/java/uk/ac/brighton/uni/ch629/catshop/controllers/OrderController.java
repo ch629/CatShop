@@ -10,6 +10,7 @@ import uk.ac.brighton.uni.ch629.catshop.data.OrderProduct;
 import uk.ac.brighton.uni.ch629.catshop.data.Product;
 import uk.ac.brighton.uni.ch629.catshop.data.services.interfaces.OrderService;
 import uk.ac.brighton.uni.ch629.catshop.update.AddOrder;
+import uk.ac.brighton.uni.ch629.catshop.update.AddOrderNew;
 import uk.ac.brighton.uni.ch629.catshop.update.PickOrder;
 import uk.ac.brighton.uni.ch629.catshop.update.ShopDisplayUpdate;
 
@@ -66,6 +67,7 @@ public class OrderController {
             Order createdOrder = orderService.create(basket.asOrder());
 
             SubscriptionManager.getInstance().sendUpdate(new AddOrder(createdOrder.asBasket()));
+            SubscriptionManager.getInstance().sendUpdate(new AddOrderNew(createdOrder));
             SubscriptionManager.getInstance().sendUpdate(new ShopDisplayUpdate(createdOrder.getOrderID(), ShopDisplayUpdate.UpdateReason.ADD));
 
             //TODO: Reduce Stock of Products

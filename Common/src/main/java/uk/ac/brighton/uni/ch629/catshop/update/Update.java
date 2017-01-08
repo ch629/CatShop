@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = AddOrder.class, name = "AddOrder"),
         @JsonSubTypes.Type(value = PickOrder.class, name = "PickOrder"),
         @JsonSubTypes.Type(value = ShopDisplayUpdate.class, name = "ShopDisplayUpdate"),
+        @JsonSubTypes.Type(value = AddOrderNew.class, name = "AddOrderNew"),
 })
 public interface Update {
     String getType();
