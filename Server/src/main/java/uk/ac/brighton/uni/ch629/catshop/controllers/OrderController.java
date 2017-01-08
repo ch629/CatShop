@@ -9,8 +9,7 @@ import uk.ac.brighton.uni.ch629.catshop.data.Order;
 import uk.ac.brighton.uni.ch629.catshop.data.OrderProduct;
 import uk.ac.brighton.uni.ch629.catshop.data.Product;
 import uk.ac.brighton.uni.ch629.catshop.data.services.interfaces.OrderService;
-import uk.ac.brighton.uni.ch629.catshop.update.AddOrderToWarehouse;
-import uk.ac.brighton.uni.ch629.catshop.update.CollectOrder;
+import uk.ac.brighton.uni.ch629.catshop.update.AddOrder;
 import uk.ac.brighton.uni.ch629.catshop.update.PickOrder;
 import uk.ac.brighton.uni.ch629.catshop.update.ShopDisplayUpdate;
 
@@ -28,16 +27,17 @@ public class OrderController {
 
     @PostMapping(value = "/order/{id}/collect")
     public void collectOrder(@PathVariable int id) {
-        SubscriptionManager.getInstance().sendUpdate(new CollectOrder(id));
+        SubscriptionManager.getInstance().sendUpdate(new ShopDisplayUpdate(id, ShopDisplayUpdate.UpdateReason.COLLECT));
     }
 
     @PostMapping(value = "/order/{id}/pick")
     public void pickOrder(@PathVariable int id) {
         SubscriptionManager.getInstance().sendUpdate(new PickOrder(id));
+        SubscriptionManager.getInstance().sendUpdate(new ShopDisplayUpdate(id, ShopDisplayUpdate.UpdateReason.PICK));
     }
 
     @PostMapping(value = "/order/product")
-    public void addProductToOrder(@RequestBody OrderProduct orderProduct) {
+    public void addProductToOrder(@RequestBody OrderProduct orderProduct) { //TODO: Remove this?
         orderService.addProduct(orderProduct);
     }
 
@@ -52,7 +52,7 @@ public class OrderController {
     }
 
     @GetMapping(value = {"/order/{id}/hash"})
-    public HashMap<Product, Integer> getHashOrders(@PathVariable int id) {
+    public HashMap<Product, Integer> getHashOrders(@PathVariable int id) { //TODO: Remove this?
         HashMap<Product, Integer> hashMap = new HashMap<>();
         Order order = orderService.findByID(id);
         order.getProducts().forEach(pair -> hashMap.put(pair.getProduct(), pair.getQuantity()));
@@ -65,7 +65,7 @@ public class OrderController {
         if (basket != null) {
             Order createdOrder = orderService.create(basket.asOrder());
 
-            SubscriptionManager.getInstance().sendUpdate(new AddOrderToWarehouse(createdOrder));
+            SubscriptionManager.getInstance().sendUpdate(new AddOrder(createdOrder.asBasket()));
             SubscriptionManager.getInstance().sendUpdate(new ShopDisplayUpdate(createdOrder.getOrderID(), ShopDisplayUpdate.UpdateReason.ADD));
 
             //TODO: Reduce Stock of Products
@@ -76,7 +76,7 @@ public class OrderController {
     }
 
     @PostMapping(value = {"/order/basket"})
-    public void addBasketToOrder(@RequestBody HashMap<Product, Integer> products) {
+    public void addBasketToOrder(@RequestBody HashMap<Product, Integer> products) { //TODO: Remove this?
         Order order = new Order(products);
         orderService.create(order);
     }

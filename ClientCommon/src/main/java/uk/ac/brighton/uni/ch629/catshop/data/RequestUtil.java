@@ -75,4 +75,12 @@ public class RequestUtil {
         }
         return -1;
     }
+
+    public void pickOrder(int orderID) {
+        //TODO: IMPLEMENT
+    }
+
+    public void collectOrder(int orderID) {
+        //TODO: IMPLEMENT
+    }
 }
