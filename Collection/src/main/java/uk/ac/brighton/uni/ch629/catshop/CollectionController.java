@@ -43,6 +43,6 @@ public class CollectionController {
     }
 
     public void removeOrder(int orderID) {
-        orders.remove(orderID);
+        orders.remove(orders.indexOf(orderID));
     }
 }
