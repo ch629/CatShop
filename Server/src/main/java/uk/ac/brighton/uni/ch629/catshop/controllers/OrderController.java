@@ -33,6 +33,7 @@ public class OrderController {
 
     @PostMapping(value = "/order/{id}/pick")
     public void pickOrder(@PathVariable int id) {
+        System.out.println("Picking Order: " + id);
         SubscriptionManager.getInstance().sendUpdate(new PickOrder(id));
         SubscriptionManager.getInstance().sendUpdate(new ShopDisplayUpdate(id, ShopDisplayUpdate.UpdateReason.PICK));
     }

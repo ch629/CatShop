@@ -77,10 +77,11 @@ public class RequestUtil {
     }
 
     public static void pickOrder(int orderID) {
-        Unirest.post(serverURL + String.format("/order/%d/pick", orderID));
+        System.out.println("PICK ORDER");
+        Unirest.post(serverURL + String.format("order/%d/pick", orderID));
     }
 
     public static void collectOrder(int orderID) {
-        Unirest.post(serverURL + String.format("/order/%d/collect", orderID));
+        Unirest.post(serverURL + String.format("order/%d/collect", orderID));
     }
 }

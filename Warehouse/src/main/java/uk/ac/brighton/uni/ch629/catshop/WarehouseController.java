@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import uk.ac.brighton.uni.ch629.catshop.data.Order;
-import uk.ac.brighton.uni.ch629.catshop.data.RequestUtil;
 import uk.ac.brighton.uni.ch629.catshop.subscriptions.SubscriptionCreator;
 import uk.ac.brighton.uni.ch629.catshop.update.AddOrderNew;
 
@@ -27,11 +26,6 @@ public class WarehouseController {
         orders = FXCollections.observableArrayList();
         listView.setItems(orders);
         listView.setCellFactory(param -> new WarehouseItemCell(this));
-
-        Order testOrder = RequestUtil.getOrder(1);
-        orders.add(testOrder);
-        orders.add(testOrder);
-        orders.add(testOrder);
 
         new SubscriptionCreator(AddOrderNew.class, updateWrapper -> addOrderLater(((AddOrderNew) updateWrapper.getUpdate()).getOrder()));
     }
