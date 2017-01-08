@@ -1,4 +1,7 @@
 package uk.ac.brighton.uni.ch629.catshop;
 
-public class CashierModel {
+import uk.ac.brighton.uni.ch629.catshop.data.Basket;
+
+public class CashierModel extends Basket {
+
 }
