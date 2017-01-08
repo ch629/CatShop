@@ -1,3 +1,20 @@
 dependencies {
-    
+    compile 'com.mashape.unirest:unirest-java:1.4.9'
+
+    compile 'com.fasterxml.jackson.core:jackson-core:2.8.5'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
+
+    compile project(":ClientCommon")
+    compile project(":Common")
+}
+
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'uk.ac.brighton.uni.ch629.catshop.WarehouseApp'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }

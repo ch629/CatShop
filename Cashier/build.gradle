@@ -1,3 +1,9 @@
+jar {
+    manifest {
+        attributes 'Main-Class': 'uk.ac.brighton.uni.ch629.catshop.CashierApp'
+    }
+}
+
 dependencies {
     compile 'com.mashape.unirest:unirest-java:1.4.9'
 
@@ -9,10 +15,9 @@ dependencies {
     compile project(":Common")
 }
 
-
 task fatJar(type: Jar) {
     manifest {
-        attributes 'Main-Class': 'uk.ac.brighton.uni.ch629.catshop.CollectionApp'
+        attributes 'Main-Class': 'uk.ac.brighton.uni.ch629.catshop.CashierApp'
     }
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
