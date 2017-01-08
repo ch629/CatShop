@@ -76,11 +76,11 @@ public class RequestUtil {
         return -1;
     }
 
-    public void pickOrder(int orderID) {
-        //TODO: IMPLEMENT
+    public static void pickOrder(int orderID) {
+        Unirest.post(serverURL + String.format("/order/%d/pick", orderID));
     }
 
-    public void collectOrder(int orderID) {
-        //TODO: IMPLEMENT
+    public static void collectOrder(int orderID) {
+        Unirest.post(serverURL + String.format("/order/%d/collect", orderID));
     }
 }
