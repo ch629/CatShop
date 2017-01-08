@@ -21,7 +21,7 @@ public class RequestUtil {
 
             @Override
             public String writeValue(Object value) {
-                return JsonHelper.objectToString(value); //Note: Not sure if this should be toString or asText?
+                return JsonHelper.objectToString(value);
             }
         });
     }
@@ -67,7 +67,12 @@ public class RequestUtil {
         return getTypeNoException(Order.class, orderID, "order/%d");
     }
 
-    public static void addOrder(Order order) {
-
+    public static int addOrder(Basket basket) {
+        try {
+            return Unirest.post(serverURL + "/order").body(basket).asObject(Integer.class).getBody(); //TODO: Check this
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

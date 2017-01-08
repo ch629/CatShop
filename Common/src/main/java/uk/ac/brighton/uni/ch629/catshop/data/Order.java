@@ -22,16 +22,16 @@ public class Order implements Serializable {
     }
 
     @JsonCreator
-    public Order(@JsonProperty("orderProducts") Set<OrderProduct> orderProducts) {
-        this.orderProducts = orderProducts;
-    }
-
-    /*@JsonCreator
     public Order(@JsonProperty("orderID") int orderID,
                  @JsonProperty("orderProducts") Set<OrderProduct> orderProducts) {
         this.orderProducts = orderProducts;
         this.orderID = orderID;
-    }*/
+    }
+
+    @JsonCreator
+    public Order(@JsonProperty("orderProducts") Set<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
+    }
 
     public Map<Product, Integer> asMap() {
         Map<Product, Integer> map = new HashMap<>();

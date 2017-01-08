@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.*;
 import java.io.Serializable;
 
 @JsonAutoDetect
-public class OrderProduct implements Serializable {
+public class OrderProduct implements Serializable { //TODO: This works fine with one constructor
     private static final long serialVersionUID = 1L;
     @JsonIgnore
     private OrderProductId orderProductId;
@@ -14,37 +14,33 @@ public class OrderProduct implements Serializable {
     public OrderProduct() {
     }
 
-    @JsonCreator
-    public OrderProduct(@JsonProperty("product") Product product,
-                        @JsonProperty("quantity") int quantity) {
-        this(null, product, quantity); //TODO: Check if this is needed anymore.
-    }
-
-    @JsonCreator
+    @JsonIgnore
     public OrderProduct(@JsonProperty("order") Order order,
                         @JsonProperty("product") Product product,
-                        @JsonProperty("quantity") int quantity) {
+                        @JsonProperty("quantity") int quantity) { //TODO: Check if this is ever used.
         orderProductId = new OrderProductId(order, product);
         this.quantity = quantity;
     }
 
-    @JsonProperty("product") //NOTE: These should allow me to just ignore the composite key class.
+    @JsonCreator
+    public OrderProduct(@JsonProperty("product") Product product,
+                        @JsonProperty("quantity") int quantity) {
+        this(null, product, quantity);
+    }
+
     public Product getProduct() {
         return orderProductId.getProduct();
     }
 
-    @JsonSetter("product")
     public void setProduct(Product product) {
         this.orderProductId.setProduct(product);
     }
 
-    @JsonProperty("order")
     @JsonBackReference
     public Order getOrder() {
         return orderProductId.getOrder();
     }
 
-    @JsonSetter("order")
     public void setOrder(Order order) {
         this.orderProductId.setOrder(order);
     }
