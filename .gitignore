@@ -17,7 +17,7 @@ hs_err_pid*
 build/
 
 # Database Files
-catshop/
+/catshop/
 
 # Ignore Gradle GUI config
 gradle-app.setting
