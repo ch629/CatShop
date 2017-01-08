@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.60"
+            fx:controller="uk.ac.brighton.uni.ch629.catshop.CashierController">
+    <children>
+        <TextField fx:id="search" layoutX="23.0" layoutY="59.0"/>
+        <Label fx:id="productName" layoutX="23.0" layoutY="125.0" prefHeight="25.0" prefWidth="149.0"/>
+        <Button layoutX="23.0" layoutY="93.0" mnemonicParsing="false" onAction="#onCheck" prefHeight="25.0"
+                prefWidth="149.0" text="Check"/>
+        <Button layoutX="23.0" layoutY="163.0" mnemonicParsing="false" onAction="#onAdd" prefHeight="25.0"
+                prefWidth="149.0" text="Add"/>
+        <Label layoutX="30.0" layoutY="26.0" prefHeight="17.0" prefWidth="115.0" text="Product Number"/>
+        <Label fx:id="totalPrice" layoutX="406.0" layoutY="229.0" prefHeight="33.0" prefWidth="103.0"
+               text="Total Price: "/>
+        <TableView fx:id="basket" layoutX="201.0" layoutY="1.0" prefHeight="205.0" prefWidth="337.0">
+            <columns>
+                <TableColumn prefWidth="118.0" text="Name"/>
+                <TableColumn prefWidth="61.0" text="Stock"/>
+                <TableColumn prefWidth="63.0" text="Quantity"/>
+                <TableColumn prefWidth="91.0" text="Price"/>
+            </columns>
+        </TableView>
+        <Button layoutX="23.0" layoutY="206.0" mnemonicParsing="false" onAction="#onBuy" prefHeight="25.0"
+                prefWidth="149.0" text="Buy"/>
+        <Button layoutX="201.0" layoutY="229.0" mnemonicParsing="false" onAction="#onClear" prefHeight="25.0"
+                prefWidth="73.0" text="Clear"/>
+    </children>
+</AnchorPane>

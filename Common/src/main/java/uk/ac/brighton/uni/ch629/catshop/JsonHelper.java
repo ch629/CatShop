@@ -39,8 +39,8 @@ public class JsonHelper {
 
         try {
             return objectMapper.readValue(json, clazz);
-        } catch (IOException e) {
-            e.printStackTrace(); //Invalid JSON for this class
+        } catch (Exception e) {
+//            e.printStackTrace(); //Invalid JSON for this class
         }
         return null;
     }
